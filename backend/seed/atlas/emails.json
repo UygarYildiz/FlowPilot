@@ -1,0 +1,134 @@
+{
+  "company": "Atlas Endüstri A.Ş. (kurgusal)",
+  "domain": "seed.atlas-endustri.example",
+  "note": "Tüm kişi, şirket ve adresler kurgusaldır. Alan adları .example (RFC 2606) kullanır.",
+  "emails": [
+    {
+      "id": "seed-001",
+      "from": "satis@ozkanrulman.example",
+      "to": ["satinalma@atlas-endustri.example"],
+      "subject": "SAT-2026-031 talebiniz için fiyat teklifimiz",
+      "body": "Merhaba,\n\nSAT-2026-031 numaralı talebiniz için hazırladığımız TK-2611-07 numaralı teklifimiz ektedir. Teklifimiz 01.12.2026 tarihine kadar geçerlidir, teslim süresi sipariş onayından itibaren 10 iş günüdür.\n\nSorularınız için bize ulaşabilirsiniz.\n\nSaygılarımızla,\nMert Özkan\nÖzkan Rulman San. ve Tic. Ltd. Şti.",
+      "minutes_ago": 180,
+      "attachments": ["teklif-ozkan-rulman-TK-2611-07.pdf"]
+    },
+    {
+      "id": "seed-002",
+      "from": "teklif@anadolurulman.example",
+      "to": ["satinalma@atlas-endustri.example"],
+      "subject": "RE: Rulman fiyat talebi SAT-2026-031",
+      "body": "Sayın Satın Alma Ekibi,\n\nTalebinize ilişkin AR-26-1184 numaralı teklifimizi Excel olarak ekte bulabilirsiniz. Fiyatlarımız EUR cinsindendir ve 28.11.2026'ya kadar geçerlidir. 32210 kodlu rulmanda stok olmadığı için teslim süresi 21 gündür.\n\nİyi çalışmalar,\nSelin Aydın\nAnadolu Rulman A.Ş.",
+      "minutes_ago": 150,
+      "attachments": ["teklif-anadolu-rulman-AR-26-1184.xlsx"]
+    },
+    {
+      "id": "seed-003",
+      "from": "bilgi@kayahidrolik.example",
+      "to": ["satinalma@atlas-endustri.example"],
+      "subject": "Aralık 2026 itibarıyla geçerli güncel fiyat listemiz",
+      "body": "Değerli iş ortağımız,\n\nHammadde maliyetlerindeki artış nedeniyle 01.12.2026 tarihinden itibaren geçerli olacak güncel fiyat listemiz ektedir. Bu tarihten önce verilen siparişler eski fiyatlarla karşılanacaktır.\n\nKaya Hidrolik",
+      "minutes_ago": 140,
+      "attachments": ["fiyat-listesi-kaya-hidrolik-2026-12.csv"]
+    },
+    {
+      "id": "seed-004",
+      "from": "siparis@demirtascelik.example",
+      "to": ["satinalma@atlas-endustri.example"],
+      "subject": "PO-2026-0902 sipariş onayınız hk.",
+      "body": "Merhaba,\n\n10 Kasım'da gönderdiğimiz teklife istinaden PO-2026-0902 numaralı siparişi aldığınızı belirtmiştiniz ancak imzalı sipariş formu henüz elimize ulaşmadı. Üretim planımıza almamız için siparişin durumunu teyit edebilir misiniz?\n\nTeşekkürler,\nBurak Demirtaş",
+      "minutes_ago": 125
+    },
+    {
+      "id": "seed-005",
+      "from": "kalite@ozkanrulman.example",
+      "to": ["satinalma@atlas-endustri.example"],
+      "cc": ["kalite@atlas-endustri.example"],
+      "subject": "Teknik şartname değişikliği konusunda şikâyetimiz",
+      "body": "Merhaba,\n\nPO-2026-0877 siparişinin üretimi tamamlandıktan sonra tolerans değerlerinin değiştiği bildirildi. Bu değişiklik bize yazılı olarak iletilmedi ve ek maliyet doğurdu. Konuyu bu hafta içinde bir toplantıyla netleştirmek istiyoruz; aksi halde bundan sonraki siparişlerde teslim tarihlerini garanti edemeyeceğiz.\n\nKalite Müdürü\nÖzkan Rulman",
+      "minutes_ago": 110
+    },
+    {
+      "id": "seed-006",
+      "from": "planlama@atlas-endustri.example",
+      "to": ["satinalma@atlas-endustri.example"],
+      "subject": "Acil malzeme talebi — hat 3 bakım duruşu",
+      "body": "Selam,\n\nHat 3'ün 25 Kasım'daki bakım duruşu için aşağıdaki malzemelere ihtiyacımız var, en geç 24 Kasım'da depoda olması gerekiyor:\n\n- HYD-PMP-045 dişli pompa 45 cc: 2 adet\n- HYD-FLT-10 dönüş filtresi: 12 adet\n- RLM-6205-2RS rulman: 40 adet\n\nMasraf merkezi: ÜRT-03\n\nTeşekkürler,\nEce Yılmaz — Üretim Planlama",
+      "minutes_ago": 95
+    },
+    {
+      "id": "seed-007",
+      "from": "efatura@ozkanrulman.example",
+      "to": ["muhasebe@atlas-endustri.example"],
+      "subject": "OZR2026000412 numaralı e-faturanız",
+      "body": "Sayın Atlas Endüstri A.Ş.,\n\nPO-2026-0877 numaralı siparişinize ait OZR2026000412 numaralı e-faturanız ektedir. Fatura vadesi 14.12.2026'dır.\n\nÖzkan Rulman Muhasebe",
+      "minutes_ago": 80,
+      "attachments": ["fatura-ozkan-rulman-OZR2026000412.pdf"]
+    },
+    {
+      "id": "seed-008",
+      "from": "finans@bilgemakina.example",
+      "to": ["muhasebe@atlas-endustri.example"],
+      "subject": "ATL-2026-1156 faturası ödemesi yapılmıştır",
+      "body": "Merhaba,\n\nATL-2026-1156 numaralı faturanızın 186.400,00 TRY tutarındaki ödemesi bugün hesabınıza EFT ile gönderilmiştir. Tahsilatı kontrol edip cari hesabımızı güncellemenizi rica ederiz.\n\nBilge Makina Finans",
+      "minutes_ago": 70
+    },
+    {
+      "id": "seed-009",
+      "from": "satinalma@bilgemakina.example",
+      "to": ["satis@atlas-endustri.example"],
+      "subject": "Yeni sipariş: konveyör yedek parçaları",
+      "body": "Merhaba,\n\nAşağıdaki ürünler için sipariş vermek istiyoruz. Teslimat Bursa fabrikamıza, 5 Aralık'a kadar:\n\n- ATL-KNV-220 konveyör tahrik makarası: 8 adet\n- ATL-KNV-115 gergi makarası: 16 adet\n- ATL-RDK-40 redüktör kaplini: 4 adet\n\nGeçen ayki fiyatlar geçerliyse onayınızla birlikte proforma fatura gönderebilir misiniz?\n\nHakan Bilge\nBilge Makina",
+      "minutes_ago": 60
+    },
+    {
+      "id": "seed-010",
+      "from": "satinalma@bilgemakina.example",
+      "to": ["satis@atlas-endustri.example"],
+      "subject": "SO-2026-0440 siparişinde miktar değişikliği",
+      "body": "Merhaba,\n\nSO-2026-0440 numaralı siparişimizdeki ATL-KNV-115 gergi makarası miktarını 10'dan 14 adede çıkarmak istiyoruz. Teslim tarihi değişmeden karşılanabilir mi?\n\nHakan Bilge",
+      "minutes_ago": 50
+    },
+    {
+      "id": "seed-011",
+      "from": "operasyon@hizlilojistik.example",
+      "to": ["lojistik@atlas-endustri.example"],
+      "subject": "HL-55120 sevkiyatınızda gecikme",
+      "body": "Sayın yetkili,\n\nİzmir'e çıkan HL-55120 numaralı sevkiyatınız, Bozüyük'teki yol çalışması nedeniyle bugün teslim edilemeyecektir. Tahmini teslim yarın saat 12:00'dir. Taranmış irsaliye ektedir.\n\nHızlı Lojistik Operasyon",
+      "minutes_ago": 40,
+      "attachments": ["irsaliye-taramasi-HL-55120.png"]
+    },
+    {
+      "id": "seed-012",
+      "from": "depo@atlas-endustri.example",
+      "to": ["lojistik@atlas-endustri.example"],
+      "subject": "Bilge Makina sevkiyatı için araç talebi",
+      "body": "Merhaba,\n\nSO-2026-0431 siparişine ait 6 palet ürün yarın 09:00'da yüklemeye hazır olacak. Bursa teslimatı için kapalı kasa bir araç ayarlayabilir misiniz? Toplam ağırlık yaklaşık 2,8 ton.\n\nDepo Sorumlusu",
+      "minutes_ago": 30
+    },
+    {
+      "id": "seed-013",
+      "from": "satinalma@bilgemakina.example",
+      "to": ["satis@atlas-endustri.example"],
+      "cc": ["muhasebe@atlas-endustri.example"],
+      "subject": "SO-2026-0431: eksik teslimat ve hatalı fatura",
+      "body": "Merhaba,\n\nDünkü SO-2026-0431 teslimatında 2 adet ATL-RDK-40 redüktör kaplini eksik geldi. Ayrıca ATL-2026-1171 numaralı faturada bu eksik ürünler de faturalandırılmış. Eksik ürünlerin ne zaman gönderileceğini bildirmenizi ve faturanın düzeltilmesini rica ederiz.\n\nHakan Bilge",
+      "minutes_ago": 20
+    },
+    {
+      "id": "seed-014",
+      "from": "etkinlik@sanayifuari.example",
+      "to": ["info@atlas-endustri.example"],
+      "subject": "Sanayi Fuarı 2027 katılımcı kayıtları açıldı",
+      "body": "Değerli sektör temsilcisi,\n\nSanayi Fuarı 2027 için erken kayıt dönemi başladı. Stant başvurularınızı 31 Aralık'a kadar indirimli yapabilirsiniz.\n\nFuar Organizasyon Ekibi",
+      "minutes_ago": 10
+    },
+    {
+      "id": "seed-015",
+      "from": "ahmet.kara@atlas-endustri.example",
+      "to": ["info@atlas-endustri.example"],
+      "subject": "Perşembe toplantısı",
+      "body": "Herkese merhaba, perşembe günkü konuyu tekrar konuşalım mı? Ben müsaitim.",
+      "minutes_ago": 5
+    }
+  ]
+}

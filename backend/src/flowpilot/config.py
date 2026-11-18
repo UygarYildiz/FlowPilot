@@ -11,6 +11,14 @@ class Settings(BaseSettings):
     env: str = "development"
     llm_provider: str = "fake"
     llm_model: str = ""
+    database_url: str = "postgresql+psycopg://flowpilot:flowpilot@localhost:5433/flowpilot"
+    storage_dir: str = "var/attachments"
+    seed_dir: str = "seed/atlas"
+    imap_host: str = ""
+    imap_port: int = 993
+    imap_user: str = ""
+    imap_password: str = ""
+    imap_folder: str = "INBOX"
 
 
 @lru_cache

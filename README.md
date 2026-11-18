@@ -28,8 +28,11 @@ git config core.hooksPath .githooks
 Gereken araçlar: [uv](https://docs.astral.sh/uv/), Node.js 24, Docker.
 
 ```
-docker compose up -d                                  # PostgreSQL
-cd backend && uv sync && uv run uvicorn flowpilot.main:app --reload
+docker compose up -d                                  # PostgreSQL (localhost:5433)
+cd backend && uv sync
+uv run alembic upgrade head                           # şemayı kur
+uv run flowpilot ingest seed                          # kurgusal Atlas Endüstri e-postaları
+uv run uvicorn flowpilot.main:app --reload
 cd frontend && npm install && npm run dev             # http://localhost:5173
 ```
 

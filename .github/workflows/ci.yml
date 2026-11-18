@@ -8,6 +8,20 @@ on:
 jobs:
   backend:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: flowpilot
+          POSTGRES_PASSWORD: flowpilot
+          POSTGRES_DB: flowpilot
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U flowpilot"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      FLOWPILOT_TEST_DATABASE_URL: postgresql+psycopg://flowpilot:flowpilot@localhost:5432/flowpilot_test
     defaults:
       run:
         working-directory: backend
@@ -21,7 +35,7 @@ jobs:
         run: uv run pyright
       - name: Bağımlılık kuralları (MIMARI.md)
         run: uv run lint-imports
-      - name: Testler (sahte modelle, ADR-008)
+      - name: Testler (PostgreSQL + sahte model, ADR-008)
         run: uv run pytest -q
 
   frontend:

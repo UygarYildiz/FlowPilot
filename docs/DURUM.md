@@ -5,17 +5,18 @@
 
 **Son güncelleme:** 2026-11-18
 **Aktif sürüm:** v1 — Çekirdek + Procurement ([kapsam](surumler/v1.md))
-**Aşama:** M0 (iskelet) bitti; M1 (giriş) başlamadı.
+**Aşama:** M0 (iskelet) ve M1 (e-posta girişi) bitti; M2 (karar) başlamadı.
 **Yığın:** ADR-009 — Python/FastAPI, PostgreSQL, React/Vite, LLM olarak Gemini (ücretsiz katman).
 **Uzak depo:** https://github.com/UygarYildiz/FlowPilot (`main`, CI: GitHub Actions)
 
 ## Şu an yapılan
 - Yok. Sıradaki adımı bekliyor.
 
-## Sıradaki adım
-1. M1: SQLAlchemy veri modeli + Alembic ilk göç (`Email`, `Attachment`, `AuditEvent`, `User`).
-2. Giriş adaptörü arayüzü; seed adaptörü + ilk kurgusal e-postalar (Atlas Endüstri); IMAP adaptörü.
-3. Ek metni çıkarma (pdfplumber, openpyxl), tekrar önleme testi (başarı kriteri 6).
+## Sıradaki adım (M2)
+1. Departman sözleşmesi + kayıt defteri; 4 departman (yalnızca `key/name/intents`). import-linter'a kural 2'yi ekle.
+2. `Decision` / `Route` modelleri + göç; Decision Engine (şema doğrulama, eşik 0.75, bir yeniden deneme, manuel inceleme).
+3. `llm/gemini.py` (google-genai, yapılandırılmış çıktı). Kullanıcıdan `GEMINI_API_KEY` gerekecek.
+4. Yönlendirme seti (≥150 etiketli e-posta; seed'deki 15'ten başla) ve ölçüm aracı.
 
 ## Açık sorular
 - Kullanılacak Gemini modeli (M2'de değerlendirme setiyle seçilecek; ücretsiz katman sınırlarına bakılacak).
@@ -23,7 +24,8 @@
 
 ## Notlar
 - Gemini ücretsiz katmanına yalnızca kurgusal veri gönderilir (ADR-009).
-- MIMARI.md kural 2'nin import-linter sözleşmesi ilk departman paketiyle (M2) eklenecek.
+- Geliştirme veritabanı `localhost:5433` (5432'de makinede başka bir PostgreSQL var). Testler `flowpilot_test` veritabanını kendisi kurar.
+- IMAP adaptörü yalnızca sahte sunucuyla test edildi; gerçek posta kutusuyla denenmedi.
 
 ## Engeller
 - Yok.
