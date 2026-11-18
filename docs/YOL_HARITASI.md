@@ -7,9 +7,9 @@ Durum işaretleri: `[ ]` yapılmadı · `[~]` sürüyor · `[x]` bitti
 
 ## v1 — Çekirdek + Procurement
 Amaç: Platformun iskeleti ve ilk gerçek ajan canlıda.
-- [ ] v1 kapsam belgesi (`docs/surumler/v1.md`)
+- [x] v1 kapsam belgesi (`docs/surumler/v1.md`) — ara hedefler M0–M6 orada
 - [ ] Teknoloji yığını kararı (ADR)
-- [ ] E-posta girişi (ekleriyle, aynı e-postayı iki kez işlemeden)
+- [ ] E-posta girişi: seed + IMAP adaptörü, ekler, tekrar önleme (ADR-007)
 - [ ] Decision Engine: departman, kategori, intent, öncelik, güven skoru, çoklu departman
 - [ ] Ajanı olmayan departmanlar için inbox + manuel işleme
 - [ ] Departman sözleşmesi (yeni departman = yeni modül, çekirdeğe dokunmadan)

@@ -49,3 +49,15 @@
 **Bağlam:** Proje büyüdükçe nerede kalındığı, neden öyle yapıldığı ve sistemin nasıl çalıştığı kaybolmamalı.
 **Karar:** Durum, yol haritası, mimari, kararlar, günlük ve changelog ayrı dosyalarda tutulur (kurallar CLAUDE.md'de). Kod değiştiğinde DURUM.md'nin güncellenmesi iki kontrolle zorlanır: Claude Code Stop hook'u ve git pre-commit hook'u.
 **Sonuçlar:** Her oturumun sonunda birkaç dakikalık belge güncellemesi; karşılığında her oturum kaldığı yerden başlar.
+
+## ADR-007: E-posta girişi adaptör arkasında; v1'de seed + IMAP
+**Tarih:** 2026-11-18 · **Durum:** Kabul edildi
+**Bağlam:** Demo herkese açık olacak ve tekrarlanabilir olmalı; ama sistemin gerçek e-postayla da çalıştığı gösterilmeli. Gmail API OAuth onayı ve sağlayıcıya bağımlılık getirir.
+**Karar:** Giriş bir adaptör arayüzü arkasında durur. v1'de iki adaptör: kurgusal e-postaları gönderen seed/simülasyon adaptörü (demo) ve IMAP adaptörü. Gmail API / Microsoft 365 sonraki sürümlere kalır.
+**Sonuçlar:** Demo dış hesaba bağlı değil ve sıfırlanabilir. Yeni kaynak eklemek yeni adaptör yazmaktır; çekirdek değişmez.
+
+## ADR-008: LLM bir arayüz arkasında; testlerde deterministik sahte model
+**Tarih:** 2026-11-18 · **Durum:** Kabul edildi
+**Bağlam:** CI'da her push'ta gerçek LLM çağırmak pahalı ve sonuçları değişken; sağlayıcı da sonradan değişebilir.
+**Karar:** Decision Engine ve ajanlar modele yalnızca bir arayüz üzerinden ulaşır. Testler ve CI, kayıtlı cevaplar döndüren deterministik sahte modelle çalışır. Gerçek modelle değerlendirme her sürüm öncesi elle çalıştırılır. Sağlayıcı seçimi yığın ADR'sinde yapılır.
+**Sonuçlar:** CI hızlı ve ücretsiz; sağlayıcı değiştirmek tek modülü etkiler. Buna karşılık sahte modelin kayıtlı cevapları bakım ister.
