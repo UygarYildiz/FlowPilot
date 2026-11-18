@@ -1,0 +1,3 @@
+#!/bin/sh
+# Kod değişen commit'lerde docs/DURUM.md'nin de commit'te olmasını ister (ADR-006).
+exec node "$(git rev-parse --show-toplevel)/.claude/hooks/dokuman-kontrol.mjs" pre-commit

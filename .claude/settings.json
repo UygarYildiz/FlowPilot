@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/dokuman-kontrol.mjs\" stop",
+            "timeout": 20,
+            "statusMessage": "Belgelerin güncelliği kontrol ediliyor"
+          }
+        ]
+      }
+    ]
+  }
+}
