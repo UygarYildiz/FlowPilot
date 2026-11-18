@@ -20,5 +20,7 @@ Proje geliştirme aşamasında. Nerede olduğumuzu görmek için: [docs/DURUM.md
 Depoyu klonladıktan sonra belge kontrolü yapan git hook'unu etkinleştirin:
 
 ```
+git clone https://github.com/UygarYildiz/FlowPilot.git
+cd FlowPilot
 git config core.hooksPath .githooks
 ```
