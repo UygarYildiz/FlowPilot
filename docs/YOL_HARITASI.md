@@ -8,7 +8,7 @@ Durum işaretleri: `[ ]` yapılmadı · `[~]` sürüyor · `[x]` bitti
 ## v1 — Çekirdek + Procurement
 Amaç: Platformun iskeleti ve ilk gerçek ajan canlıda.
 - [x] v1 kapsam belgesi (`docs/surumler/v1.md`) — ara hedefler M0–M6 orada
-- [ ] Teknoloji yığını kararı (ADR)
+- [x] Teknoloji yığını kararı (ADR-009; LLM: Gemini ücretsiz katman)
 - [ ] E-posta girişi: seed + IMAP adaptörü, ekler, tekrar önleme (ADR-007)
 - [ ] Decision Engine: departman, kategori, intent, öncelik, güven skoru, çoklu departman
 - [ ] Ajanı olmayan departmanlar için inbox + manuel işleme
@@ -17,7 +17,7 @@ Amaç: Platformun iskeleti ve ilk gerçek ajan canlıda.
 - [ ] Onay / ret akışı ve denetim kaydı
 - [ ] Procurement Agent: PDF/Excel tekliften veri çıkarma, karşılaştırma, satın alma taslağı
 - [ ] Değerlendirme seti + yönlendirme doğruluğu ölçümü
-- [ ] CI/CD ve canlı demo (kurgusal şirket)
+- [~] CI/CD ve canlı demo (kurgusal şirket) — CI kuruldu (M0), yayın M6'da
 
 ## v2 — Finance
 - [ ] Finance Agent: fatura çıkarma (v1'deki belge çıkarmayı yeniden kullanır), ödeme kaydı kontrolü

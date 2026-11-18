@@ -61,3 +61,22 @@
 **Bağlam:** CI'da her push'ta gerçek LLM çağırmak pahalı ve sonuçları değişken; sağlayıcı da sonradan değişebilir.
 **Karar:** Decision Engine ve ajanlar modele yalnızca bir arayüz üzerinden ulaşır. Testler ve CI, kayıtlı cevaplar döndüren deterministik sahte modelle çalışır. Gerçek modelle değerlendirme her sürüm öncesi elle çalıştırılır. Sağlayıcı seçimi yığın ADR'sinde yapılır.
 **Sonuçlar:** CI hızlı ve ücretsiz; sağlayıcı değiştirmek tek modülü etkiler. Buna karşılık sahte modelin kayıtlı cevapları bakım ister.
+
+## ADR-009: Teknoloji yığını
+**Tarih:** 2026-11-18 · **Durum:** Kabul edildi
+**Bağlam:** v1'e başlamak için backend, veritabanı, kuyruk, frontend, LLM ve barındırma seçilmeli. Ölçütler: AI/otomasyon ilanlarıyla uyum, az hareketli parça, belge işleme gücü, düşük maliyet.
+**Karar:**
+- **Backend:** Python 3.12, FastAPI, Pydantic (v2), pydantic-settings. Paketler `uv` ile yönetilir.
+- **Veritabanı:** PostgreSQL; SQLAlchemy 2 + Alembic.
+- **İş kuyruğu:** PostgreSQL üzerinde (`SKIP LOCKED`, ör. procrastinate). Ayrı Redis yok.
+- **Frontend:** React + TypeScript + Vite; TanStack Query; Tailwind. Paketler `npm` ile.
+- **LLM:** Google Gemini API (`google-genai` SDK), ücretsiz katman. Model adı ortam değişkeninden okunur; somut model M2'de değerlendirme setiyle seçilir. ADR-008'deki arayüzün arkasındadır.
+- **Ajan yapısı:** Agent çatısı yok; akış kendi kodumuzda, LLM yapılandırılmış çıktı (JSON şeması) ile çağrılır.
+- **Belge okuma:** pdfplumber (PDF), openpyxl/pandas (XLSX, CSV).
+- **Ek depolama:** geliştirmede yerel disk, canlıda S3 uyumlu depolama (Cloudflare R2); arayüz arkasında.
+- **Kalite:** pytest, import-linter (MIMARI.md bağımlılık kuralları), ruff, pyright; frontend'de vitest.
+- **Yerel geliştirme:** Docker Compose (PostgreSQL). **CI:** GitHub Actions. **Barındırma:** Render (web servisi + worker + PostgreSQL), `render.yaml` ile.
+**Sonuçlar:**
+- Gemini ücretsiz katmanı geliştirme ve denemeyi bedava yapar. Bedeli: istek/dakika ve günlük sınırlar (değerlendirme setleri yavaş çalıştırılır, canlı demoda yeni işlem sınırlanır) ve ücretsiz katmanda gönderilen içeriğin Google tarafından ürün geliştirmede kullanılabilmesi. Bu yüzden ücretsiz katmana yalnızca kurgusal veri gönderilir; IMAP ile gerçek posta kutusu bağlanırsa ücretli katman gerekir.
+- Sağlayıcı değişirse yalnızca `llm/` altındaki uygulama değişir.
+- Redis olmadığı için tek veritabanı yedeklenir; kuyruk yükü büyürse yeni ADR ile ayrı kuyruğa geçilir.

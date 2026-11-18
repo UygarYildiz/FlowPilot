@@ -1,0 +1,14 @@
+# Yerel geliştirme için PostgreSQL (ADR-009).
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: flowpilot
+      POSTGRES_PASSWORD: flowpilot
+      POSTGRES_DB: flowpilot
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:

@@ -24,3 +24,18 @@ git clone https://github.com/UygarYildiz/FlowPilot.git
 cd FlowPilot
 git config core.hooksPath .githooks
 ```
+
+Gereken araçlar: [uv](https://docs.astral.sh/uv/), Node.js 24, Docker.
+
+```
+docker compose up -d                                  # PostgreSQL
+cd backend && uv sync && uv run uvicorn flowpilot.main:app --reload
+cd frontend && npm install && npm run dev             # http://localhost:5173
+```
+
+Kontroller (CI'da da aynıları çalışır):
+
+```
+cd backend && uv run ruff check . && uv run pyright && uv run lint-imports && uv run pytest
+cd frontend && npm run lint && npm run build && npm test
+```
