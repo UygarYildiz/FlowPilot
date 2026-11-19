@@ -315,14 +315,3 @@ def test_agent_proposes_quotes_and_draft_after_first_quote_is_recorded(
     assert stored.request_no == "SAT-2026-031" and stored.lines[0]["chosen"]["supplier"]
     # Araçlar hiçbir şey yazmadı: hâlâ tek teklif kayıtlı (Anadolu'nun kaydı onay bekliyor).
     assert session.scalar(select(func.count()).select_from(Quote)) == 1
-
-
-def test_other_intents_produce_no_proposals_yet(session: Session, llm: FakeLLM) -> None:
-    registry = DepartmentRegistry(
-        procurement.with_agent(lambda: llm) if d.key == "procurement" else d for d in DEPARTMENTS
-    )
-    route = _email(session, OZKAN_FILE, "satis@ozkanrulman.example")
-    route.intent = "supplier_complaint"
-    run = run_agent(session, route, registry=registry)
-    assert run is not None and run.status.value == "succeeded" and run.proposals == []
-    assert llm.calls == []

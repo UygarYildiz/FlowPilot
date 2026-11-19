@@ -98,3 +98,71 @@ class PurchaseDraft(Base):
     )
     idempotency_key: Mapped[str] = mapped_column(String(64), unique=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
+
+
+class SupplierPrice(Base):
+    """Onaylanmış `update_supplier_prices` önerisiyle kaydedilen tedarikçi fiyatı (ADR-016)."""
+
+    __tablename__ = "procurement_supplier_price"
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    supplier_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("procurement_supplier.id"))
+    product_code: Mapped[str] = mapped_column(String(64))
+    description: Mapped[str] = mapped_column(Text, default="")
+    unit: Mapped[str | None] = mapped_column(String(32))
+    price: Mapped[Decimal] = mapped_column(AMOUNT)
+    currency: Mapped[str] = mapped_column(String(3))
+    valid_from: Mapped[date | None] = mapped_column(Date)
+    source_email_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("email.id", ondelete="SET NULL")
+    )
+    idempotency_key: Mapped[str] = mapped_column(String(64))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
+
+    supplier: Mapped[Supplier] = relationship()
+
+    __table_args__ = (
+        Index("ix_procurement_supplier_price_lookup", "supplier_id", "product_code"),
+        Index(
+            "uq_procurement_supplier_price_key_code", "idempotency_key", "product_code", unique=True
+        ),
+    )
+
+
+class ReplyDraft(Base):
+    """Onaylanmış yanıt taslağı. Gönderilmez (v1); yalnızca kayıt ve panelde gösterim (ADR-016)."""
+
+    __tablename__ = "procurement_reply_draft"
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    kind: Mapped[str] = mapped_column(String(32))
+    to_addr: Mapped[str] = mapped_column(String(320))
+    subject: Mapped[str] = mapped_column(Text)
+    body: Mapped[str] = mapped_column(Text)
+    priority: Mapped[str] = mapped_column(String(16))
+    source_email_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("email.id", ondelete="SET NULL")
+    )
+    idempotency_key: Mapped[str] = mapped_column(String(64), unique=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
+
+
+class PurchaseRequest(Base):
+    """Şirket içi satın alma talebi (ADR-016). Talep numarası `apply` sırasında verilir."""
+
+    __tablename__ = "procurement_purchase_request"
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    request_no: Mapped[str] = mapped_column(String(64), unique=True)
+    requester: Mapped[str | None] = mapped_column(String(200))
+    department: Mapped[str | None] = mapped_column(String(200))
+    cost_center: Mapped[str | None] = mapped_column(String(64))
+    needed_by: Mapped[date | None] = mapped_column(Date)
+    reason: Mapped[str] = mapped_column(Text, default="")
+    items: Mapped[list[dict[str, Any]]] = mapped_column(JSONB)
+    issues: Mapped[list[dict[str, Any]]] = mapped_column(JSONB, default=list)
+    source_email_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("email.id", ondelete="SET NULL")
+    )
+    idempotency_key: Mapped[str] = mapped_column(String(64), unique=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)

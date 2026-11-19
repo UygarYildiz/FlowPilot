@@ -54,9 +54,20 @@ Bir örnekle:
      tutup tutmadığını kendisi kontrol ediyor. Tutmayan değeri düzeltmeye çalışmıyor, panelde kırmızıyla
      "şüpheli" diye gösteriyor.
 
-**Henüz olmayanlar:** Ajan şimdilik yalnızca "yeni teklif" e-postalarını işliyor. Fiyat güncellemesi,
-sipariş durumu sorusu, tedarikçi şikâyeti ve şirket içi talep e-postaları M5'in ikinci parçasında. Panel
-şimdilik yalnızca senin bilgisayarında çalışıyor (internette değil).
+9. **Satın Alma ajanı diğer e-postaları da işliyor (yeni):**
+   - **Fiyat güncellemesi:** *"Kaya Hidrolik fiyatlarını güncelle — 4 ürün: 3 zam (ort. %8,6), 1
+     değişmedi"*. Önceki fiyatı önce kayıtlarımızdan, yoksa belgedeki "eski fiyat"tan alıyor ve hangisini
+     kullandığını yazıyor.
+   - **Sipariş durumu sorusu ve tedarikçi şikâyeti:** özet, öncelik önerisi ve bir **yanıt taslağı**.
+     Ajan önce e-postadaki sipariş/talep numaralarını kayıtlarda arıyor; bulamazsa taslakta bunu
+     dürüstçe söylüyor ("kontrol edip dönüş yapacağız"), tarih ya da söz uydurmuyor. Taslakta e-postada
+     ve kayıtlarda olmayan bir sayı geçerse uyarı veriyor. **Hiçbir e-posta gönderilmiyor**; onay yalnızca
+     taslağı kaydediyor.
+   - **Şirket içi satın alma talebi:** *"Satın alma talebi oluştur: 3 kalem (Üretim Planlama, en geç
+     24.11.2026)"*. Onaylanınca talep numarası veriliyor (SAT-2026-101, 102…).
+
+**Henüz olmayanlar:** Finans, Satış ve Lojistik departmanlarının ajanları (v2–v4). Panel şimdilik yalnızca
+senin bilgisayarında çalışıyor (internette değil).
 
 ## Ne kadar iyi çalışıyor?
 150 örnek e-postayla ölçtük (19 Kasım):
@@ -102,12 +113,18 @@ Tuzaklı belgelerdeki sorunların hepsini kontrol yakaladı ve "şüpheli" diye 
 | M2 | Yapay zekâyla departmana yönlendirme + ölçüm (150 örnek) | ✅ Bitti |
 | M3 | **Panel:** e-postaları, kararları ve gerekçelerini ekranda görme, yanlışı düzeltme, giriş | ✅ Bitti |
 | M4 | Ajan önerilerini onaylama/reddetme ve tüm sistemin "kim ne yaptı" ekranı | ✅ Bitti |
-| M5 | **Satın Alma ajanı:** tekliften ürün/fiyat çıkarma, teklifleri karşılaştırma, sipariş taslağı | 🟡 Sürüyor (1. parça bitti) |
-| M6 | İnternette herkesin açabileceği canlı demo | ⬜ |
+| M5 | **Satın Alma ajanı:** tekliften ürün/fiyat çıkarma, teklifleri karşılaştırma, sipariş taslağı | ✅ Bitti |
+| M6 | İnternette herkesin açabileceği canlı demo | ⬜ Sırada |
 
 v1 bitince sırayla Finans (v2), Satış ve Sipariş (v3), Lojistik (v4) departmanlarının ajanları eklenecek.
 
 ## Son oturumlarda ne yaptık?
+
+**20 Kasım — Satın Alma ajanı, 2. parça (M5 bitti)**
+- Fiyat güncellemesi, sipariş durumu sorusu, tedarikçi şikâyeti ve iç satın alma talebi e-postaları da
+  artık öneriye dönüşüyor (yukarıda 9. madde).
+- Kurgusal şirketin dört gerçek e-postasıyla gerçek yapay zekâyı denedik: hepsi doğru öneri üretti,
+  yanıt taslakları hiçbir şey uydurmadı. Şikâyet yanıtını tarayıcıda onayladık (gönderilmedi).
 
 **20 Kasım — Satın Alma ajanı, 1. parça (M5)**
 - Ajan teklif eklerini okuyor, sayıları belgeye ve aritmetiğe karşı kontrol ediyor, "teklifi kaydet" ve
@@ -126,25 +143,20 @@ v1 bitince sırayla Finans (v2), Satış ve Sipariş (v3), Lojistik (v4) departm
 - Panele "Onay bekleyenler" listesi, e-postada "Ajan önerileri" bölümü ve yönetici için "Denetim kaydı"
   ekranı eklendi; hepsini tarayıcıda denedik.
 
-**19 Kasım — Yapay zekâ yarışı ve yeni düzen**
-- Clef ve SubQ'yu sisteme bağladık, Gemini ile tarafsız yarıda yarıştırdık; Clef elendi.
-- SubQ'nun neden fazla insana sorduğunu inceledik: model dürüst, sınırdaki e-postalarda gerçekten tereddüt ediyor.
-- Önce SubQ, sonra Gemini, sonra insan düzenini kurduk ve gerçek ölçümle doğruladık (sonuçlar "Şu an" bölümünde).
-
 (Daha eski çalışmalar: `docs/gunluk/`.)
 
 ## Şu an
-**M5'in ilk parçası bitti:** "yeni teklif" e-postaları baştan sona çalışıyor (oku → kontrol et → öner →
-onayla → kaydet → karşılaştır).
+**M5 bitti:** Satın Alma ajanı v1 kapsamındaki beş e-posta türünün hepsini işliyor.
 
-Bilgisayarındaki deneme verisinde değişenler: dünkü geçici deneme önerilerini sildik (yerine gerçek ajan
-çalıştı); Özkan ve Anadolu teklifleri kaydedildi ve SAT-2026-031 için bir satın alma taslağı onaylandı.
+Bilgisayarındaki deneme verisinde seni bekleyen üç öneri var (menüde "Onay bekleyenler"): Kaya Hidrolik
+fiyat güncellemesi, Demirtaş Çelik'e sipariş durumu yanıt taslağı ve Hat 3 için iç satın alma talebi.
+İstersen onaylayıp ya da reddedip deneyebilirsin. Şikâyet yanıt taslağını biz onayladık.
 
 ## Sırada ne var?
-1. **M5, 2. parça:** fiyat güncellemesi (yeni fiyatları kayıtlı fiyatlarla karşılaştırma), sipariş durumu
-   sorusu ve tedarikçi şikâyeti (yalnızca **yanıt taslağı**, e-posta gönderilmez), şirket içi satın alma
-   talebi (talep kaydı önerisi).
-2. **M6 — Canlı demo:** internette açılabilen panel, demo verisini sıfırlama, tanıtım.
+1. **M6 — Canlı demo:** internette açılabilen panel, demo hesabı, "demo verisini sıfırla" düğmesi,
+   README ve kısa tanıtım, ölçüm sonuçlarıyla birlikte v1.0.0.
+2. Ölçülmemiş bir v1 hedefi kaldı: e-postanın gelişinden önerinin hazır olmasına kadar geçen süre (60
+   saniyenin altında olmalı). M6'da canlı akışta ölçeceğiz.
 
 ## Senden beklenenler
 - **Bilgi:** Bilgisayarındaki ayarı yeni düzene çevirdim; artık gerçek Gemini kullanılıyor (önceden sahte
@@ -205,6 +217,7 @@ Sonra tarayıcıda http://localhost:5173 adresini aç ve giriş sayfasındaki de
 | Kademeli yönlendirme | Önce ucuz model bakar, emin değilse güçlü model, o da emin değilse insan. |
 | Kaynak kontrolü | Ajanın okuduğu her sayının belgede gerçekten yazıp yazmadığının kontrolü. Yazmıyorsa "şüpheli". |
 | Satın alma taslağı | Aynı talebe gelen teklifler arasından ürün başına seçilen tedarikçi listesi. Onaylanınca kaydedilir, kimseye gönderilmez. |
+| Yanıt taslağı | Ajanın hazırladığı cevap metni. Onaylansa bile gönderilmez; yalnızca kaydedilir. |
 | Demo kur | Karşılaştırma için kullanılan sabit kur (1 EUR = 37,50 TL, 1 USD = 34,80 TL). Gerçek kur değildir. |
 | Ajan | Departmanın işini hazırlayan yapay zekâ (ilki M5'te). Sadece **önerir**, onay insanındır. |
 | Öneri | Ajanın hazırladığı iş (ör. "bu teklifi kaydet"). Onaylanınca bir kez uygulanır, reddedilirse hiç. |

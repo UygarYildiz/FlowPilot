@@ -3,10 +3,10 @@
 > Bu belge **bugün var olan** sistemi anlatır. Henüz yazılmamış parçalar yalnızca "Planlanan" bölümünde durur
 > ve kod yazıldıkça yukarı taşınır. Bir bileşen değiştiğinde bu belge aynı commit'te güncellenir.
 
-**Son güncelleme:** 2026-11-20 (M5 1. parça: Satın Alma ajanı)
+**Son güncelleme:** 2026-11-20 (M5: Satın Alma ajanı)
 
 ## Var olan
-Yığın: ADR-009. M0 (iskelet), M1 (e-posta girişi), M2 (karar), M3 (panel), M4 (onay akışı) ve M5'in 1. parçası (Satın Alma ajanı, `new_quote`) var.
+Yığın: ADR-009. M0 (iskelet), M1 (e-posta girişi), M2 (karar), M3 (panel), M4 (onay akışı) ve M5 (Satın Alma ajanı) var.
 
 | Bileşen | Yer | Ne yapar |
 |---|---|---|
@@ -24,7 +24,7 @@ Yığın: ADR-009. M0 (iskelet), M1 (e-posta girişi), M2 (karar), M3 (panel), M
 | Departman sözleşmesi | `core/registry.py` | `Department` (key, name, description, intents, isteğe bağlı `agent` ve `proposal_types`) ve `DepartmentRegistry` (`register`/`unregister`). Ajan sözleşmesi (ADR-014): `Agent.handle(AgentContext) → [ProposalDraft]`; `ProposalType` (şema, `requires_approval`, `apply(ApplyContext, payload)`). Araçlar (ADR-015): `Tool(name, description, fn(session, **kw))`; ajan `AgentContext.tools.call(...)` ile çağırır, çekirdek `ToolBox` her çağrıyı geri alınan SAVEPOINT'te çalıştırır. |
 | Öneriler ve tek yürütücü | `core/proposals.py`, `core/agent_runner.py` | `run_agent` ajanı çalıştırır, çıktıyı doğrular, önerileri kaydeder. `approve` / `reject` (gerekçe zorunlu) / `retry`. `execute` tek yürütücüdür: `FOR UPDATE` kilidi, `executed` ise hiçbir şey yapmaz, `apply`'ı durum değişikliğiyle aynı işlemde (SAVEPOINT) çalıştırır; onaylanan tam bir kez, reddedilen hiç (kriter 7). E-posta durumu `awaiting_approval` ↔ `routed`. `run_pending_agents` açık rotaları işler (`flowpilot agents`). |
 | Departmanlar | `departments/<ad>/__init__.py` | `procurement`, `finance`, `sales_orders`, `logistics`: her biri bir `DEPARTMENT` tanımı. Yalnızca Satın Alma ajanlı (`with_agent`). |
-| Satın Alma ajanı | `departments/procurement/` | ADR-015. `extraction.py` (Gemini şemalı çıktı, `quote-extract-v1`) → `validation.py` (kaynak kontrolü, aritmetik, para birimi, katalog; `Issue` error/warning, değer düzeltilmez) → `record_quote`; `tools.open_quotes` + `comparison.py` (sabit demo kuru, ürün başına en ucuz) → `purchase_draft`. Tablolar `procurement_supplier/quote/quote_line/purchase_draft` (`models.py`), yalnızca `actions.py`'deki `apply`'lar yazar. 1. parça yalnızca `new_quote`. |
+| Satın Alma ajanı | `departments/procurement/` | ADR-015. `extraction.py` (Gemini şemalı çıktı, `quote-extract-v1`) → `validation.py` (kaynak kontrolü, aritmetik, para birimi, katalog; `Issue` error/warning, değer düzeltilmez) → `record_quote`; `tools.open_quotes` + `comparison.py` (sabit demo kuru, ürün başına en ucuz) → `purchase_draft`. ADR-016: `pricing.py` (`price_update` → `update_supplier_prices`, önceki fiyat `known_prices` aracıyla), `replies.py` (`order_status_inquiry`/`supplier_complaint` → `reply_draft`; `find_records` aracı; taslak gönderilmez), `internal_request.py` (`purchase_request` → `create_purchase_request`, numara apply'da). Tablolar `procurement_supplier/quote/quote_line/purchase_draft/supplier_price/reply_draft/purchase_request` (`models.py`), yalnızca `actions.py`'deki `apply`'lar yazar. |
 | Bileşim kökü | `bootstrap.py` | Departmanları kayıt defterine bağlar (ADR-010). Yeni departman = yeni paket + burada bir satır. |
 | Decision Engine | `core/decision/` | `engine.py`: `Classifier` protokolü; `LLMClassifier` (generatif, `decision-v1` prompt, şema + doğrulama + bir yeniden deneme) ve `decide` (sonucu kaydeder). `typed.py`: `DecisionModelClassifier` (karar modeli; `typed-v2`: departman başına evet/hayır, departman başına intent seçimi, öncelik puanı; `typed-v3`: asıl departman seçimi + departman başına "ayrıca" sorusu, `FLOWPILOT_TYPED_PROMPT`). `cascade.py`: `CascadeClassifier` (ADR-013): önce `first` (SubQ), incelemeye gidecekse `second` (Gemini), ikisi de emin değilse insan; SubQ "hiçbir departman" ≥ 0,95 ise ikinci çağrılmaz; biri erişilemezse diğeri karar verir. `Classification.decided_by` kararı veren alt motoru `Decision.model`'e yazar, `raw_output.stages` iki görüşü saklar. `runner.py`: `received` e-postaları işler. Motor `decision_setup.py`'de ayardan seçilir (`FLOWPILOT_DECISION_ENGINE=llm|clef|subq|cascade`). |
 | Değerlendirme | `evals/routing.py`, `evals/extraction.py`, `backend/evals/` | Yönlendirme seti (`evals/routing/dataset.jsonl`) ve çıkarma seti (`evals/extraction/`, `scripts/make_extraction_set.py` ile üretilir: alan doğruluğu, işaretsiz yanlış tutar); raporlar `evals/results/`. |
@@ -97,6 +97,6 @@ bağımsız", "departmanlar bootstrap, CLI ve API'yi import etmez", "core API/CL
 
 ## Planlanan
 - **Giriş:** canlıda S3 uyumlu depolama (R2); seed e-postalarının zamanlanmış gönderimi (M6).
-- **Procurement Agent 2. parça** (M5): `update_supplier_prices`, `reply_draft`, `create_purchase_request`.
+- Tamamlanmış ajan çalışmalarını yeniden çalıştırma (ajan sürümü değişince).
 - Özel öneri görünümleri (`views`) şimdilik gerekmedi; panel genel görünümü kullanıyor.
 - Demo verisini sıfırlama ve paneli FastAPI'den sunma (M6).

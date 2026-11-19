@@ -1,6 +1,6 @@
 // Öneri verisinin genel görünümü: alanlar, satır tabloları ve doğrulama uyarıları.
 // Departmana özel değildir; alan adları text.ts'deki sözlükten okunur, bilinmeyen ad olduğu gibi görünür.
-import { byFieldOrder, fieldLabel } from '../lib/text'
+import { byFieldOrder, fieldLabel, valueLabel } from '../lib/text'
 
 interface Issue {
   field: string
@@ -29,6 +29,11 @@ function Scalar({ name, value }: { name: string; value: unknown }) {
   if (typeof value === 'string' && NUMERIC.test(value) && !NOT_NUMBERS.has(name))
     return <span className="num">{formatNumber(Number(value), name)}</span>
   if (typeof value === 'boolean') return <>{value ? 'Evet' : 'Hayır'}</>
+  if (typeof value === 'string' && value.includes('\n'))
+    return <span className="block whitespace-pre-line rounded bg-ground px-2 py-1.5">{value}</span>
+  if (typeof value === 'string') return <>{valueLabel(name, value)}</>
+  if (Array.isArray(value) && value.length === 0) return <span className="text-steel">Yok</span>
+  if (Array.isArray(value) && value.every((v) => typeof v === 'string')) return <>{value.join(', ')}</>
   if (Array.isArray(value)) return <span className="text-steel">{value.length} kayıt</span>
   if (typeof value === 'object')
     return (

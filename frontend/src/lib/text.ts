@@ -76,6 +76,20 @@ export function deptColor(key: string): string {
 
 // Öneri verisindeki alan adlarının okunur karşılıkları (bilinmeyen ad olduğu gibi gösterilir).
 const FIELD_LABELS: Record<string, string> = {
+  summary: 'Özet',
+  kind: 'Tür',
+  priority: 'Öncelik',
+  priority_reason: 'Öncelik gerekçesi',
+  to: 'Alıcı',
+  subject: 'Konu',
+  body: 'Taslak metni',
+  references: 'Referanslar',
+  records: 'Kayıtlarda bulunanlar',
+  requester: 'Talep eden',
+  department: 'Birim',
+  cost_center: 'Masraf merkezi',
+  needed_by: 'En geç',
+  reason: 'Gerekçe',
   source_filename: 'Belge',
   supplier: 'Tedarikçi',
   quote_no: 'Teklif no',
@@ -99,6 +113,22 @@ const FIELD_LABELS: Record<string, string> = {
   alternatives: 'Alternatifler',
   line_total_try: 'Tutar (TRY)',
   unit_price_try: 'Birim fiyat (TRY)',
+  valid_from: 'Geçerlilik başlangıcı',
+  items: 'Kalemler',
+  previous_price: 'Önceki fiyat',
+  previous_source: 'Önceki fiyatın kaynağı',
+  new_price: 'Yeni fiyat',
+  change_pct: 'Değişim (%)',
+}
+
+// Bazı alanların değerleri de okunur hâle getirilir (ör. öncelik: high → Yüksek).
+const VALUE_LABELS: Record<string, Record<string, string>> = {
+  priority: { low: 'Düşük', normal: 'Normal', high: 'Yüksek', urgent: 'Acil' },
+  kind: { order_status_inquiry: 'Sipariş durumu sorusu', supplier_complaint: 'Tedarikçi şikâyeti' },
+}
+
+export function valueLabel(field: string, value: string): string {
+  return VALUE_LABELS[field]?.[value] ?? value
 }
 
 export function fieldLabel(key: string): string {

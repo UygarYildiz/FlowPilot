@@ -63,6 +63,7 @@ class AgentContext:
     intent: str | None
     priority: str
     tools: Tools = field(default_factory=NoTools)
+    received_at: str = ""  # ISO 8601; yılsız tarihleri yorumlamak için
 
 
 @dataclass(frozen=True)

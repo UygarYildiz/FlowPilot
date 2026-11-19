@@ -98,6 +98,7 @@ def agent_context(route: Route, tools: Tools | None = None) -> AgentContext:
         intent=route.intent,
         priority=route.priority.value,
         tools=tools or NoTools(),
+        received_at=email.received_at.isoformat() if email.received_at else "",
     )
 
 

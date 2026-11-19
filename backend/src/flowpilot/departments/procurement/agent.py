@@ -1,20 +1,24 @@
-"""Satın Alma ajanı (v1 kapsamı 3.6; ADR-015). 1. parça: `new_quote`.
+"""Satın Alma ajanı (v1 kapsamı 3.6; ADR-015, ADR-016).
 
-Akış: ekteki (yoksa gövdedeki) her belge için çıkar → doğrula → `record_quote` önerisi. Aynı talebe
-kayıtlı ya da aynı e-postada gelen başka tedarikçi teklifleri varsa → `purchase_draft` önerisi.
-Diğer intent'ler 2. parçada; şimdilik öneri üretmez.
+- `new_quote`: ekteki (yoksa gövdedeki) her belge → çıkar → doğrula → `record_quote`; aynı talebe
+  başka tedarikçi teklifi varsa → `purchase_draft`.
+- `price_update`: fiyat listesi → önceki fiyatla fark → `update_supplier_prices`.
+- `order_status_inquiry`, `supplier_complaint`: referansları kayıtlarda ara → `reply_draft`
+  (yalnızca taslak, gönderilmez).
+- `purchase_request`: iç talep → `create_purchase_request`.
 """
 
 from collections.abc import Callable
 from decimal import Decimal
 
 from flowpilot.core.registry import AgentContext, ProposalDraft
+from flowpilot.departments.procurement import internal_request, pricing, replies
 from flowpilot.departments.procurement.comparison import compare
 from flowpilot.departments.procurement.extraction import extract_quote
 from flowpilot.departments.procurement.validation import QuoteData, validate
 from flowpilot.llm import LLMClient
 
-HANDLED_INTENTS = {"new_quote"}
+PRIORITY_LABEL = {"low": "düşük", "normal": "normal", "high": "yüksek", "urgent": "acil"}
 
 
 def money(value: Decimal | None, currency: str | None) -> str:
@@ -72,8 +76,101 @@ class ProcurementAgent:
         return self._llm
 
     def handle(self, context: AgentContext) -> list[ProposalDraft]:
-        if context.intent not in HANDLED_INTENTS:
-            return []
+        if context.intent == "new_quote":
+            return self._new_quote(context)
+        if context.intent == "price_update":
+            return self._price_update(context)
+        if context.intent in ("order_status_inquiry", "supplier_complaint"):
+            return self._reply(context)
+        if context.intent == "purchase_request":
+            return self._purchase_request(context)
+        return []
+
+    def _price_update(self, context: AgentContext) -> list[ProposalDraft]:
+        sources = [(a.filename, a.text) for a in context.attachments if a.text and a.text.strip()]
+        if not sources:
+            sources = [("e-posta gövdesi", context.body_text)]
+        domain = context.from_addr.rsplit("@", 1)[-1]
+        drafts = []
+        for filename, text in sources:
+            assert text is not None
+            extraction = pricing.extract_price_list(
+                self.llm,
+                sender=context.from_addr,
+                subject=context.subject,
+                body=context.body_text,
+                filename=filename,
+                text=text,
+            )
+            if not extraction.is_price_list:
+                continue
+            supplier = (extraction.supplier or "").strip()
+            codes = [i.product_code for i in extraction.items if i.product_code]
+            currency = (extraction.currency or "").upper() or None
+            known = (
+                context.tools.call(
+                    "known_prices", supplier=supplier, codes=codes, currency=currency
+                )
+                if supplier and codes
+                else {}
+            )
+            data = pricing.build_update(
+                extraction,
+                context.body_text + "\n" + text,
+                source_filename=filename,
+                fallback_supplier=f"Bilinmeyen tedarikçi ({domain})",
+                known=known,
+            )
+            drafts.append(
+                ProposalDraft(
+                    "update_supplier_prices", data.model_dump(mode="json"), pricing.summary(data)
+                )
+            )
+        return drafts
+
+    def _reply(self, context: AgentContext) -> list[ProposalDraft]:
+        kind = context.intent or ""
+        references = replies.references_in(context.subject, context.body_text)
+        records = context.tools.call("find_records", references=references) if references else []
+        data = replies.draft_reply(
+            self.llm,
+            kind=kind,
+            sender=context.from_addr,
+            subject=context.subject,
+            body=context.body_text,
+            records=records,
+            references=references,
+        )
+        label = replies.KIND_LABEL.get(kind, kind)
+        found = "kayıt bulundu" if records else "kayıt bulunamadı"
+        return [
+            ProposalDraft(
+                "reply_draft",
+                data.model_dump(mode="json"),
+                f"Yanıt taslağı ({label}, öncelik: {PRIORITY_LABEL[data.priority]}; {found})",
+            )
+        ]
+
+    def _purchase_request(self, context: AgentContext) -> list[ProposalDraft]:
+        extraction = internal_request.extract_request(
+            self.llm,
+            sender=context.from_addr,
+            subject=context.subject,
+            body=context.body_text,
+            received=context.received_at[:10],
+        )
+        data = internal_request.build_request(
+            extraction, context.subject + "\n" + context.body_text
+        )
+        return [
+            ProposalDraft(
+                "create_purchase_request",
+                data.model_dump(mode="json"),
+                internal_request.summary(data),
+            )
+        ]
+
+    def _new_quote(self, context: AgentContext) -> list[ProposalDraft]:
         sender_domain = context.from_addr.rsplit("@", 1)[-1]
         sources = [(a.filename, a.text) for a in context.attachments if a.text and a.text.strip()]
         if not sources and context.body_text.strip():

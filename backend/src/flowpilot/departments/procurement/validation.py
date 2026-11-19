@@ -94,13 +94,13 @@ def numbers_in(text: str) -> set[Decimal]:
     return numbers
 
 
-def _dec(value: float | int | None) -> Decimal | None:
+def to_decimal(value: float | int | None) -> Decimal | None:
     if value is None:
         return None
     return Decimal(repr(value)) if isinstance(value, float) else Decimal(value)
 
 
-def _parse_date(value: str | None) -> date | None:
+def parse_date(value: str | None) -> date | None:
     if not value:
         return None
     try:
@@ -140,7 +140,7 @@ def validate(
             Issue(field="currency", level="warning", message=f"Bilinmeyen para birimi: {currency}")
         )
 
-    valid_until = _parse_date(extraction.valid_until)
+    valid_until = parse_date(extraction.valid_until)
     if extraction.valid_until and valid_until is None:
         issues.append(
             Issue(field="valid_until", level="warning", message="Geçerlilik tarihi okunamadı.")
@@ -160,10 +160,10 @@ def validate(
         line = QuoteLineData(
             product_code=(raw.product_code or "").strip() or None,
             description=(raw.description or "").strip(),
-            quantity=_dec(raw.quantity),
+            quantity=to_decimal(raw.quantity),
             unit=raw.unit,
-            unit_price=_dec(raw.unit_price),
-            line_total=_dec(raw.line_total),
+            unit_price=to_decimal(raw.unit_price),
+            line_total=to_decimal(raw.line_total),
             lead_time_days=raw.lead_time_days,
         )
         lines.append(line)
@@ -217,7 +217,11 @@ def validate(
         else:
             sum_known = False
 
-    subtotal, vat, total = _dec(extraction.subtotal), _dec(extraction.vat), _dec(extraction.total)
+    subtotal, vat, total = (
+        to_decimal(extraction.subtotal),
+        to_decimal(extraction.vat),
+        to_decimal(extraction.total),
+    )
     grounded("subtotal", subtotal)
     grounded("vat", vat)
     grounded("total", total)

@@ -5,8 +5,8 @@
 
 **Son güncelleme:** 2026-11-20
 **Aktif sürüm:** v1 — Çekirdek + Procurement ([kapsam](surumler/v1.md))
-**Aşama:** M0–M4 bitti. M5 sürüyor: 1. parça (`new_quote`: çıkarma, doğrulama, araçlar, `record_quote`,
-`purchase_draft`, çıkarma seti; ADR-015) bitti; 2. parça (diğer intent'ler) sırada.
+**Aşama:** M0–M5 bitti. M5: Procurement Agent beş intent (ADR-015 `new_quote`; ADR-016 `price_update`,
+`order_status_inquiry`, `supplier_complaint`, `purchase_request`). Sırada M6 (yayın).
 **Yığın:** ADR-009 — Python/FastAPI, PostgreSQL, React/Vite. Sınıflandırma: ADR-013 kademeli — SubQ `subq-snap-1.2` → Gemini `gemini-3.5-flash-lite` → insan.
 **Uzak depo:** https://github.com/UygarYildiz/FlowPilot (`main`, CI: GitHub Actions)
 
@@ -30,13 +30,14 @@ Test yarısı: Gemini %97,3 / otomatik hata %0 / inceleme %12,2 · SubQ %95,9 / 
 Denenip bırakılanlar: "belirsiz" eşiğini gevşetmek, `typed-v3` (asıl + ek departman soruları).
 
 ## Sıradaki adım
-1. M5 2. parça (v1 kapsamı 3.6 tablosu): `price_update` → `update_supplier_prices` (kayıtlı fiyatla fark;
-   fiyat listesi tablosu gerekir), `order_status_inquiry` / `supplier_complaint` → `reply_draft` (yalnızca
-   taslak, gönderilmez; `order_status_inquiry` için ilgili kaydı araçla bul), `purchase_request` →
-   `create_purchase_request` (`PurchaseRequest` tablosu). Her biri için kayıtlı FakeLLM cevaplı testler.
-2. Sonra M6. (İleride) `decision-v2` prompt denemesi (yalnızca dev yarısına bakarak).
+1. M6 (v1 kapsamı 3.8, 7. madde): canlı demo (barındırma yeri açık soru), demo hesabı, "demo verisini sıfırla",
+   paneli FastAPI'den sunma, README/GIF, ölçüm sonuçları, CHANGELOG `v1.0.0`. Kriter 10 (gelişten öneriye
+   p95 ≤ 60 sn) henüz ölçülmedi: kademeli sınıflandırma + ajan süresi canlı akışta ölçülmeli.
+2. (İleride) Ajan sürümü değişince tamamlanmış `agent_run`'ları yeniden çalıştırma yolu yok (dev'de elle silindi).
+   `decision-v2` prompt denemesi (yalnızca dev yarısına bakarak).
 
 ## Açık sorular
+- Canlı demonun barındırılacağı yer (v1 kapsamı 9. açık soru) — M6 öncesi kullanıcıya sorulmalı.
 - Panel dili Türkçe yapıldı (ADR-012); kullanıcı İngilizce isterse `frontend/src/lib/text.ts` + sayfalar çevrilir.
 - Değerlendirme setine kullanıcının da (Claude dışında) birkaç gerçekçi e-posta eklemesi ölçümü daha güvenilir yapar.
 
@@ -49,8 +50,8 @@ Denenip bırakılanlar: "belirsiz" eşiğini gevşetmek, `typed-v3` (asıl + ek 
 - IMAP adaptörü yalnızca sahte sunucuyla test edildi.
 - Geliştirme DB'si (2026-11-20): göç `b3e23afd5d95` uygulandı. M4'teki geçici deneme ajanının çalışması ve 3 önerisi
   silindi (denetim olayları duruyor); gerçek ajan çalıştı: Anadolu ve Özkan teklifleri + SAT-2026-031 taslağı onaylı.
-  Diğer 4 Satın Alma rotası (price_update vb.) için `agent_run` succeeded / 0 öneri: 2. parçada yeniden çalışmaları
-  için bu çalışmaların silinmesi ya da "yeniden çalıştır" yolu gerekir.
+  2. parça: göç `b7f029c4be61`; 4 boş `agent_run` silinip ajan yeniden çalıştı; şikâyet yanıtı onaylı, diğer
+  üç öneri (fiyat güncellemesi, sipariş durumu yanıtı, iç talep) kullanıcı için bekliyor.
 - `flowpilot agents`: açık rotalarda ajanları çalıştırır; Satın Alma ajanı modeli `FLOWPILOT_LLM_PROVIDER`'dan alır.
 - `backend/.env`: `FLOWPILOT_DECISION_ENGINE=cascade`, `FLOWPILOT_LLM_PROVIDER=gemini` (önceden `fake`); `SUBQ_API_KEY` dolu.
   Kademeli kararla paneldeki fiş tarayıcıda görülmedi (geliştirme DB'sinde bekleyen e-posta yoktu).
