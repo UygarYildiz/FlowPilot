@@ -14,13 +14,14 @@ Departman %96,0 (hedef ≥90) · otomatik yönlendirilenlerde hata %3,1 (≤5) �
 · tüm intent %98,6 · çok departmanlı geri çağırma %96,4 · manuel inceleme %12,7.
 Rapor: `backend/evals/results/routing-20261119-100854-*.md`. 6 hatanın 4'ü fazladan departman ekleme.
 
-## Şu an yapılan
-- Karar modeli denemesi: Cloudflare Clef ile ikinci bir sınıflandırıcı yazıldı (`core/decision/typed.py`,
-  `llm/decision_model.py`), testli. **Engel:** kullanıcının Cloudflare API anahtarı (`CLOUDFLARE_API_TOKEN`,
-  "Workers AI" şablonu) `backend/.env`'ye girilmeli. Hesap: `c7213f99b71f72b2b4da8ecef5e5070c`.
-- Anahtar gelince: `uv run flowpilot eval routing --engine clef` (clef-flash), sonra gerekirse `FLOWPILOT_CLEF_MODEL=clef`;
-  Gemini raporuyla karşılaştır, seçimi ADR ile yaz.
-- Cloudflare MCP eklentisi Clef'i "üçüncü taraf model" sanıp çağırmıyor; deneme eklentiyle yapılamadı.
+## Şu an yapılan (yarıda kaldı — kullanım sınırı)
+- Clef karşılaştırması. Clef-flash `typed-v1` (150 e-posta): departman %72,7, otomatik hata %16,4 (Gemini %96 / %3,1).
+  Neden: model müşteriyi tedarikçiyle karıştırıyor (satış e-postaları Satın Alma'ya).
+- Set dev/test olarak ikiye bölündü (`--split`, 76/74); `flowpilot eval rescore` kayıtlı raporları bir yarıda karşılaştırır.
+- `typed-v2` yazıldı (şirket bağlamı + ticaret yönü ipucu + `sender_role` sorusu), testler geçiyor, **henüz ölçülmedi**.
+- Devam: `uv run flowpilot eval routing --engine clef --split dev` → gerekirse v3 (yalnızca dev'e bakarak) →
+  test yarısında Gemini / clef-flash / clef (`FLOWPILOT_CLEF_MODEL=clef`, ~5k nöron) `eval rescore --split test` →
+  seçimi ADR olarak yaz. Cloudflare anahtarı `backend/.env`'de.
 
 ## Sıradaki adım
 1. M4: departman sözleşmesine `agent` ve `proposal_types` (v1 kapsamı 3.3), `AgentRun` / `Proposal` modelleri,
@@ -42,4 +43,4 @@ Rapor: `backend/evals/results/routing-20261119-100854-*.md`. 6 hatanın 4'ü faz
 - IMAP adaptörü yalnızca sahte sunucuyla test edildi.
 
 ## Engeller
-- Clef ölçümü için Cloudflare API anahtarı (kullanıcıdan).
+- Yok.

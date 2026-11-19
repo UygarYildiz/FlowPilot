@@ -12,6 +12,7 @@ ve her ikisinde:
 Ölçütler v1 kapsamı bölüm 6'daki başarı kriterleriyle eşleşir (1, 2, 3).
 """
 
+import hashlib
 import json
 import statistics
 import time
@@ -50,6 +51,26 @@ class CaseResult:
     reasoning: str
     errors: list[str] = field(default_factory=list)
     seconds: float = 0.0
+
+
+def split_of(case_id: str) -> str:
+    """Kararlı geliştirme/test ayrımı (kimliğin özetine göre, ~yarı yarıya).
+
+    İyileştirmeler yalnızca `dev` üzerinde yapılır; karşılaştırma `test` ile raporlanır.
+    """
+    return "dev" if hashlib.sha256(case_id.encode("utf-8")).digest()[0] % 2 == 0 else "test"
+
+
+def filter_split(items: list[Any], split: str) -> list[Any]:
+    if split == "all":
+        return items
+    return [item for item in items if split_of(item.id) == split]
+
+
+def load_results(report_json: Path) -> tuple[dict[str, Any], list[CaseResult]]:
+    """Kaydedilmiş bir raporu (`*.json`) yeniden puanlamak için okur."""
+    data = json.loads(report_json.read_text(encoding="utf-8"))
+    return data["meta"], [CaseResult(**item) for item in data["results"]]
 
 
 def load_cases(dataset: Path, seed_dir: Path) -> list[Case]:
@@ -173,6 +194,10 @@ def run(
 
 def _seconds(value: float | None) -> str:
     return "—" if value is None else f"{value:.2f} sn"
+
+
+def percent(value: float | None) -> str:
+    return _pct(value)
 
 
 def _pct(value: float | None) -> str:

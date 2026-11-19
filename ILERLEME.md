@@ -91,14 +91,13 @@ v1 bitince sırayla Finans (v2), Satış ve Sipariş (v3), Lojistik (v4) departm
 (Daha eski çalışmalar: `docs/gunluk/`.)
 
 ## Şu an
-**Yeni bir yapay zekâ türünü deniyoruz: "karar modeli" (Cloudflare Clef).** Gemini cevabı metin olarak
-yazıyor ve "ne kadar emin olduğunu" kendisi söylüyor. Clef ise metin yazmıyor; her seçeneğe gerçek bir
-olasılık veriyor ("Satın Alma'nın işi mi? %93 evet") ve listede olmayan bir cevap veremiyor. Bu, "insan baksın"
-kararını daha sağlam hâle getirebilir ve en sık hatamızı (fazladan departman) azaltabilir.
+**Karar modeli (Cloudflare Clef) denemesi yarıda.** İlk denemede Clef, Gemini'den çok daha kötü çıktı
+(%73 doğru, Gemini %96). Sebebini bulduk: Clef müşteriyi tedarikçiyle karıştırıyor; örneğin bir müşterinin
+"sipariş veriyoruz" e-postasını Satın Alma'ya gönderiyor. Sorulara "Atlas kime satar, kimden alır" bilgisini
+ekledik ama bu düzeltmeyi henüz ölçmedik.
 
-Clef'le çalışan ikinci sınıflandırıcı hazır. Şimdi aynı 150 e-postada Gemini'yle yarıştıracağız; hangisi
-iyiyse onu seçeceğiz. Bunun için senden bir Cloudflare anahtarı gerekiyor (aşağıda). Cloudflare'in günlük
-ücretsiz kotası bu deneme için yetiyor.
+Ölçümün kendini kandırmaması için örnek seti ikiye böldük: düzeltmeleri yalnızca bir yarıya bakarak
+yapıyoruz, son karşılaştırmayı diğer yarıyla yapacağız.
 
 ## Sırada ne var?
 1. **M4 — Onay akışı:** Ajanların önerilerini (ör. "bu tekliften sipariş taslağı hazırladım") onaylama
@@ -107,9 +106,7 @@ iyiyse onu seçeceğiz. Bunun için senden bir Cloudflare anahtarı gerekiyor (a
    yaparken ölçümün kendini kandırmaması için örnek seti ikiye ayıracağız.
 
 ## Senden beklenenler
-- **Yapman gereken:** Cloudflare'de bir API anahtarı oluşturup `backend/.env` dosyasına eklemek (adımlar
-  sohbette). Anahtarı sohbete yapıştırma, yalnızca dosyaya yaz.
-- **Karar (sonra):** Clef/Gemini karşılaştırmasından sonra M4'e geçmek.
+- Şimdilik bir şey yok. Clef/Gemini karşılaştırması bitince hangisinin kalacağını birlikte seçeriz, sonra M4.
 - **Onay:** Panel Türkçe yapıldı. İlanlar İngilizce ise çevirebiliriz, söylemen yeterli.
 - **İsteğe bağlı:** Şirketlere gelebilecek 5–10 gerçekçi e-posta yazarsan ölçüm çok daha güvenilir olur.
   Gerçek kişi/şirket bilgisi koyma; Gemini'nin ücretsiz katmanına yalnızca kurgusal veri gönderiyoruz.

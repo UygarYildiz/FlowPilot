@@ -20,7 +20,28 @@ from flowpilot.core.registry import UNKNOWN, DepartmentRegistry
 from flowpilot.llm import LLMError
 from flowpilot.llm.decision_model import DecisionModelClient
 
-PROMPT_VERSION = "typed-v1"
+PROMPT_VERSION = "typed-v2"
+
+# typed-v1 bağlamsızdı: model müşteriyi tedarikçiyle karıştırdı (satış e-postaları Satın Alma'ya).
+# v2: e-postanın kime geldiği ve kimin satıcı/alıcı olduğu baştan söylenir; gönderen rolü de sorulur.
+COMPANY_CONTEXT = (
+    "Bu e-postayı Atlas Endüstri A.Ş. aldı. Atlas Endüstri konveyör makarası, kaplin gibi makine "
+    "yedek parçaları üretir ve bunları MÜŞTERİLERİNE SATAR. Hammadde, parça ve hizmetleri ise "
+    "TEDARİKÇİLERİNDEN SATIN ALIR. Nakliye/kargo/gümrük firmaları Atlas'ın sevkiyatlarını taşır. "
+    "@atlas-endustri.example adresleri Atlas'ın kendi çalışanlarıdır."
+)
+DIRECTION_HINT = (
+    "Remember the direction of trade: a sender who buys from Atlas (orders, order changes, price "
+    "or catalogue requests for Atlas products) is a CUSTOMER; a sender who sells to Atlas (quotes, "
+    "price lists, invoices for what Atlas bought) is a SUPPLIER."
+)
+SENDER_ROLES = {
+    "supplier": "A company that sells goods or services to Atlas, or wants to",
+    "customer": "A company that buys Atlas products, or wants to",
+    "carrier": "A shipping, cargo, freight forwarding or customs company",
+    "internal": "An Atlas Endüstri employee (@atlas-endustri.example)",
+    "other": "Anyone else: newsletters, ads, banks, job applicants, automated messages",
+}
 ROUTE_CUTOFF = 0.5
 PRIORITY_LEVELS: tuple[PriorityValue, ...] = ("low", "normal", "high", "urgent")
 PRIORITY_CRITERIA = [
@@ -32,7 +53,13 @@ PRIORITY_CRITERIA = [
 
 
 def build_questions(registry: DepartmentRegistry) -> dict[str, dict[str, Any]]:
-    questions: dict[str, dict[str, Any]] = {}
+    questions: dict[str, dict[str, Any]] = {
+        "sender_role": {
+            "type": "choice",
+            "instructions": "Who is the sender of this email, from Atlas Endüstri's point of view?",
+            "criteria": SENDER_ROLES,
+        }
+    }
     for department in registry:
         questions[f"act.{department.key}"] = {
             "type": "noul",
@@ -40,7 +67,7 @@ def build_questions(registry: DepartmentRegistry) -> dict[str, dict[str, Any]]:
                 f"Does the {department.name} department of Atlas Endüstri need to take action on "
                 f"this email? {department.name} handles: {department.description} "
                 "Answer yes only if this department must do some work; being copied for "
-                "information is not enough."
+                f"information is not enough. {DIRECTION_HINT}"
             ),
         }
         questions[f"intent.{department.key}"] = {
@@ -68,7 +95,7 @@ class DecisionModelClassifier:
     prompt_version: str = PROMPT_VERSION
 
     def __call__(self, email: EmailForDecision) -> Classification:
-        state = build_user_prompt(email)
+        state = f"{COMPANY_CONTEXT}\n\n{build_user_prompt(email)}"
         try:
             answers = self.client.ask(state=state, questions=build_questions(self.registry))
             act = {d.key: answers.noul(f"act.{d.key}") for d in self.registry}
@@ -134,5 +161,8 @@ class DecisionModelClassifier:
                 "act": act,
                 "intents": {k: {"choice": c, "probabilities": p} for k, (c, p) in intents.items()},
                 "priority_score": priority_score,
+                "sender_role": answers.choice("sender_role")[0]
+                if "sender_role" in answers.answers
+                else None,
             },
         )

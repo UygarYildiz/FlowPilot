@@ -142,7 +142,7 @@ def test_questions_cover_every_department_and_intent() -> None:
         assert questions[f"act.{department.key}"]["type"] == "noul"
         assert set(questions[f"intent.{department.key}"]["criteria"]) == department.intent_keys()
     assert questions["priority"]["type"] == "score"
-    assert len(questions) == 2 * len(get_registry()) + 1 <= 64
+    assert len(questions) == 2 * len(get_registry()) + 2 <= 64
 
 
 def test_confident_departments_become_routes() -> None:

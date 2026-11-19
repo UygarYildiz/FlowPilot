@@ -68,7 +68,8 @@ def _classify(args: argparse.Namespace, settings: Settings) -> int:
 
 def _eval_routing(args: argparse.Namespace, settings: Settings) -> int:
     dataset = Path(args.dataset)
-    cases = routing.load_cases(dataset, Path(settings.seed_dir))[: args.limit]
+    cases = routing.filter_split(routing.load_cases(dataset, Path(settings.seed_dir)), args.split)
+    cases = cases[: args.limit]
     classifier = build_classifier(settings, get_registry(), engine=args.engine)
 
     def progress(index: int, result: routing.CaseResult) -> None:
@@ -84,6 +85,7 @@ def _eval_routing(args: argparse.Namespace, settings: Settings) -> int:
         "dataset": dataset.as_posix(),
         "prompt_version": classifier.prompt_version,
         "threshold": settings.decision_threshold,
+        "split": args.split,
     }
     path = routing.write_report(EVALS_DIR / "results", summary, results, meta)
     print(routing.render_markdown(summary, [], meta).split("## Hatalar")[0])
@@ -97,6 +99,32 @@ def _users_demo(settings: Settings) -> int:
     print("Demo kullanıcıları hazır (şifre: FLOWPILOT_DEMO_PASSWORD):")
     for email in emails:
         print(f"  {email}")
+    return 0
+
+
+def _eval_rescore(args: argparse.Namespace) -> int:
+    """Kaydedilmiş raporları yeniden çalıştırmadan bir yarıda puanlar ve yan yana gösterir."""
+    keys = [
+        ("department_accuracy", "Departman doğruluğu"),
+        ("auto_routed_error_rate", "Otomatik yönlendirilenlerde hata"),
+        ("procurement_intent", "Procurement intent"),
+        ("intent_accuracy_all", "Tüm intent"),
+        ("multi_department_recall", "Çok departmanlı geri çağırma"),
+        ("review_rate", "Manuel inceleme"),
+    ]
+    rows = []
+    for report in args.reports:
+        meta, results = routing.load_results(Path(report))
+        subset = routing.filter_split(results, args.split)
+        summary = routing.summarize(subset)
+        rows.append((f"{meta['model']} ({meta['prompt_version']})", len(subset), summary))
+    print(f"| Ölçüt ({args.split}) | " + " | ".join(f"{n} [{c}]" for n, c, _ in rows) + " |")
+    print("|---|" + "---|" * len(rows))
+    for key, label in keys:
+        cells = [routing.percent(s[key]) for _, _, s in rows]
+        print(f"| {label} | " + " | ".join(cells) + " |")
+    medians = [s.get("median_seconds") for _, _, s in rows]
+    print("| Ortanca süre | " + " | ".join(f"{m:.2f} sn" if m else "—" for m in medians) + " |")
     return 0
 
 
@@ -124,8 +152,15 @@ def main(argv: list[str] | None = None) -> int:
     routing_parser.add_argument("--dataset", default=str(EVALS_DIR / "routing" / "dataset.jsonl"))
     routing_parser.add_argument("--limit", type=int, default=None)
     routing_parser.add_argument(
+        "--split", choices=["all", "dev", "test"], default="all", help="Geliştirme/test yarısı"
+    )
+    routing_parser.add_argument(
         "--engine", choices=["llm", "clef"], default=None, help="Varsayılan: ayarlardaki motor"
     )
+
+    rescore = suites.add_parser("rescore", help="Kayıtlı raporları bir yarıda karşılaştır")
+    rescore.add_argument("reports", nargs="+", help="evals/results/*.json")
+    rescore.add_argument("--split", choices=["all", "dev", "test"], default="test")
 
     users = commands.add_parser("users", help="Panel kullanıcıları")
     users_commands = users.add_subparsers(dest="users_command", required=True)
@@ -139,6 +174,8 @@ def main(argv: list[str] | None = None) -> int:
         return _classify(args, settings)
     if args.command == "users":
         return _users_demo(settings)
+    if args.suite == "rescore":
+        return _eval_rescore(args)
     return _eval_routing(args, settings)
 
 
