@@ -86,3 +86,9 @@
 **Bağlam:** Decision Engine departmanların intent listesine ihtiyaç duyar, ama çekirdek departman paketlerini import edemez (MIMARI.md kural 1). Departmanlar bir yerde kayıt defterine eklenmeli.
 **Karar:** Sözleşme (`Department`, `Intent`, `DepartmentRegistry`) çekirdekte durur. Departman paketleri yalnızca bu sözleşmeyi import eder ve bir `DEPARTMENT` tanımı dışa verir. Çekirdeğin dışındaki `flowpilot/bootstrap.py` departmanları açık bir listeyle kayıt defterine ekler; CLI ve API kayıt defterini oradan alır. Otomatik keşif (paket tarama, entry point) kullanılmaz.
 **Sonuçlar:** Yeni departman = yeni paket + `bootstrap.py`'de bir satır + import-linter kural 2 listesine bir satır; çekirdek değişmez. Açık liste, hangi departmanların etkin olduğunu tek bakışta gösterir. Bedeli: kaydı unutulan bir departman sessizce devre dışı kalır (kayıt defteri testi dört departmanı doğrular).
+
+## ADR-011: Kullanıcı için sade ilerleme belgesi
+**Tarih:** 2026-11-19 · **Durum:** Kabul edildi
+**Bağlam:** Teknik belgeler (DURUM, MIMARI, günlük) güncel olsa da proje sahibi ilerlemeyi takip etmekte zorlanıyor ve projeden koptuğunu söyledi.
+**Karar:** Kök dizinde `ILERLEME.md`: teknik olmayan dille sistemin bugün ne yaptığı (örnekle), yol haritasında nerede olunduğu, son en fazla 3 oturum, sıradaki adım, kullanıcıdan beklenen kararlar ve küçük bir sözlük. ADR-006'daki Stop ve pre-commit kontrolleri artık `docs/DURUM.md` ile birlikte bu dosyayı da ister. Oturum sonu mesajları da aynı sade dille yazılır (CLAUDE.md).
+**Sonuçlar:** Her oturumda birkaç dakikalık ek yazım; karşılığında proje sahibi teknik belgeleri okumadan güncel kalır.

@@ -2,11 +2,12 @@
 
 Şirketlere gelen e-postaları yapay zekâyla sınıflandırıp ilgili departmana yönlendiren, departman ajanlarıyla işlem öneren ve kritik işlemlerde insan onayını koruyan bir AI operasyon platformu.
 
-Proje geliştirme aşamasında. Nerede olduğumuzu görmek için: [docs/DURUM.md](docs/DURUM.md)
+Proje geliştirme aşamasında. Nerede olduğumuzu sade bir dille görmek için: **[ILERLEME.md](ILERLEME.md)** · teknik durum: [docs/DURUM.md](docs/DURUM.md)
 
 ## Belgeler
 | Belge | İçerik |
 |---|---|
+| [ILERLEME.md](ILERLEME.md) | Neredeyiz? Teknik olmayan ilerleme özeti |
 | [docs/VIZYON.md](docs/VIZYON.md) | Ürün fikri ve uzun vadeli vizyon |
 | [docs/DURUM.md](docs/DURUM.md) | Nerede kaldık, sıradaki adım, açık sorular |
 | [docs/YOL_HARITASI.md](docs/YOL_HARITASI.md) | Sürümler ve departman sırası |

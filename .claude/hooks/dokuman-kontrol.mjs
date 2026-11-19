@@ -2,13 +2,15 @@
 // Belge güncellik kontrolü (ADR-006).
 //   node dokuman-kontrol.mjs stop        -> Claude Code Stop hook'u
 //   node dokuman-kontrol.mjs pre-commit  -> git pre-commit hook'u
-// Kural: kod değiştiyse docs/DURUM.md de güncellenmiş olmalı.
+// Kural: kod değiştiyse docs/DURUM.md ve ILERLEME.md de güncellenmiş olmalı.
 
 import { execFileSync } from "node:child_process";
 import { statSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 const DURUM = "docs/DURUM.md";
+const ILERLEME = "ILERLEME.md"; // kullanıcı için sade özet
+const ZORUNLU = [DURUM, ILERLEME];
 const mode = process.argv[2] ?? "stop";
 
 function git(args, cwd) {
@@ -23,7 +25,7 @@ function git(args, cwd) {
 function isDoc(path) {
   return (
     path.startsWith("docs/") ||
-    ["README.md", "CHANGELOG.md", "CLAUDE.md"].includes(path)
+    ["README.md", "CHANGELOG.md", "CLAUDE.md", ILERLEME].includes(path)
   );
 }
 
@@ -67,13 +69,18 @@ function stopHook() {
   const kod = entries.filter((e) => !isDoc(e.path));
   if (kod.length === 0) return;
 
-  const durumZamani = mtime(root, DURUM) ?? 0;
-  const durumDegisti = entries.some((e) => e.path === DURUM);
-  const eskiKalan = kod.filter((e) => {
-    const t = mtime(root, e.path);
-    return t === null ? !durumDegisti : t > durumZamani;
+  // Her zorunlu belge, en son değişen kod dosyasından sonra güncellenmiş olmalı.
+  const geride = ZORUNLU.filter((belge) => {
+    const belgeZamani = mtime(root, belge) ?? 0;
+    const belgeDegisti = entries.some((e) => e.path === belge);
+    return kod.some((e) => {
+      const t = mtime(root, e.path);
+      return t === null ? !belgeDegisti : t > belgeZamani;
+    });
   });
-  if (eskiKalan.length === 0) return;
+  if (geride.length === 0) return;
+  const enSonBelge = Math.min(...geride.map((b) => mtime(root, b) ?? 0));
+  const eskiKalan = kod.filter((e) => (mtime(root, e.path) ?? Infinity) > enSonBelge);
 
   const liste = eskiKalan.slice(0, 8).map((e) => `  - ${e.path}`).join("\n");
   const fazla = eskiKalan.length > 8 ? `\n  - … ve ${eskiKalan.length - 8} dosya daha` : "";
@@ -81,9 +88,11 @@ function stopHook() {
     JSON.stringify({
       decision: "block",
       reason:
-        `Kod değişti ama ${DURUM} bu değişikliklerden sonra güncellenmedi:\n${liste}${fazla}\n\n` +
+        `Kod değişti ama ${geride.join(" ve ")} bu değişikliklerden sonra güncellenmedi:\n` +
+        `${liste}${fazla}\n\n` +
         `İşi bitirmeden önce CLAUDE.md'deki "Güncel tutma" adımlarını uygula: ` +
-        `${DURUM} (tarih, şu an yapılan, sıradaki adım), ${buAyinGunlugu()} (en üste kısa kayıt), ` +
+        `${ILERLEME} (kullanıcı için sade özet), ${DURUM} (tarih, şu an yapılan, sıradaki adım), ` +
+        `${buAyinGunlugu()} (en üste kısa kayıt), ` +
         `gerekiyorsa docs/MIMARI.md, docs/KARARLAR.md ve docs/YOL_HARITASI.md.`,
     })
   );
@@ -96,12 +105,14 @@ function preCommit() {
     .split("\0")
     .filter(Boolean);
   const kod = staged.filter((p) => !isDoc(p));
-  if (kod.length === 0 || staged.includes(DURUM)) return 0;
+  const eksik = ZORUNLU.filter((belge) => !staged.includes(belge));
+  if (kod.length === 0 || eksik.length === 0) return 0;
 
   process.stderr.write(
-    `\n[FlowPilot] Commit durduruldu: kod değişiyor ama ${DURUM} commit'te yok.\n` +
+    `\n[FlowPilot] Commit durduruldu: kod değişiyor ama ${eksik.join(" ve ")} commit'te yok.\n` +
       `Belgeler kodla aynı commit'te güncellenir (CLAUDE.md, ADR-006).\n` +
-      `Yapılacaklar: ${DURUM} ve ${buAyinGunlugu()} dosyasını güncelleyip 'git add' ile ekle.\n\n`
+      `Yapılacaklar: ${eksik.join(", ")} ve ${buAyinGunlugu()} dosyasını güncelleyip ` +
+      `'git add' ile ekle.\n\n`
   );
   return 1;
 }

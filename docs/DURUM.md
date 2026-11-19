@@ -27,6 +27,7 @@ Departman %98,2 (hedef ≥90) · otomatik yönlendirilenlerde hata %2,1 (≤5) �
 - Değerlendirme setine kullanıcının da (Claude dışında) birkaç gerçekçi e-posta eklemesi ölçümü daha güvenilir yapar.
 
 ## Notlar
+- Kullanıcıya her oturum sonunda `ILERLEME.md` sade dille güncellenir (ADR-011); Stop/pre-commit kontrolü ister.
 - Gemini ücretsiz katmanına yalnızca kurgusal veri gönderilir (ADR-009). `.env` gitignore'da.
 - Docker Desktop kapanınca DB testleri atlanır (yerelde); `docker compose up -d` gerekir. DB `localhost:5433`.
 - IMAP adaptörü yalnızca sahte sunucuyla test edildi.
