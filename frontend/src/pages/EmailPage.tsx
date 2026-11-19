@@ -2,11 +2,14 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 import CorrectionForm from '../components/CorrectionForm'
+import Proposals from '../components/Proposals'
 import RoutingSlip from '../components/RoutingSlip'
 import { api, type AuditEvent, type EmailDetail, type RouteInput } from '../lib/api'
 import { fileSize, fullTime } from '../lib/format'
 import { keys, useCounts, useMe } from '../lib/hooks'
 import { describeAction, describeActor, statusLabel } from '../lib/text'
+
+type ProposalAction = { kind: 'approve' | 'retry'; id: string } | { kind: 'reject'; id: string; reason: string }
 
 const PARSE_LABEL = {
   ok: 'Metni okundu',
@@ -96,6 +99,16 @@ export default function EmailPage() {
     },
   })
   const done = useMutation({ mutationFn: (routeId: string) => api.routeDone(routeId), onSuccess: refresh })
+  const decide = useMutation({
+    mutationFn: (action: ProposalAction) => {
+      if (action.kind === 'reject') return api.reject(action.id, action.reason)
+      return action.kind === 'approve' ? api.approve(action.id) : api.retry(action.id)
+    },
+    onSuccess: (detail) => {
+      refresh(detail)
+      queryClient.invalidateQueries({ queryKey: keys.audit })
+    },
+  })
   const dismiss = useMutation({
     mutationFn: () => api.dismiss(id, dismissReason),
     onSuccess: (detail) => {
@@ -168,6 +181,18 @@ export default function EmailPage() {
             </p>
           )}
           {done.isError && <p className="text-sm text-danger">{done.error.message}</p>}
+
+          <Proposals
+            proposals={data.proposals}
+            runs={data.agent_runs}
+            counts={counts.data}
+            user={user}
+            pending={decide.isPending}
+            error={decide.isError ? decide.error.message : null}
+            onApprove={(proposalId) => decide.mutate({ kind: 'approve', id: proposalId })}
+            onReject={(proposalId, reason) => decide.mutate({ kind: 'reject', id: proposalId, reason })}
+            onRetry={(proposalId) => decide.mutate({ kind: 'retry', id: proposalId })}
+          />
 
           {data.status !== 'done' && counts.data && (
             <div className="rounded-md border border-rule bg-panel px-5 py-4">

@@ -238,3 +238,119 @@ def test_attachment_download(client: TestClient, data: dict[str, Email]) -> None
     assert response.status_code == 200
     assert response.content == b"Kod;Fiyat\n"
     assert "liste.csv" in response.headers["content-disposition"]
+
+
+# ---------- Öneriler ve denetim kaydı (ADR-014) ----------
+
+FINANCE = f"finans@{DEMO_DOMAIN}"
+
+
+def _agent_registry():  # noqa: ANN202
+    """Yalnızca testte: Satın Alma'ya sahte bir ajan ve öneri tipi takılmış kayıt defteri."""
+    from dataclasses import replace
+
+    from pydantic import BaseModel
+
+    from flowpilot.bootstrap import DEPARTMENTS
+    from flowpilot.core.registry import DepartmentRegistry, ProposalDraft, ProposalType
+
+    class QuoteNote(BaseModel):
+        supplier: str
+        total: float
+
+    class Agent:
+        def handle(self, context):  # noqa: ANN001, ANN202
+            return [
+                ProposalDraft(
+                    "save_quote", {"supplier": "Özkan Rulman", "total": 1250.0}, "Teklif"
+                ),
+                ProposalDraft("save_quote", {"supplier": "Bilge", "total": 990.0}, "İkinci teklif"),
+            ]
+
+    def apply(ctx, payload):  # noqa: ANN001, ANN202
+        return {"stored": payload.supplier}
+
+    departments = [
+        replace(
+            d,
+            agent=Agent(),
+            proposal_types=(ProposalType("save_quote", "Teklifi kaydet", QuoteNote, apply),),
+        )
+        if d.key == "procurement"
+        else d
+        for d in DEPARTMENTS
+    ]
+    return DepartmentRegistry(departments)
+
+
+@pytest.fixture
+def agent_client(client: TestClient, session: Session, data: dict[str, Email]) -> TestClient:
+    from flowpilot.api.deps import registry as registry_dep
+    from flowpilot.core.proposals import run_agent
+
+    registry = _agent_registry()
+    client.app.dependency_overrides[registry_dep] = lambda: registry  # type: ignore[attr-defined]
+    decision = data["quote"].current_decision
+    assert decision is not None
+    run_agent(session, decision.routes[0], registry=registry)
+    return client
+
+
+def test_proposals_are_listed_and_approval_applies_them(
+    agent_client: TestClient, data: dict[str, Email]
+) -> None:
+    login(agent_client, PROCUREMENT)
+    counts = agent_client.get("/api/counts").json()
+    assert counts["awaiting_approval"] == 1
+    waiting = agent_client.get("/api/emails", params={"view": "approval"}).json()
+    assert [e["subject"] for e in waiting["items"]] == ["Konu quote"]
+
+    detail = agent_client.get(f"/api/emails/{data['quote'].id}").json()
+    assert detail["status"] == "awaiting_approval"
+    assert detail["agent_runs"][0]["status"] == "succeeded"
+    by_summary = {p["summary"]: p for p in detail["proposals"]}
+    first, second = by_summary["Teklif"], by_summary["İkinci teklif"]
+    assert first["type_label"] == "Teklifi kaydet" and first["status"] == "pending"
+    assert first["payload"] == {"supplier": "Özkan Rulman", "total": 1250.0} and first["current"]
+
+    approved = agent_client.post(f"/api/proposals/{first['id']}/approve").json()
+    by_id = {p["id"]: p for p in approved["proposals"]}
+    assert by_id[first["id"]]["status"] == "executed"
+    assert by_id[first["id"]]["result"] == {"stored": "Özkan Rulman"}
+    again = agent_client.post(f"/api/proposals/{first['id']}/approve")
+    assert again.status_code == 422
+
+    no_reason = agent_client.post(f"/api/proposals/{second['id']}/reject", json={"reason": ""})
+    assert no_reason.status_code == 422 and "gerekçe" in no_reason.json()["detail"]
+    rejected = agent_client.post(
+        f"/api/proposals/{second['id']}/reject", json={"reason": "Eski teklif"}
+    ).json()
+    assert {p["id"]: p for p in rejected["proposals"]}[second["id"]]["status"] == "rejected"
+    assert rejected["status"] == "routed"
+    actions = [e["action"] for e in rejected["events"]]
+    assert actions[-3:] == ["proposal.approved", "proposal.executed", "proposal.rejected"]
+
+
+def test_other_departments_cannot_see_or_decide_proposals(
+    agent_client: TestClient, data: dict[str, Email]
+) -> None:
+    login(agent_client, ADMIN)
+    proposal_id = agent_client.get(f"/api/emails/{data['quote'].id}").json()["proposals"][0]["id"]
+    login(agent_client, FINANCE)
+    assert agent_client.post(f"/api/proposals/{proposal_id}/approve").status_code == 404
+    assert agent_client.get("/api/counts").json()["awaiting_approval"] == 0
+
+
+def test_audit_log_is_admin_only_and_newest_first(
+    agent_client: TestClient, data: dict[str, Email]
+) -> None:
+    login(agent_client, PROCUREMENT)
+    assert agent_client.get("/api/audit").status_code == 403
+    login(agent_client, ADMIN)
+    log = agent_client.get("/api/audit").json()
+    assert log["total"] >= 3
+    newest = log["items"][0]
+    assert newest["action"] == "proposal.created" and newest["actor"] == "agent:procurement"
+    assert newest["email_subject"] == "Konu quote"
+    filtered = agent_client.get("/api/audit", params={"q": "agent.ran"}).json()
+    assert [i["action"] for i in filtered["items"]] == ["agent.ran"]

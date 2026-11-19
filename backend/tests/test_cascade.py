@@ -68,6 +68,7 @@ def test_unsure_first_goes_to_second_and_confident_second_decides() -> None:
     assert final.decided_by == "gemini:flash" and not final.needs_review
     assert [r.department for r in final.routes] == ["sales_orders"]
     assert final.reasoning == "SubQ: S\nGemini: Müşteri talebi"
+    assert final.raw_output is not None
     assert final.attempts == 2 and len(final.raw_output["stages"]) == 2
 
 

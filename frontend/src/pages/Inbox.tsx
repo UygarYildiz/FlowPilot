@@ -7,7 +7,7 @@ import { senderLabel, shortTime } from '../lib/format'
 import { useCounts } from '../lib/hooks'
 import { deptColor } from '../lib/text'
 
-type Mode = 'all' | 'review' | 'department'
+type Mode = 'all' | 'review' | 'approval' | 'department'
 
 const ROUTE_STATUS_TABS = [
   { value: 'open', label: 'Açık işler' },
@@ -18,6 +18,7 @@ const ROUTE_STATUS_TABS = [
 const EMPTY: Record<Mode, string> = {
   all: 'Henüz e-posta yok. Kurgusal e-postaları içeri almak için: uv run flowpilot ingest seed',
   review: 'İnceleme bekleyen e-posta yok. Yapay zekânın emin olamadığı e-postalar burada toplanır.',
+  approval: 'Onay bekleyen öneri yok. Departman ajanlarının hazırladığı öneriler burada toplanır.',
   department: 'Bu departmanın açık işi yok.',
 }
 
@@ -57,13 +58,21 @@ export default function Inbox({ mode }: { mode: Mode }) {
 
   const department = counts.data?.departments.find((d) => d.key === key)
   const title =
-    mode === 'review' ? 'İnsan baksın' : mode === 'department' ? (department?.name ?? '') : 'Tüm e-postalar'
+    mode === 'review'
+      ? 'İnsan baksın'
+      : mode === 'approval'
+        ? 'Onay bekleyenler'
+        : mode === 'department'
+          ? (department?.name ?? '')
+          : 'Tüm e-postalar'
   const subtitle =
     mode === 'review'
       ? 'Yapay zekânın emin olamadığı ya da hiçbir departmanla eşleştiremediği e-postalar. Doğru departmana yönlendir ya da ilgisizse kapat.'
-      : mode === 'department'
-        ? department?.description
-        : 'Gelen her e-posta ve yapay zekânın onu hangi departmana gönderdiği.'
+      : mode === 'approval'
+        ? 'Departman ajanlarının hazırladığı, onayını bekleyen öneriler. Onaylanan öneri bir kez uygulanır; reddedilen hiç uygulanmaz.'
+        : mode === 'department'
+          ? department?.description
+          : 'Gelen her e-posta ve yapay zekânın onu hangi departmana gönderdiği.'
 
   const submitSearch = (event: FormEvent) => {
     event.preventDefault()

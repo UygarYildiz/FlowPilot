@@ -14,7 +14,10 @@ from flowpilot.api.deps import (
     Storage,
 )
 from flowpilot.api.schemas import (
+    AgentRunOut,
     AttachmentOut,
+    AuditItem,
+    AuditOut,
     CorrectionIn,
     CountsOut,
     DecisionOut,
@@ -25,21 +28,26 @@ from flowpilot.api.schemas import (
     EventOut,
     IntentOut,
     LoginIn,
+    ProposalOut,
     ReasonIn,
     RouteOut,
     UserOut,
 )
 from flowpilot.core.models import (
+    AgentRun,
     Attachment,
     AuditEvent,
     Decision,
     Email,
     EmailStatus,
+    Proposal,
     Route,
     RouteStatus,
     User,
     UserRole,
 )
+from flowpilot.core.proposals import ProposalError, approve, is_current, reject, retry
+from flowpilot.core.registry import DepartmentRegistry
 from flowpilot.core.users import authenticate
 from flowpilot.core.workflow import (
     RouteInput,
@@ -147,7 +155,17 @@ def counts(user: CurrentUser, db: Db, registry: Registry) -> CountsOut:
         for d in registry
         if user.can_see(d.key)
     ]
-    return CountsOut(all=total, needs_review=review, departments=departments)
+    awaiting = (
+        db.scalar(
+            select(func.count())
+            .select_from(Email)
+            .where(*visible, Email.status == EmailStatus.AWAITING_APPROVAL)
+        )
+        or 0
+    )
+    return CountsOut(
+        all=total, needs_review=review, awaiting_approval=awaiting, departments=departments
+    )
 
 
 # ---------- E-postalar ----------
@@ -174,7 +192,7 @@ def _decision_out(decision: Decision) -> DecisionOut:
 def list_emails(
     user: CurrentUser,
     db: Db,
-    view: Literal["all", "review", "department"] = "all",
+    view: Literal["all", "review", "approval", "department"] = "all",
     department: str | None = None,
     route_status: Literal["open", "done", "any"] = "open",
     q: str | None = Query(default=None, max_length=200),
@@ -186,6 +204,8 @@ def list_emails(
         if user.role is not UserRole.ADMIN:
             raise HTTPException(status.HTTP_403_FORBIDDEN, "İnceleme kuyruğu yöneticiler içindir.")
         conditions.append(Email.status == EmailStatus.NEEDS_REVIEW)
+    elif view == "approval":
+        conditions.append(Email.status == EmailStatus.AWAITING_APPROVAL)
     elif view == "department":
         if not department or not user.can_see(department):
             raise HTTPException(status.HTTP_404_NOT_FOUND, "Departman bulunamadı.")
@@ -236,9 +256,41 @@ def list_emails(
     return EmailListOut(items=items, total=total)
 
 
+def _proposal_out(db: Db, proposal: Proposal, registry: DepartmentRegistry) -> ProposalOut:
+    department = registry.get(proposal.department)
+    ptype = department.proposal_type(proposal.type) if department else None
+    return ProposalOut(
+        id=proposal.id,
+        department=proposal.department,
+        type=proposal.type,
+        type_label=ptype.label if ptype else proposal.type,
+        summary=proposal.summary,
+        payload=proposal.payload,
+        status=proposal.status,
+        requires_approval=proposal.requires_approval,
+        created_at=proposal.created_at,
+        decided_by=proposal.decided_by,
+        decided_at=proposal.decided_at,
+        reason=proposal.reason,
+        executed_at=proposal.executed_at,
+        attempts=proposal.attempts,
+        result=proposal.result,
+        error=proposal.error,
+        current=is_current(db, proposal),
+    )
+
+
 @router.get("/emails/{email_id}")
-def email_detail(email_id: UUID, user: CurrentUser, db: Db) -> EmailDetail:
+def email_detail(email_id: UUID, user: CurrentUser, db: Db, registry: Registry) -> EmailDetail:
     email = _get_visible_email(db, email_id, user)
+    runs = db.scalars(
+        select(AgentRun).where(AgentRun.email_id == email.id).order_by(AgentRun.started_at)
+    ).all()
+    proposals = db.scalars(
+        select(Proposal)
+        .where(Proposal.email_id == email.id)
+        .order_by(Proposal.created_at, Proposal.id)
+    ).all()
     events = db.scalars(
         select(AuditEvent)
         .where(AuditEvent.entity_type == "email", AuditEvent.entity_id == str(email.id))
@@ -277,6 +329,12 @@ def email_detail(email_id: UUID, user: CurrentUser, db: Db) -> EmailDetail:
             for d in reversed(email.decisions)
             if current is None or d.id != current.id
         ],
+        agent_runs=[
+            AgentRunOut.model_validate(r, from_attributes=True)
+            for r in runs
+            if user.can_see(r.department)
+        ],
+        proposals=[_proposal_out(db, p, registry) for p in proposals if user.can_see(p.department)],
         events=[EventOut(at=e.at, actor=e.actor, action=e.action, data=e.data) for e in events],
     )
 
@@ -326,22 +384,26 @@ def correct(
         raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT, str(exc)) from exc
     db.flush()
     db.expire(email)
-    return email_detail(email_id, user, db)
+    return email_detail(email_id, user, db, registry)
 
 
 @router.post("/emails/{email_id}/dismiss")
-def dismiss_email(email_id: UUID, body: ReasonIn, user: AdminUser, db: Db) -> EmailDetail:
+def dismiss_email(
+    email_id: UUID, body: ReasonIn, user: AdminUser, db: Db, registry: Registry
+) -> EmailDetail:
     email = _get_visible_email(db, email_id, user)
     try:
         dismiss(db, email, reason=body.reason, user=user)
     except WorkflowError as exc:
         raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT, str(exc)) from exc
     db.flush()
-    return email_detail(email_id, user, db)
+    return email_detail(email_id, user, db, registry)
 
 
 @router.post("/routes/{route_id}/done")
-def route_done(route_id: UUID, body: ReasonIn, user: CurrentUser, db: Db) -> EmailDetail:
+def route_done(
+    route_id: UUID, body: ReasonIn, user: CurrentUser, db: Db, registry: Registry
+) -> EmailDetail:
     route = db.get(Route, route_id)
     if route is None or not user.can_see(route.department):
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Rota bulunamadı.")
@@ -350,4 +412,109 @@ def route_done(route_id: UUID, body: ReasonIn, user: CurrentUser, db: Db) -> Ema
     except WorkflowError as exc:
         raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT, str(exc)) from exc
     db.flush()
-    return email_detail(route.decision.email_id, user, db)
+    return email_detail(route.decision.email_id, user, db, registry)
+
+
+# ---------- Öneriler (ADR-014) ----------
+
+
+def _get_proposal(db: Db, proposal_id: UUID, user: User) -> Proposal:
+    proposal = db.get(Proposal, proposal_id)
+    if proposal is None or not user.can_see(proposal.department):
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Öneri bulunamadı.")
+    return proposal
+
+
+def _after(db: Db, email_id: UUID, user: User, registry: DepartmentRegistry) -> EmailDetail:
+    db.flush()
+    db.expire_all()
+    return email_detail(email_id, user, db, registry)
+
+
+@router.post("/proposals/{proposal_id}/approve")
+def approve_proposal(
+    proposal_id: UUID, user: CurrentUser, db: Db, registry: Registry
+) -> EmailDetail:
+    proposal = _get_proposal(db, proposal_id, user)
+    try:
+        approve(db, proposal, user=user, registry=registry)
+    except ProposalError as exc:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT, str(exc)) from exc
+    return _after(db, proposal.email_id, user, registry)
+
+
+@router.post("/proposals/{proposal_id}/reject")
+def reject_proposal(
+    proposal_id: UUID, body: ReasonIn, user: CurrentUser, db: Db, registry: Registry
+) -> EmailDetail:
+    proposal = _get_proposal(db, proposal_id, user)
+    try:
+        reject(db, proposal, user=user, reason=body.reason)
+    except ProposalError as exc:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT, str(exc)) from exc
+    return _after(db, proposal.email_id, user, registry)
+
+
+@router.post("/proposals/{proposal_id}/retry")
+def retry_proposal(proposal_id: UUID, user: CurrentUser, db: Db, registry: Registry) -> EmailDetail:
+    proposal = _get_proposal(db, proposal_id, user)
+    try:
+        retry(db, proposal, user=user, registry=registry)
+    except ProposalError as exc:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT, str(exc)) from exc
+    return _after(db, proposal.email_id, user, registry)
+
+
+# ---------- Denetim kaydı ----------
+
+
+def _email_uuid(event: AuditEvent) -> UUID | None:
+    if event.entity_type != "email":
+        return None
+    try:
+        return UUID(event.entity_id)
+    except ValueError:
+        return None
+
+
+@router.get("/audit")
+def audit_log(
+    user: AdminUser,
+    db: Db,
+    q: str | None = Query(default=None, max_length=200),
+    limit: int = Query(default=50, ge=1, le=200),
+    offset: int = Query(default=0, ge=0),
+) -> AuditOut:
+    """Tüm sistemin denetim kaydı, en yeni üstte (yalnızca yönetici)."""
+    conditions = []
+    if q:
+        pattern = f"%{q.strip()}%"
+        conditions.append(or_(AuditEvent.actor.ilike(pattern), AuditEvent.action.ilike(pattern)))
+    total = db.scalar(select(func.count()).select_from(AuditEvent).where(*conditions)) or 0
+    events = db.scalars(
+        select(AuditEvent)
+        .where(*conditions)
+        .order_by(AuditEvent.at.desc(), AuditEvent.id.desc())
+        .limit(limit)
+        .offset(offset)
+    ).all()
+    email_ids = [i for i in (_email_uuid(e) for e in events) if i is not None]
+    subjects = dict(
+        db.execute(select(Email.id, Email.subject).where(Email.id.in_(email_ids))).all()
+    )
+    return AuditOut(
+        items=[
+            AuditItem(
+                id=e.id,
+                at=e.at,
+                actor=e.actor,
+                action=e.action,
+                entity_type=e.entity_type,
+                entity_id=e.entity_id,
+                email_subject=subjects.get(_email_uuid(e)),  # type: ignore[arg-type]
+                data=e.data,
+            )
+            for e in events
+        ],
+        total=total,
+    )

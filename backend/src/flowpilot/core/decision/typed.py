@@ -28,7 +28,7 @@ PROMPT_VERSIONS = ("typed-v2", "typed-v3")
 NO_DEPARTMENT = "none"
 
 # typed-v1 bağlamsızdı: model müşteriyi tedarikçiyle karıştırdı (satış e-postaları Satın Alma'ya).
-# v2: e-postanın kime geldiği ve kimin satıcı/alıcı olduğu baştan söylenir; gönderen rolü de sorulur.
+# v2: e-postanın kime geldiği, kimin satıcı/alıcı olduğu baştan söylenir; gönderen rolü sorulur.
 COMPANY_CONTEXT = (
     "Bu e-postayı Atlas Endüstri A.Ş. aldı. Atlas Endüstri konveyör makarası, kaplin gibi makine "
     "yedek parçaları üretir ve bunları MÜŞTERİLERİNE SATAR. Hammadde, parça ve hizmetleri ise "

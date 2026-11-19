@@ -68,6 +68,7 @@ export default function Layout() {
         <p className="wide font-extrabold text-lg px-3">FlowPilot</p>
         <nav className="flex flex-col gap-0.5" aria-label="Gelen kutuları">
           <NavItem to="/" label="Tüm e-postalar" count={counts.data?.all} />
+          <NavItem to="/onay" label="Onay bekleyenler" count={counts.data?.awaiting_approval} attention />
           {isAdmin && (
             <NavItem
               to="/inceleme"
@@ -76,6 +77,7 @@ export default function Layout() {
               attention
             />
           )}
+          {isAdmin && <NavItem to="/denetim" label="Denetim kaydı" />}
         </nav>
         <nav className="flex flex-col gap-0.5" aria-label="Departmanlar">
           <p className="px-3 pb-1 text-sm text-steel">Departmanlar</p>

@@ -121,8 +121,11 @@ class Classifier(Protocol):
     """Bir e-postayı sınıflandıran motor: generatif LLM (`LLMClassifier`) ya da karar modeli
     (`typed.DecisionModelClassifier`). `decide` ve değerlendirme aracı yalnızca bunu bilir."""
 
-    model_name: str
-    prompt_version: str
+    @property
+    def model_name(self) -> str: ...
+
+    @property
+    def prompt_version(self) -> str: ...
 
     def __call__(self, email: EmailForDecision) -> Classification: ...
 

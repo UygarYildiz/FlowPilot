@@ -35,9 +35,17 @@ Bir örnekle:
    - Yapay zekâ yanlış yönlendirdiyse düzeltebiliyorsun; düzeltme ve gerekçesi kaydedilir. Kim ne zaman
      ne yaptı, her e-postanın "Geçmiş" bölümünde görünür.
 
-**Henüz olmayanlar:** Satın Alma "ajanı" (teklifleri karşılaştırıp sipariş taslağı hazırlayan kısım) ve
-onun önerilerini onaylama/reddetme ekranı. Panel şimdilik yalnızca senin bilgisayarında çalışıyor
-(internette değil).
+7. **Onay akışı hazır (yeni):** Bir departmanın "ajanı" bir iş hazırladığında (ör. *"Özkan Rulman
+   teklifini kaydet: 3 kalem, 18.450 TL"*) bu bir **öneri** olarak e-postanın yanında görünür.
+   - Yetkili kişi **"Onayla ve uygula"** der ya da gerekçe yazarak **reddeder**.
+   - Onaylanan öneri **tam bir kez** uygulanır; iki kişi aynı anda bassa bile. Reddedilen hiçbir zaman
+     uygulanmaz. Uygulama sırasında hata olursa öneri "Uygulanamadı" olur ve "Yeniden dene" denebilir.
+   - Menüde **"Onay bekleyenler"** listesi var. Yönetici için **"Denetim kaydı"** ekranı: sistemde kim,
+     ne zaman, ne yaptı; en yeniden eskiye, aranabilir.
+
+**Henüz olmayanlar:** Satın Alma ajanının kendisi (teklifleri okuyup karşılaştıran kısım, M5). Yani onay
+akışı hazır ama ona öneri gönderecek gerçek ajan henüz yok. Panel şimdilik yalnızca senin bilgisayarında
+çalışıyor (internette değil).
 
 ## Ne kadar iyi çalışıyor?
 150 örnek e-postayla ölçtük (19 Kasım):
@@ -67,13 +75,21 @@ yine e-postayı alıyor, fazladan biri de görüyor.
 | M1 | E-postaları ve eklerini içeri alma, tekrarları ayıklama | ✅ Bitti |
 | M2 | Yapay zekâyla departmana yönlendirme + ölçüm (150 örnek) | ✅ Bitti |
 | M3 | **Panel:** e-postaları, kararları ve gerekçelerini ekranda görme, yanlışı düzeltme, giriş | ✅ Bitti |
-| M4 | Ajan önerilerini onaylama/reddetme ve tüm sistemin "kim ne yaptı" ekranı | ⬜ Sırada |
-| M5 | **Satın Alma ajanı:** tekliften ürün/fiyat çıkarma, teklifleri karşılaştırma, sipariş taslağı | ⬜ |
+| M4 | Ajan önerilerini onaylama/reddetme ve tüm sistemin "kim ne yaptı" ekranı | ✅ Bitti |
+| M5 | **Satın Alma ajanı:** tekliften ürün/fiyat çıkarma, teklifleri karşılaştırma, sipariş taslağı | ⬜ Sırada |
 | M6 | İnternette herkesin açabileceği canlı demo | ⬜ |
 
 v1 bitince sırayla Finans (v2), Satış ve Sipariş (v3), Lojistik (v4) departmanlarının ajanları eklenecek.
 
 ## Son oturumlarda ne yaptık?
+
+**19 Kasım — Onay akışı (M4 bitti)**
+- Departmanların "ajan" takabileceği kurallar yazıldı: ajan yalnızca öneri hazırlar, hiçbir şeyi kendisi
+  değiştiremez.
+- Öneriler onaylanır ya da gerekçeyle reddedilir; onaylanan tam bir kez uygulanır. Bunu, iki işlemin
+  aynı öneriyi aynı anda uygulamaya çalıştığı bir test dahil, otomatik testlerle kanıtladık.
+- Panele "Onay bekleyenler" listesi, e-postada "Ajan önerileri" bölümü ve yönetici için "Denetim kaydı"
+  ekranı eklendi; hepsini tarayıcıda denedik.
 
 **19 Kasım — Yapay zekâ yarışı ve yeni düzen**
 - Clef ve SubQ'yu sisteme bağladık, Gemini ile tarafsız yarıda yarıştırdık; Clef elendi.
@@ -85,49 +101,22 @@ v1 bitince sırayla Finans (v2), Satış ve Sipariş (v3), Lojistik (v4) departm
 - Ölçüm yaptık: üç hedef de tuttu (yukarıdaki tablo). Hataları inceledik ve en sık hatanın "fazladan
   departman eklemek" olduğunu bulduk.
 
-**19 Kasım — Panel (M3)**
-- Giriş ekranı ve demo hesapları: yönetici ile Satın Alma, Finans, Satış ve Lojistik çalışanları.
-  Her biri yalnızca görmesi gerekeni görüyor; bunu otomatik testlerle de kontrol ediyoruz.
-- E-posta listeleri, e-posta ayrıntısı, yönlendirme fişi, düzeltme ve "işlendi" akışı.
-- Hepsini tarayıcıda tek tek denedik: giriş, bir departmanın işini kapatma, reklam e-postasını kapatma,
-  yanlış yönlendirmeyi düzeltme, telefon ekranı. Bu denemeler senin bilgisayarındaki deneme verisini
-  değiştirdi (örn. fuar e-postası kapandı); istersen veriyi sıfırlarız.
-- Panel dilini Türkçe yaptık. İngilizceye çevirmek gerekirse metinler tek yerde duruyor.
-
 (Daha eski çalışmalar: `docs/gunluk/`.)
 
 ## Şu an
-**Yapay zekâ seçimi bitti: iki model birlikte, sırayla çalışıyor.**
+**M4 bitti: onay akışı hazır.** Yapay zekâ seçimi de kapandı: önce SubQ, emin değilse Gemini, o da emin
+değilse insan (ayrıntılar `docs/KARARLAR.md`, ADR-013).
 
-Üç modeli (Gemini, SubQ, Clef) aynı örneklerle yarıştırdık. Gemini ve SubQ başa baş çıktı, Clef elendi.
-İkisinin güçlü yanlarını birleştirdik:
-
-- **Önce SubQ bakıyor.** Çok ucuz, çok hızlı ve ne kadar emin olduğunu dürüst söylüyor. Eminse karar onun.
-- **SubQ tereddüt ederse Gemini bakıyor.** Gemini e-postayı bütün olarak yorumlamakta daha iyi.
-  Örnek: müşterinin satın alma bölümünden gelen "fiyat önerinizi bekliyoruz" e-postasında SubQ "Satış mı,
-  Satın Alma mı?" diye kalıyor; Gemini "bu bir müşteri talebi" deyip Satış'a gönderiyor.
-- **İkisi de emin değilse insan bakıyor.** Panelde iki modelin görüşü de yazıyor.
-
-Tarafsız 74 e-postayla gerçek ölçüm:
-
-| Ne ölçtük | Yalnız Gemini | Yeni düzen | Hedefimiz |
-|---|---|---|---|
-| Doğru departmana gönderme | %97 | %97 | en az %90 ✅ |
-| "Eminim" deyip yanlış gönderme | %0 | %1,5 (1 e-posta) | en fazla %5 ✅ |
-| "Bir insan baksın" diye ayırdıkları | %12 | **%11** | |
-| Gemini'ye sorulan e-posta | 74 | **16** | |
-
-Yani insana kalan iş aynı, ama Gemini'ye dörtte bir oranında soruluyor. Bu, Gemini'nin ücretsiz kotasının
-çok daha geç dolması (ileride paralıya geçince de daha az ödeme) demek.
-
-Tek hata: bir müşteri "makaralar ses çıkarıyor" diye yazdı. SubQ doğru departmanı (Satış) bulmuştu ama emin
-değildi; Gemini Satış'ın yanına Lojistik'i de ekledi. Zararı sınırlı: doğru departman yine e-postayı aldı.
+Tarayıcıda denerken onay ekranını görebilmek için bilgisayarındaki deneme verisine, geçici bir deneme
+ajanıyla üç öneri ekledik ("SAT-2026-031 talebiniz için fiyat teklifimiz" e-postasında): biri uygulandı,
+biri reddedildi, biri "Uygulanamadı" durumunda (deneme ajanı artık sistemde olmadığı için). Bunlar ve
+denetim kayıtları deneme verisinde duruyor; istersen M6'daki "veriyi sıfırla" ile temizlenir.
 
 ## Sırada ne var?
-1. **M4 — Onay akışı:** Ajanların önerilerini (ör. "bu tekliften sipariş taslağı hazırladım") onaylama
-   veya reddetme ekranı ve bütün sistemin "kim ne yaptı" kaydı.
-2. İleride: "fazladan departman" hatasını azaltmak için yapay zekâya verilen talimatı iyileştirmek. Bunu
-   yaparken ölçümün kendini kandırmaması için örnek seti ikiye ayıracağız.
+1. **M5 — Satın Alma ajanı:** teklif PDF/Excel'inden tedarikçi, ürün, miktar ve fiyatları çıkarmak;
+   aynı talebe gelen teklifleri karşılaştırmak; satın alma taslağını öneri olarak onaya sunmak. Çıkarılan
+   sayıların doğruluğunu ölçmek için ayrı bir örnek seti de hazırlanacak.
+2. İleride: "fazladan departman" hatasını azaltmak için yapay zekâya verilen talimatı iyileştirmek.
 
 ## Senden beklenenler
 - **Bilgi:** Bilgisayarındaki ayarı yeni düzene çevirdim; artık gerçek Gemini kullanılıyor (önceden sahte
@@ -186,7 +175,9 @@ Sonra tarayıcıda http://localhost:5173 adresini aç ve giriş sayfasındaki de
 | API | Panelin arka planda veri aldığı/gönderdiği kısım. |
 | Karar modeli | Metin yazmayan, seçeneklere olasılık veren yapay zekâ türü (Cloudflare Clef, SubQ Snap). |
 | Kademeli yönlendirme | Önce ucuz model bakar, emin değilse güçlü model, o da emin değilse insan. |
-| Ajan | Departmanın işini hazırlayan yapay zekâ (M5'te gelecek). Sadece **önerir**, onay insanındır. |
+| Ajan | Departmanın işini hazırlayan yapay zekâ (ilki M5'te). Sadece **önerir**, onay insanındır. |
+| Öneri | Ajanın hazırladığı iş (ör. "bu teklifi kaydet"). Onaylanınca bir kez uygulanır, reddedilirse hiç. |
+| Denetim kaydı | Sistemde olan her şeyin silinemeyen listesi: kim, ne zaman, ne yaptı. |
 | Seed | Demo için hazırladığımız kurgusal şirket verisi (Atlas Endüstri). |
 | Değerlendirme seti | Doğru cevabını bildiğimiz örnek e-postalar; sistemin ne kadar doğru çalıştığını ölçmek için. |
 | ADR | "Neden böyle yaptık" kaydı. `docs/KARARLAR.md`'de durur. |

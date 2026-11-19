@@ -91,3 +91,95 @@ test('gelen kutusunu ve inceleme rozetini gösterir', async () => {
   expect(screen.getByText('Yeni teklif')).toBeDefined()
   expect(screen.getAllByText('İnsan baksın').length).toBeGreaterThan(0)
 })
+
+const ADMIN = {
+  status: 200,
+  body: { email: 'yonetici@atlas-endustri.example', name: 'Demo Yönetici', role: 'admin', departments: [] },
+}
+const COUNTS = {
+  status: 200,
+  body: { all: 1, needs_review: 0, awaiting_approval: 1, departments: [] },
+}
+
+test('e-posta sayfası bekleyen öneriyi onay ve ret düğmeleriyle gösterir', async () => {
+  respond({
+    '/api/auth/me': ADMIN,
+    '/api/counts': COUNTS,
+    '/api/emails/e1': {
+      status: 200,
+      body: {
+        id: 'e1',
+        message_id: '<e1@x>',
+        source: 'seed',
+        from_addr: 'satis@ozkanrulman.example',
+        to_addrs: [],
+        cc_addrs: [],
+        subject: 'Fiyat teklifimiz',
+        body_text: 'Teklifimiz ektedir.',
+        received_at: '2026-11-19T09:00:00Z',
+        status: 'awaiting_approval',
+        attachments: [],
+        current_decision: null,
+        previous_decisions: [],
+        agent_runs: [],
+        proposals: [
+          {
+            id: 'p1',
+            department: 'procurement',
+            type: 'save_quote',
+            type_label: 'Teklifi kaydet',
+            summary: 'Özkan Rulman teklifi: 1.250 TL',
+            payload: { supplier: 'Özkan Rulman', total: 1250 },
+            status: 'pending',
+            requires_approval: true,
+            created_at: '2026-11-19T09:01:00Z',
+            decided_by: null,
+            decided_at: null,
+            reason: null,
+            executed_at: null,
+            attempts: 0,
+            result: null,
+            error: null,
+            current: true,
+          },
+        ],
+        events: [],
+      },
+    },
+  })
+  renderAt('/eposta/e1')
+  expect(await screen.findByText('Özkan Rulman teklifi: 1.250 TL')).toBeDefined()
+  expect(screen.getByRole('button', { name: 'Onayla ve uygula' })).toBeDefined()
+  expect(screen.getByRole('button', { name: 'Reddet' })).toBeDefined()
+  expect(screen.getAllByText('Onay bekliyor').length).toBeGreaterThan(0)
+})
+
+test('denetim kaydı olayları okunur adlarla listeler', async () => {
+  respond({
+    '/api/auth/me': ADMIN,
+    '/api/counts': COUNTS,
+    '/api/audit': {
+      status: 200,
+      body: {
+        total: 1,
+        items: [
+          {
+            id: 7,
+            at: '2026-11-19T09:05:00Z',
+            actor: 'user:satinalma@atlas-endustri.example',
+            action: 'proposal.rejected',
+            entity_type: 'email',
+            entity_id: 'e1',
+            email_subject: 'Fiyat teklifimiz',
+            data: { reason: 'Eski teklif' },
+          },
+        ],
+      },
+    },
+  })
+  renderAt('/denetim')
+  expect(await screen.findByText('Öneri reddedildi')).toBeDefined()
+  expect(screen.getByRole('link', { name: 'Fiyat teklifimiz' })).toBeDefined()
+  expect(screen.getByText('“Eski teklif”')).toBeDefined()
+  expect(screen.getByText('satinalma@atlas-endustri.example')).toBeDefined()
+})

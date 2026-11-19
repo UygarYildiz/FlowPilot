@@ -6,6 +6,7 @@ export const keys = {
   counts: ['counts'] as const,
   emails: ['emails'] as const,
   email: (id: string) => ['email', id] as const,
+  audit: ['audit'] as const,
 }
 
 export function useMe() {

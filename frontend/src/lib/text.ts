@@ -1,5 +1,5 @@
 // Ekrandaki sabit metinler tek yerde: panel dili değişirse yalnızca bu dosya çevrilir.
-import type { Counts, EmailStatus, Priority } from './api'
+import type { Counts, EmailStatus, Priority, ProposalStatus } from './api'
 
 export const priorityLabel: Record<Priority, string> = {
   low: 'Düşük',
@@ -25,6 +25,22 @@ const actionLabel: Record<string, string> = {
   'email.rerouted': 'Yönlendirme düzeltildi',
   'email.dismissed': 'İlgisiz olarak kapatıldı',
   'route.done': 'Departman işi kapattı',
+  'users.demo_ensured': 'Demo kullanıcıları hazırlandı',
+  'agent.ran': 'Ajan e-postayı inceledi',
+  'agent.failed': 'Ajan çalışamadı',
+  'proposal.created': 'Ajan öneri hazırladı',
+  'proposal.approved': 'Öneri onaylandı',
+  'proposal.rejected': 'Öneri reddedildi',
+  'proposal.executed': 'Öneri uygulandı',
+  'proposal.failed': 'Öneri uygulanırken hata oldu',
+}
+
+export const proposalStatusLabel: Record<ProposalStatus, string> = {
+  pending: 'Onay bekliyor',
+  approved: 'Onaylandı, uygulanıyor',
+  rejected: 'Reddedildi',
+  executed: 'Uygulandı',
+  failed: 'Uygulanamadı',
 }
 
 export function describeAction(action: string): string {
@@ -35,6 +51,7 @@ export function describeActor(actor: string): string {
   if (actor === 'system') return 'Sistem'
   if (actor.startsWith('user:')) return actor.slice(5)
   if (actor.startsWith('decision_engine:')) return `Yapay zekâ (${actor.split(':').slice(1).join(':')})`
+  if (actor.startsWith('agent:')) return `Ajan (${actor.slice(6)})`
   return actor
 }
 

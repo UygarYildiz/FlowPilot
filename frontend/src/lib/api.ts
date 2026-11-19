@@ -34,6 +34,7 @@ export interface Department {
 export interface Counts {
   all: number
   needs_review: number
+  awaiting_approval: number
   departments: Department[]
 }
 
@@ -90,6 +91,50 @@ export interface AuditEvent {
   data: Record<string, unknown>
 }
 
+export type ProposalStatus = 'pending' | 'approved' | 'rejected' | 'executed' | 'failed'
+
+export interface Proposal {
+  id: string
+  department: string
+  type: string
+  type_label: string
+  summary: string
+  payload: Record<string, unknown>
+  status: ProposalStatus
+  requires_approval: boolean
+  created_at: string
+  decided_by: string | null
+  decided_at: string | null
+  reason: string | null
+  executed_at: string | null
+  attempts: number
+  result: Record<string, unknown> | null
+  error: string | null
+  /** Öneri e-postanın geçerli yönlendirmesine mi ait? Düzeltilmişse eskidir. */
+  current: boolean
+}
+
+export interface AgentRun {
+  id: string
+  department: string
+  status: 'running' | 'succeeded' | 'failed'
+  attempts: number
+  error: string | null
+  started_at: string
+  finished_at: string | null
+}
+
+export interface AuditItem {
+  id: number
+  at: string
+  actor: string
+  action: string
+  entity_type: string
+  entity_id: string
+  email_subject: string | null
+  data: Record<string, unknown>
+}
+
 export interface EmailDetail {
   id: string
   message_id: string
@@ -104,6 +149,8 @@ export interface EmailDetail {
   attachments: Attachment[]
   current_decision: Decision | null
   previous_decisions: Decision[]
+  agent_runs: AgentRun[]
+  proposals: Proposal[]
   events: AuditEvent[]
 }
 
@@ -114,7 +161,7 @@ export interface RouteInput {
 }
 
 export interface EmailQuery {
-  view: 'all' | 'review' | 'department'
+  view: 'all' | 'review' | 'approval' | 'department'
   department?: string
   route_status?: 'open' | 'done' | 'any'
   q?: string
@@ -170,6 +217,15 @@ export const api = {
   dismiss: (id: string, reason: string) => post<EmailDetail>(`/api/emails/${id}/dismiss`, { reason }),
   routeDone: (routeId: string, reason = '') =>
     post<EmailDetail>(`/api/routes/${routeId}/done`, { reason }),
+  approve: (proposalId: string) => post<EmailDetail>(`/api/proposals/${proposalId}/approve`, {}),
+  reject: (proposalId: string, reason: string) =>
+    post<EmailDetail>(`/api/proposals/${proposalId}/reject`, { reason }),
+  retry: (proposalId: string) => post<EmailDetail>(`/api/proposals/${proposalId}/retry`, {}),
+  audit: (q: string, offset: number) => {
+    const params = new URLSearchParams({ limit: '50', offset: String(offset) })
+    if (q) params.set('q', q)
+    return request<{ items: AuditItem[]; total: number }>(`/api/audit?${params}`)
+  },
   attachmentUrl: (emailId: string, attachmentId: string) =>
     `/api/emails/${emailId}/attachments/${attachmentId}`,
 }

@@ -66,6 +66,19 @@ def _classify(args: argparse.Namespace, settings: Settings) -> int:
     return 1 if report.failed else 0
 
 
+def _agents(args: argparse.Namespace) -> int:
+    from flowpilot.core.agent_runner import run_pending_agents
+
+    report = run_pending_agents(session_scope, registry=get_registry(), limit=args.limit)
+    print(
+        f"Ajan çalıştı: {report.succeeded}  Yeni öneri: {report.proposals}  "
+        f"Hata: {len(report.failed)}"
+    )
+    for line in report.failed:
+        print(f"  ! {line}")
+    return 1 if report.failed else 0
+
+
 def _eval_routing(args: argparse.Namespace, settings: Settings) -> int:
     dataset = Path(args.dataset)
     cases = routing.filter_split(routing.load_cases(dataset, Path(settings.seed_dir)), args.split)
@@ -146,6 +159,9 @@ def main(argv: list[str] | None = None) -> int:
     classify = commands.add_parser("classify", help="Bekleyen e-postaları sınıflandır")
     classify.add_argument("--limit", type=int, default=None)
 
+    agents = commands.add_parser("agents", help="Açık rotalarda departman ajanlarını çalıştır")
+    agents.add_argument("--limit", type=int, default=None)
+
     evaluate = commands.add_parser("eval", help="Değerlendirme çalıştır")
     suites = evaluate.add_subparsers(dest="suite", required=True)
     routing_parser = suites.add_parser("routing", help="Yönlendirme doğruluğu")
@@ -175,6 +191,8 @@ def main(argv: list[str] | None = None) -> int:
         return _ingest(args, settings, parser)
     if args.command == "classify":
         return _classify(args, settings)
+    if args.command == "agents":
+        return _agents(args)
     if args.command == "users":
         return _users_demo(settings)
     if args.suite == "rescore":
