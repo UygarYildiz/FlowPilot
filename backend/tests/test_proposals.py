@@ -439,3 +439,43 @@ def test_concurrent_execution_applies_once(engine: Engine) -> None:
             s.delete(s.get_one(Email, email_id))
             s.execute(delete(AuditEvent).where(AuditEvent.action == "test.applied"))
             s.execute(delete(AuditEvent).where(AuditEvent.entity_id == str(email_id)))
+
+
+# ---------- Araçlar salt-okunurdur (ADR-015) ----------
+
+
+def test_agent_tools_can_read_but_their_writes_are_discarded(session: Session) -> None:
+    from flowpilot.core.registry import Tool
+
+    def count_and_try_to_write(s: Session, action: str) -> int:
+        before = s.scalar(
+            select(func.count()).select_from(AuditEvent).where(AuditEvent.action == action)
+        )
+        audit.record(s, actor="tool", action=action, entity_type="test", entity_id="x")
+        s.flush()
+        return before or 0
+
+    class ToolUsingAgent:
+        seen: list[int] = []
+
+        def handle(self, context: AgentContext) -> list[ProposalDraft]:
+            self.seen.append(context.tools.call("count", action="tool.write"))
+            self.seen.append(context.tools.call("count", action="tool.write"))
+            return [note()]
+
+    agent = ToolUsingAgent()
+    base = make_department(ScriptedAgent([]), Applier())
+    department = Department(
+        **{
+            **base.__dict__,
+            "agent": agent,
+            "tools": (Tool("count", "Olay sayar", count_and_try_to_write),),
+        }
+    )
+    run = ran(session, routed_email(session), make_registry(department))
+    assert run.status is AgentRunStatus.SUCCEEDED
+    assert agent.seen == [0, 0]  # ilk çağrının yazdığı ikinci çağrıda yok
+    written = session.scalar(
+        select(func.count()).select_from(AuditEvent).where(AuditEvent.action == "tool.write")
+    )
+    assert written == 0

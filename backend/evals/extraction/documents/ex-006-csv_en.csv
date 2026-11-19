@@ -1,0 +1,11 @@
+Supplier,Bosphorus Industrial Supply Ltd.
+Quotation,BOS-1550,Your ref,SAT-2026-048
+Valid until,2026-12-08
+Currency,USD
+Item,Description,Qty,UoM,Unit price,Amount,Lead time (days)
+HYD-SIL-63,Hidrolik silindir 63/36,200,adet,172.07,"34,414.00",14
+RLM-22216,Oynak makaralı rulman 22216,100,adet,72.95,"7,295.00",10
+HYD-PMP-045,Dişli pompa 45 cc,20,adet,236.14,"4,722.80",7
+KNV-BNT-650,Konveyör bandı 650 mm,60,m,40.50,"2,430.00",14
+RLM-6205-2RS,Sabit bilyalı rulman 6205-2RS,60,adet,2.20,132.00,28
+,,,,Total (excl. VAT),"48,993.80"

@@ -69,13 +69,28 @@ def _xlsx(data: bytes) -> str:
     return "\n\n".join(parts).strip()
 
 
+def _csv_delimiter(text: str) -> str | None:
+    """Satırların çoğunda geçen ayraç. `;` ve sekme önce denenir: Türkçe CSV'de sayılar
+    ondalık virgül taşır ("2.216,39"); virgülü ayraç sanmak sayıları böler."""
+    lines = [line for line in text.splitlines()[:50] if line.strip()]
+    for delimiter in (";", "\t"):
+        if lines and sum(delimiter in line for line in lines) >= 0.6 * len(lines):
+            return delimiter
+    return None
+
+
 def _csv(data: bytes) -> str:
     text = _decode(data)
-    try:
-        dialect = csv.Sniffer().sniff(text[:4096], delimiters=",;\t")
-    except csv.Error:
-        dialect = csv.excel
-    return "\n".join("\t".join(row) for row in csv.reader(io.StringIO(text), dialect)).strip()
+    delimiter = _csv_delimiter(text)
+    if delimiter is not None:
+        rows = csv.reader(io.StringIO(text), delimiter=delimiter)
+    else:
+        try:
+            dialect = csv.Sniffer().sniff(text[:4096], delimiters=",;\t")
+        except csv.Error:
+            dialect = csv.excel
+        rows = csv.reader(io.StringIO(text), dialect)
+    return "\n".join("\t".join(row) for row in rows).strip()
 
 
 def extract_text(filename: str, mime: str, data: bytes) -> Extraction:

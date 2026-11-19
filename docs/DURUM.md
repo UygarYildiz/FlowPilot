@@ -3,10 +3,10 @@
 > Her çalışma oturumunun sonunda güncellenir. Bu dosya **kısa** kalır (en fazla ~60 satır).
 > Geçmiş burada birikmez: biten işler `gunluk/` ve `CHANGELOG.md`'ye gider.
 
-**Son güncelleme:** 2026-11-19
+**Son güncelleme:** 2026-11-20
 **Aktif sürüm:** v1 — Çekirdek + Procurement ([kapsam](surumler/v1.md))
-**Aşama:** M0–M4 bitti (M4: ajan sözleşmesi, öneri yaşam döngüsü, tek yürütücü, onay/ret ve denetim ekranı;
-ADR-014). Sırada M5 (Procurement Agent).
+**Aşama:** M0–M4 bitti. M5 sürüyor: 1. parça (`new_quote`: çıkarma, doğrulama, araçlar, `record_quote`,
+`purchase_draft`, çıkarma seti; ADR-015) bitti; 2. parça (diğer intent'ler) sırada.
 **Yığın:** ADR-009 — Python/FastAPI, PostgreSQL, React/Vite. Sınıflandırma: ADR-013 kademeli — SubQ `subq-snap-1.2` → Gemini `gemini-3.5-flash-lite` → insan.
 **Uzak depo:** https://github.com/UygarYildiz/FlowPilot (`main`, CI: GitHub Actions)
 
@@ -18,17 +18,23 @@ Rapor: `backend/evals/results/routing-20261119-150223-cascade-*.md`. Tek otomati
 emin değildi (Satış %59); Gemini bu sefer Lojistik'i %85 ile ekledi (önceki çalıştırmada %60 → inceleme).
 Gemini'nin güveni çalıştırmadan çalıştırmaya değişiyor.
 
+## Çıkarma ölçümü (30 belge, `quote-extract-v1`, Gemini, 2026-11-20)
+Alan doğruluğu %98,7 (762 alan; hedef ≥90) · işaretsiz yanlış tutar 0 (hedef 0) · tutar doğruluğu %100 ·
+teklif/değil %100 · yanlış alarm 10 (hepsi tuzaklardaki doğru işaretler). Hatalar yalnızca `lead_time_days`
+boş bırakma (3 belge; çalıştırmadan çalıştırmaya değişiyor). Rapor: `evals/results/extraction-20261119-215718-*`.
+Set betikle üretilir (`scripts/make_extraction_set.py`); dev/test bölmesi yok, prompt ayarı yapılmadı.
+
 ## Motor karşılaştırması (özet; ayrıntı `gunluk/2026-11.md` 6–12, ADR-013)
 Test yarısı: Gemini %97,3 / otomatik hata %0 / inceleme %12,2 · SubQ %95,9 / %0 / %29,7 · Clef-flash %71,6 · Clef %77,0.
 150 e-posta: Gemini 4 yanlış otomatik, SubQ 0. SubQ kalibre (p 0,50–0,75 → %53 doğru); Gemini neredeyse hep ≥0,9 der.
 Denenip bırakılanlar: "belirsiz" eşiğini gevşetmek, `typed-v3` (asıl + ek departman soruları).
 
 ## Sıradaki adım
-1. M5 (v1 kapsamı 3.6): Procurement Agent — `departments/procurement/` altında `agent` + `proposal_types`
-   (ör. teklif kaydı, karşılaştırma, satın alma taslağı) ve kendi tabloları (`Supplier`, `Quote`, `QuoteLine`,
-   `PurchaseDraft`; çekirdek bilmez). Önce v1.md 3.6'yı oku; araçlar (`tools`) sözleşmeye M5'te eklenecek.
-   Çıkarma seti ve kriter 4–5 (alan doğruluğu ≥ %90, uydurulmuş tutar 0).
-2. (İleride) Fazladan departman ekleme eğilimi için `decision-v2` prompt denemesi (yalnızca dev yarısına bakarak).
+1. M5 2. parça (v1 kapsamı 3.6 tablosu): `price_update` → `update_supplier_prices` (kayıtlı fiyatla fark;
+   fiyat listesi tablosu gerekir), `order_status_inquiry` / `supplier_complaint` → `reply_draft` (yalnızca
+   taslak, gönderilmez; `order_status_inquiry` için ilgili kaydı araçla bul), `purchase_request` →
+   `create_purchase_request` (`PurchaseRequest` tablosu). Her biri için kayıtlı FakeLLM cevaplı testler.
+2. Sonra M6. (İleride) `decision-v2` prompt denemesi (yalnızca dev yarısına bakarak).
 
 ## Açık sorular
 - Panel dili Türkçe yapıldı (ADR-012); kullanıcı İngilizce isterse `frontend/src/lib/text.ts` + sayfalar çevrilir.
@@ -41,9 +47,11 @@ Denenip bırakılanlar: "belirsiz" eşiğini gevşetmek, `typed-v3` (asıl + ek 
 - Gemini ücretsiz katmanına yalnızca kurgusal veri gönderilir (ADR-009). `.env` gitignore'da.
 - Docker Desktop kapanınca DB testleri atlanır (yerelde); `docker compose up -d` gerekir. DB `localhost:5433`.
 - IMAP adaptörü yalnızca sahte sunucuyla test edildi.
-- M4 tarayıcı denemesi: geliştirme DB'sine geçici deneme ajanıyla 3 öneri eklendi (SAT-2026-031 e-postası;
-  executed / rejected / failed — tip artık kayıtlı değil). Göç `cf1b3c3aaaa5` geliştirme DB'sine uygulandı.
-- `flowpilot agents`: açık rotalarda ajanları çalıştırır (şu an hiçbir departmanda ajan yok → 0).
+- Geliştirme DB'si (2026-11-20): göç `b3e23afd5d95` uygulandı. M4'teki geçici deneme ajanının çalışması ve 3 önerisi
+  silindi (denetim olayları duruyor); gerçek ajan çalıştı: Anadolu ve Özkan teklifleri + SAT-2026-031 taslağı onaylı.
+  Diğer 4 Satın Alma rotası (price_update vb.) için `agent_run` succeeded / 0 öneri: 2. parçada yeniden çalışmaları
+  için bu çalışmaların silinmesi ya da "yeniden çalıştır" yolu gerekir.
+- `flowpilot agents`: açık rotalarda ajanları çalıştırır; Satın Alma ajanı modeli `FLOWPILOT_LLM_PROVIDER`'dan alır.
 - `backend/.env`: `FLOWPILOT_DECISION_ENGINE=cascade`, `FLOWPILOT_LLM_PROVIDER=gemini` (önceden `fake`); `SUBQ_API_KEY` dolu.
   Kademeli kararla paneldeki fiş tarayıcıda görülmedi (geliştirme DB'sinde bekleyen e-posta yoktu).
 

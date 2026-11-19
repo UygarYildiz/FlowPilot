@@ -1,0 +1,10 @@
+Supplier,Bosphorus Industrial Supply Ltd.
+Quotation,BOS-6243,Your ref,SAT-2026-047
+Valid until,2026-12-18
+Currency,USD
+Item,Description,Qty,UoM,Unit price,Amount,Lead time (days)
+SNS-IND-M18,İndüktif sensör M18,150,adet,24.10,"3,615.00",10
+ATL-OZEL-77,Özel imalat burç (çizime göre),60,adet,2.55,153.00,21
+HYD-HRT-08,Hidrolik hortum 8 mm,400,m,3.15,"1,260.00",5
+HYD-SIL-63,Hidrolik silindir 63/36,40,adet,199.90,"7,996.00",28
+,,,,Total (excl. VAT),"13,024.00"

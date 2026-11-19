@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { AgentRun, Counts, Proposal, User } from '../lib/api'
 import { fullTime } from '../lib/format'
+import ProposalPayload from './ProposalPayload'
 import { departmentName, describeActor, proposalStatusLabel } from '../lib/text'
 
 const STATUS_STYLE: Record<Proposal['status'], string> = {
@@ -9,30 +10,6 @@ const STATUS_STYLE: Record<Proposal['status'], string> = {
   rejected: 'text-steel border-rule',
   executed: 'text-ok border-ok',
   failed: 'text-danger border-danger',
-}
-
-function Value({ value }: { value: unknown }) {
-  if (value === null || value === undefined) return <span className="text-steel">—</span>
-  if (typeof value === 'number') return <span className="num">{value.toLocaleString('tr-TR')}</span>
-  if (typeof value === 'string' || typeof value === 'boolean') return <>{String(value)}</>
-  return <pre className="whitespace-pre-wrap font-sans text-xs">{JSON.stringify(value, null, 2)}</pre>
-}
-
-function Payload({ data }: { data: Record<string, unknown> }) {
-  const entries = Object.entries(data)
-  if (entries.length === 0) return null
-  return (
-    <dl className="mt-3 grid grid-cols-[minmax(6rem,auto)_1fr] gap-x-3 gap-y-1 text-sm">
-      {entries.map(([key, value]) => (
-        <div key={key} className="contents">
-          <dt className="text-steel break-all">{key}</dt>
-          <dd className="min-w-0 break-words">
-            <Value value={value} />
-          </dd>
-        </div>
-      ))}
-    </dl>
-  )
 }
 
 interface CardProps {
@@ -64,7 +41,7 @@ function ProposalCard({ proposal, canDecide, pending, onApprove, onReject, onRet
         <p className="mt-2 text-xs text-steel">Yönlendirme düzeltildiği için bu öneri artık geçerli değil.</p>
       )}
 
-      <Payload data={proposal.payload} />
+      <ProposalPayload data={proposal.payload} />
 
       {proposal.decided_by && proposal.status !== 'pending' && (
         <p className="mt-3 text-xs text-steel">

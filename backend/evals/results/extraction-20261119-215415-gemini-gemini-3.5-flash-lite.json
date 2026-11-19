@@ -1,0 +1,5698 @@
+{
+  "meta": {
+    "model": "gemini:gemini-3.5-flash-lite",
+    "date": "2026-11-19T21:54:15+00:00",
+    "dataset": "evals/extraction/dataset.jsonl",
+    "prompt_version": "quote-extract-v1"
+  },
+  "summary": {
+    "documents": 30,
+    "failed": 0,
+    "is_quote_accuracy": 1.0,
+    "field_accuracy": 0.9934383202099738,
+    "fields": 762,
+    "amount_accuracy": 1.0,
+    "wrong_amounts": 0,
+    "wrong_amounts_flagged": 0,
+    "unflagged_wrong_amounts": 0,
+    "correct_but_flagged": 31,
+    "median_seconds": 1.564
+  },
+  "results": [
+    {
+      "id": "ex-001",
+      "file": "ex-001-pdf_table.pdf",
+      "layout": "pdf_table",
+      "traps": [],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Özkan Rulman San. ve Tic. Ltd. Şti.",
+          "predicted": "Özkan Rulman San. ve Tic. Ltd. Şti.",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "OZK-2322",
+          "predicted": "OZK-2322",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-037",
+          "predicted": "SAT-2026-037",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "TRY",
+          "predicted": "TRY",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-12-02",
+          "predicted": "2026-12-02",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": 73689.0,
+          "predicted": 73689.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "vat",
+          "expected": 14737.8,
+          "predicted": 14737.8,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "total",
+          "expected": 88426.8,
+          "predicted": 88426.8,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "KYS-SPZ-1250",
+          "predicted": "KYS-SPZ-1250",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 150,
+          "predicted": 150.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 164.64,
+          "predicted": 164.64,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": 24696.0,
+          "predicted": 24696.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 14,
+          "predicted": 14,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "ATL-OZEL-77",
+          "predicted": "ATL-OZEL-77",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 150,
+          "predicted": 150.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 100.3,
+          "predicted": 100.3,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": 15045.0,
+          "predicted": 15045.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 14,
+          "predicted": 14,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].product_code",
+          "expected": "KNV-MKR-89",
+          "predicted": "KNV-MKR-89",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].quantity",
+          "expected": 60,
+          "predicted": 60.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].unit_price",
+          "expected": 471.67,
+          "predicted": 471.67,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].line_total",
+          "expected": 28300.2,
+          "predicted": 28300.2,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].lead_time_days",
+          "expected": 28,
+          "predicted": 28,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].product_code",
+          "expected": "RLM-6206-2RS",
+          "predicted": "RLM-6206-2RS",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].quantity",
+          "expected": 60,
+          "predicted": 60.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].unit_price",
+          "expected": 94.13,
+          "predicted": 94.13,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].line_total",
+          "expected": 5647.8,
+          "predicted": 5647.8,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].lead_time_days",
+          "expected": 5,
+          "predicted": 5,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.841
+    },
+    {
+      "id": "ex-002",
+      "file": "ex-002-pdf_prose.pdf",
+      "layout": "pdf_prose",
+      "traps": [],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Anadolu Rulman A.Ş.",
+          "predicted": "Anadolu Rulman A.Ş.",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "ANA-8494",
+          "predicted": "ANA-8494",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-039",
+          "predicted": "SAT-2026-039",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "TRY",
+          "predicted": "TRY",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-12-06",
+          "predicted": "2026-12-06",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "vat",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "RLM-6205-2RS",
+          "predicted": "RLM-6205-2RS",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 24,
+          "predicted": 24.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 63.27,
+          "predicted": 63.27,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 7,
+          "predicted": 7,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "KNV-MKR-89",
+          "predicted": "KNV-MKR-89",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 40,
+          "predicted": 40.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 491.5,
+          "predicted": 491.5,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 28,
+          "predicted": 28,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].product_code",
+          "expected": "KPL-N-095",
+          "predicted": "KPL-N-095",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].quantity",
+          "expected": 400,
+          "predicted": 400.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].unit_price",
+          "expected": 1840.73,
+          "predicted": 1840.73,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].lead_time_days",
+          "expected": 14,
+          "predicted": 14,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].product_code",
+          "expected": "SNS-IND-M18",
+          "predicted": "SNS-IND-M18",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].quantity",
+          "expected": 400,
+          "predicted": 400.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].unit_price",
+          "expected": 788.8,
+          "predicted": 788.8,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].lead_time_days",
+          "expected": 7,
+          "predicted": 7,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].product_code",
+          "expected": "HYD-HRT-08",
+          "predicted": "HYD-HRT-08",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].quantity",
+          "expected": 100,
+          "predicted": 100.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].unit_price",
+          "expected": 92.1,
+          "predicted": 92.1,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].lead_time_days",
+          "expected": 7,
+          "predicted": 7,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.824
+    },
+    {
+      "id": "ex-003",
+      "file": "ex-003-xlsx_plain.xlsx",
+      "layout": "xlsx_plain",
+      "traps": [],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Kaya Hidrolik Makina Ltd. Şti.",
+          "predicted": "Kaya Hidrolik Makina Ltd. Şti.",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "KAY-7880",
+          "predicted": "KAY-7880",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-066",
+          "predicted": "SAT-2026-066",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "TRY",
+          "predicted": "TRY",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-12-30",
+          "predicted": "2026-12-30",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "vat",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "HYD-HRT-08",
+          "predicted": "HYD-HRT-08",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 150,
+          "predicted": 150.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 103.41,
+          "predicted": 103.41,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 14,
+          "predicted": 14,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "KPL-N-095",
+          "predicted": "KPL-N-095",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 10,
+          "predicted": 10.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 1920.86,
+          "predicted": 1920.86,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 10,
+          "predicted": 10,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].product_code",
+          "expected": "HYD-SIL-63",
+          "predicted": "HYD-SIL-63",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].quantity",
+          "expected": 150,
+          "predicted": 150.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].unit_price",
+          "expected": 7139.22,
+          "predicted": 7139.22,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].lead_time_days",
+          "expected": 10,
+          "predicted": 10,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].product_code",
+          "expected": "RLM-6206-2RS",
+          "predicted": "RLM-6206-2RS",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].quantity",
+          "expected": 100,
+          "predicted": 100.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].unit_price",
+          "expected": 83.11,
+          "predicted": 83.11,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].lead_time_days",
+          "expected": 7,
+          "predicted": 7,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.479
+    },
+    {
+      "id": "ex-004",
+      "file": "ex-004-xlsx_totals.xlsx",
+      "layout": "xlsx_totals",
+      "traps": [],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Ege Güç Aktarma A.Ş.",
+          "predicted": "Ege Güç Aktarma A.Ş.",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "EGE-8035",
+          "predicted": "EGE-8035",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-060",
+          "predicted": "SAT-2026-060",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "EUR",
+          "predicted": "EUR",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-12-04",
+          "predicted": "2026-12-04",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": 11889.65,
+          "predicted": 11889.65,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "vat",
+          "expected": 2377.93,
+          "predicted": 2377.93,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "total",
+          "expected": 14267.58,
+          "predicted": 14267.58,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "ZNC-08B-1",
+          "predicted": "ZNC-08B-1",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 5,
+          "predicted": 5.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 19.53,
+          "predicted": 19.53,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": 97.65,
+          "predicted": 97.65,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 21,
+          "predicted": 21,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "RLM-22216",
+          "predicted": "RLM-22216",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 200,
+          "predicted": 200.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 58.96,
+          "predicted": 58.96,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": 11792.0,
+          "predicted": 11792.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 3,
+          "predicted": 3,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.194
+    },
+    {
+      "id": "ex-005",
+      "file": "ex-005-csv_tr.csv",
+      "layout": "csv_tr",
+      "traps": [
+        "para birimi yazılmamış"
+      ],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Marmara Konveyör Sistemleri",
+          "predicted": "Marmara Konveyör Sistemleri",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "MAR-9223",
+          "predicted": "MAR-9223",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-074",
+          "predicted": "SAT-2026-074",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-12-25",
+          "predicted": "2026-12-25",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": 116453.0,
+          "predicted": 116453.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "vat",
+          "expected": 23290.6,
+          "predicted": 23290.6,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "total",
+          "expected": 139743.6,
+          "predicted": 139743.6,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "ATL-OZEL-77",
+          "predicted": "ATL-OZEL-77",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 200,
+          "predicted": 200.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 105.14,
+          "predicted": 105.14,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": 21028.0,
+          "predicted": 21028.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 10,
+          "predicted": 10,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "RLM-6206-2RS",
+          "predicted": "RLM-6206-2RS",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 100,
+          "predicted": 100.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 92.41,
+          "predicted": 92.41,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": 9241.0,
+          "predicted": 9241.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 7,
+          "predicted": 7,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].product_code",
+          "expected": "KNV-MKR-89",
+          "predicted": "KNV-MKR-89",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].quantity",
+          "expected": 200,
+          "predicted": 200.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].unit_price",
+          "expected": 430.92,
+          "predicted": 430.92,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "lines[2].line_total",
+          "expected": 86184.0,
+          "predicted": 86184.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].lead_time_days",
+          "expected": 7,
+          "predicted": 7,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.507
+    },
+    {
+      "id": "ex-006",
+      "file": "ex-006-csv_en.csv",
+      "layout": "csv_en",
+      "traps": [],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Bosphorus Industrial Supply Ltd.",
+          "predicted": "Bosphorus Industrial Supply Ltd.",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "BOS-1550",
+          "predicted": "BOS-1550",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-048",
+          "predicted": "SAT-2026-048",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "USD",
+          "predicted": "USD",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-12-08",
+          "predicted": "2026-12-08",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": 48993.8,
+          "predicted": 48993.8,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "vat",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "HYD-SIL-63",
+          "predicted": "HYD-SIL-63",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 200,
+          "predicted": 200.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 172.07,
+          "predicted": 172.07,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": 34414.0,
+          "predicted": 34414.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 14,
+          "predicted": 14,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "RLM-22216",
+          "predicted": "RLM-22216",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 100,
+          "predicted": 100.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 72.95,
+          "predicted": 72.95,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": 7295.0,
+          "predicted": 7295.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 10,
+          "predicted": 10,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].product_code",
+          "expected": "HYD-PMP-045",
+          "predicted": "HYD-PMP-045",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].quantity",
+          "expected": 20,
+          "predicted": 20.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].unit_price",
+          "expected": 236.14,
+          "predicted": 236.14,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].line_total",
+          "expected": 4722.8,
+          "predicted": 4722.8,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].lead_time_days",
+          "expected": 7,
+          "predicted": 7,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].product_code",
+          "expected": "KNV-BNT-650",
+          "predicted": "KNV-BNT-650",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].quantity",
+          "expected": 60,
+          "predicted": 60.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].unit_price",
+          "expected": 40.5,
+          "predicted": 40.5,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].line_total",
+          "expected": 2430.0,
+          "predicted": 2430.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].lead_time_days",
+          "expected": 14,
+          "predicted": 14,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].product_code",
+          "expected": "RLM-6205-2RS",
+          "predicted": "RLM-6205-2RS",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].quantity",
+          "expected": 60,
+          "predicted": 60.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].unit_price",
+          "expected": 2.2,
+          "predicted": 2.2,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].line_total",
+          "expected": 132.0,
+          "predicted": 132.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].lead_time_days",
+          "expected": 28,
+          "predicted": 28,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.624
+    },
+    {
+      "id": "ex-007",
+      "file": "ex-007-pdf_table.pdf",
+      "layout": "pdf_table",
+      "traps": [],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Delta Otomasyon ve Sensör",
+          "predicted": "Delta Otomasyon ve Sensör",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "DEL-8850",
+          "predicted": "DEL-8850",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-034",
+          "predicted": "SAT-2026-034",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "TRY",
+          "predicted": "TRY",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-12-15",
+          "predicted": "2026-12-15",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": 222008.88,
+          "predicted": 222008.88,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "vat",
+          "expected": 44401.78,
+          "predicted": 44401.78,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "total",
+          "expected": 266410.66,
+          "predicted": 266410.66,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "KPL-N-095",
+          "predicted": "KPL-N-095",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 100,
+          "predicted": 100.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 2063.97,
+          "predicted": 2063.97,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": 206397.0,
+          "predicted": 206397.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 7,
+          "predicted": 7,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "KNV-BNT-650",
+          "predicted": "KNV-BNT-650",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 12,
+          "predicted": 12.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 1300.99,
+          "predicted": 1300.99,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": 15611.88,
+          "predicted": 15611.88,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 10,
+          "predicted": 10,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.323
+    },
+    {
+      "id": "ex-008",
+      "file": "ex-008-pdf_prose.pdf",
+      "layout": "pdf_prose",
+      "traps": [],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Karadeniz Zincir San. A.Ş.",
+          "predicted": "Karadeniz Zincir San. A.Ş.",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "KAR-1731",
+          "predicted": "KAR-1731",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-078",
+          "predicted": "SAT-2026-078",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "TRY",
+          "predicted": "TRY",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-12-11",
+          "predicted": "2026-12-11",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "vat",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "RLM-6206-2RS",
+          "predicted": "RLM-6206-2RS",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 5,
+          "predicted": 5.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 75.7,
+          "predicted": 75.7,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 3,
+          "predicted": 3,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "RLM-22216",
+          "predicted": "RLM-22216",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 150,
+          "predicted": 150.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 1819.16,
+          "predicted": 1819.16,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 14,
+          "predicted": 14,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].product_code",
+          "expected": "KNV-BNT-650",
+          "predicted": "KNV-BNT-650",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].quantity",
+          "expected": 10,
+          "predicted": 10.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].unit_price",
+          "expected": 1517.38,
+          "predicted": 1517.38,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].lead_time_days",
+          "expected": 14,
+          "predicted": 14,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].product_code",
+          "expected": "HYD-SIL-63",
+          "predicted": "HYD-SIL-63",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].quantity",
+          "expected": 20,
+          "predicted": 20.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].unit_price",
+          "expected": 7838.35,
+          "predicted": 7838.35,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].lead_time_days",
+          "expected": 3,
+          "predicted": 3,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.618
+    },
+    {
+      "id": "ex-009",
+      "file": "ex-009-xlsx_plain.xlsx",
+      "layout": "xlsx_plain",
+      "traps": [],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Özkan Rulman San. ve Tic. Ltd. Şti.",
+          "predicted": "Özkan Rulman San. ve Tic. Ltd. Şti.",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "OZK-2383",
+          "predicted": "OZK-2383",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-056",
+          "predicted": "SAT-2026-056",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "EUR",
+          "predicted": "EUR",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-11-27",
+          "predicted": "2026-11-27",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "vat",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "RLM-6310-ZZ",
+          "predicted": "RLM-6310-ZZ",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 60,
+          "predicted": 60.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 8.94,
+          "predicted": 8.94,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 21,
+          "predicted": 21,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "RLM-6205-2RS",
+          "predicted": "RLM-6205-2RS",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 12,
+          "predicted": 12.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 2.01,
+          "predicted": 2.01,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 14,
+          "predicted": 14,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].product_code",
+          "expected": "HYD-HRT-08",
+          "predicted": "HYD-HRT-08",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].quantity",
+          "expected": 150,
+          "predicted": 150.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].unit_price",
+          "expected": 2.59,
+          "predicted": 2.59,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].lead_time_days",
+          "expected": 5,
+          "predicted": 5,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].product_code",
+          "expected": "KNV-MKR-89",
+          "predicted": "KNV-MKR-89",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].quantity",
+          "expected": 400,
+          "predicted": 400.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].unit_price",
+          "expected": 13.02,
+          "predicted": 13.02,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].lead_time_days",
+          "expected": 14,
+          "predicted": 14,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.442
+    },
+    {
+      "id": "ex-010",
+      "file": "ex-010-xlsx_totals.xlsx",
+      "layout": "xlsx_totals",
+      "traps": [
+        "teslim süresi hafta olarak"
+      ],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Anadolu Rulman A.Ş.",
+          "predicted": "Anadolu Rulman A.Ş.",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "ANA-1419",
+          "predicted": "ANA-1419",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-062",
+          "predicted": "SAT-2026-062",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "TRY",
+          "predicted": "TRY",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-12-17",
+          "predicted": "2026-12-17",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": 78972.25,
+          "predicted": 78972.25,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "vat",
+          "expected": 15794.45,
+          "predicted": 15794.45,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "total",
+          "expected": 94766.7,
+          "predicted": 94766.7,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "KYS-SPZ-1250",
+          "predicted": "KYS-SPZ-1250",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 20,
+          "predicted": 20.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 146.55,
+          "predicted": 146.55,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": 2931.0,
+          "predicted": 2931.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "HYD-SIL-63",
+          "predicted": "HYD-SIL-63",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 10,
+          "predicted": 10.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 5941.88,
+          "predicted": 5941.88,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": 59418.8,
+          "predicted": 59418.8,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].product_code",
+          "expected": "SNS-IND-M18",
+          "predicted": "SNS-IND-M18",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].quantity",
+          "expected": 5,
+          "predicted": 5.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].unit_price",
+          "expected": 853.13,
+          "predicted": 853.13,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].line_total",
+          "expected": 4265.65,
+          "predicted": 4265.65,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].lead_time_days",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].product_code",
+          "expected": "RLM-6310-ZZ",
+          "predicted": "RLM-6310-ZZ",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].quantity",
+          "expected": 40,
+          "predicted": 40.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].unit_price",
+          "expected": 308.92,
+          "predicted": 308.92,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].line_total",
+          "expected": 12356.8,
+          "predicted": 12356.8,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].lead_time_days",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.492
+    },
+    {
+      "id": "ex-011",
+      "file": "ex-011-csv_tr.csv",
+      "layout": "csv_tr",
+      "traps": [],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Kaya Hidrolik Makina Ltd. Şti.",
+          "predicted": "Kaya Hidrolik Makina Ltd. Şti.",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "KAY-2138",
+          "predicted": "KAY-2138",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-065",
+          "predicted": "SAT-2026-065",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "TRY",
+          "predicted": "TRY",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-12-27",
+          "predicted": "2026-12-27",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": 352146.74,
+          "predicted": 352146.74,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "vat",
+          "expected": 70429.35,
+          "predicted": 70429.35,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "total",
+          "expected": 422576.09,
+          "predicted": 422576.09,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "KPL-N-095",
+          "predicted": "KPL-N-095",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 150,
+          "predicted": 150.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 2216.39,
+          "predicted": 2216.39,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": 332458.5,
+          "predicted": 332458.5,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 14,
+          "predicted": 14,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "HYD-HRT-08",
+          "predicted": "HYD-HRT-08",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 12,
+          "predicted": 12.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 118.27,
+          "predicted": 118.27,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": 1419.24,
+          "predicted": 1419.24,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 14,
+          "predicted": 14,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].product_code",
+          "expected": "RLM-6206-2RS",
+          "predicted": "RLM-6206-2RS",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].quantity",
+          "expected": 50,
+          "predicted": 50.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].unit_price",
+          "expected": 86.68,
+          "predicted": 86.68,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "lines[2].line_total",
+          "expected": 4334.0,
+          "predicted": 4334.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].lead_time_days",
+          "expected": 14,
+          "predicted": 14,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].product_code",
+          "expected": "ATL-OZEL-77",
+          "predicted": "ATL-OZEL-77",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].quantity",
+          "expected": 150,
+          "predicted": 150.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].unit_price",
+          "expected": 92.9,
+          "predicted": 92.9,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "lines[3].line_total",
+          "expected": 13935.0,
+          "predicted": 13935.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].lead_time_days",
+          "expected": 5,
+          "predicted": 5,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.492
+    },
+    {
+      "id": "ex-012",
+      "file": "ex-012-csv_en.csv",
+      "layout": "csv_en",
+      "traps": [],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Ege Güç Aktarma A.Ş.",
+          "predicted": "Ege Güç Aktarma A.Ş.",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "EGE-4088",
+          "predicted": "EGE-4088",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-060",
+          "predicted": "SAT-2026-060",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "USD",
+          "predicted": "USD",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-11-30",
+          "predicted": "2026-11-30",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": 422.1,
+          "predicted": 422.1,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "vat",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "RLM-22216",
+          "predicted": "RLM-22216",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 5,
+          "predicted": 5.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 72.1,
+          "predicted": 72.1,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": 360.5,
+          "predicted": 360.5,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 21,
+          "predicted": 21,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "KNV-MKR-89",
+          "predicted": "KNV-MKR-89",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 5,
+          "predicted": 5.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 12.32,
+          "predicted": 12.32,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": 61.6,
+          "predicted": 61.6,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 10,
+          "predicted": 10,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.564
+    },
+    {
+      "id": "ex-013",
+      "file": "ex-013-pdf_table.pdf",
+      "layout": "pdf_table",
+      "traps": [],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Marmara Konveyör Sistemleri",
+          "predicted": "Marmara Konveyör Sistemleri",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "MAR-6637",
+          "predicted": "MAR-6637",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-041",
+          "predicted": "SAT-2026-041",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "TRY",
+          "predicted": "TRY",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-12-04",
+          "predicted": "2026-12-04",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": 39763.62,
+          "predicted": 39763.62,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "vat",
+          "expected": 7952.72,
+          "predicted": 7952.72,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "total",
+          "expected": 47716.34,
+          "predicted": 47716.34,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "SNS-IND-M18",
+          "predicted": "SNS-IND-M18",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 12,
+          "predicted": 12.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 666.01,
+          "predicted": 666.01,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": 7992.12,
+          "predicted": 7992.12,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 10,
+          "predicted": 10,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "KYS-SPZ-1250",
+          "predicted": "KYS-SPZ-1250",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 100,
+          "predicted": 100.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 134.26,
+          "predicted": 134.26,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": 13426.0,
+          "predicted": 13426.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 10,
+          "predicted": 10,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].product_code",
+          "expected": "RLM-6310-ZZ",
+          "predicted": "RLM-6310-ZZ",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].quantity",
+          "expected": 50,
+          "predicted": 50.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].unit_price",
+          "expected": 366.91,
+          "predicted": 366.91,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].line_total",
+          "expected": 18345.5,
+          "predicted": 18345.5,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].lead_time_days",
+          "expected": 7,
+          "predicted": 7,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.684
+    },
+    {
+      "id": "ex-014",
+      "file": "ex-014-pdf_prose.pdf",
+      "layout": "pdf_prose",
+      "traps": [],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Bosphorus Industrial Supply Ltd.",
+          "predicted": "Bosphorus Industrial Supply Ltd.",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "BOS-9930",
+          "predicted": "BOS-9930",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-080",
+          "predicted": "SAT-2026-080",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "TRY",
+          "predicted": "TRY",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-11-29",
+          "predicted": "2026-11-29",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "vat",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "SNS-IND-M18",
+          "predicted": "SNS-IND-M18",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 60,
+          "predicted": 60.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 708.56,
+          "predicted": 708.56,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 10,
+          "predicted": 10,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "HYD-SIL-63",
+          "predicted": "HYD-SIL-63",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 100,
+          "predicted": 100.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 6199.66,
+          "predicted": 6199.66,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 28,
+          "predicted": 28,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].product_code",
+          "expected": "HYD-PMP-045",
+          "predicted": "HYD-PMP-045",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].quantity",
+          "expected": 10,
+          "predicted": 10.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].unit_price",
+          "expected": 7963.98,
+          "predicted": 7963.98,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].lead_time_days",
+          "expected": 28,
+          "predicted": 28,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].product_code",
+          "expected": "KPL-N-095",
+          "predicted": "KPL-N-095",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].quantity",
+          "expected": 5,
+          "predicted": 5.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].unit_price",
+          "expected": 1734.4,
+          "predicted": 1734.4,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].lead_time_days",
+          "expected": 3,
+          "predicted": 3,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].product_code",
+          "expected": "RLM-6310-ZZ",
+          "predicted": "RLM-6310-ZZ",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].quantity",
+          "expected": 200,
+          "predicted": 200.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].unit_price",
+          "expected": 368.09,
+          "predicted": 368.09,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].lead_time_days",
+          "expected": 7,
+          "predicted": 7,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.873
+    },
+    {
+      "id": "ex-015",
+      "file": "ex-015-xlsx_plain.xlsx",
+      "layout": "xlsx_plain",
+      "traps": [
+        "tedarikçi satır tutarını yanlış yazmış"
+      ],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Delta Otomasyon ve Sensör",
+          "predicted": "Delta Otomasyon ve Sensör",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "DEL-3172",
+          "predicted": "DEL-3172",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-036",
+          "predicted": "SAT-2026-036",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "TRY",
+          "predicted": "TRY",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-12-06",
+          "predicted": "2026-12-06",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "vat",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "ATL-OZEL-77",
+          "predicted": "ATL-OZEL-77",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 100,
+          "predicted": 100.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 104.69,
+          "predicted": 104.69,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 5,
+          "predicted": 5,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "RLM-6310-ZZ",
+          "predicted": "RLM-6310-ZZ",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 400,
+          "predicted": 400.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 282.51,
+          "predicted": 282.51,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 7,
+          "predicted": 7,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].product_code",
+          "expected": "HYD-HRT-08",
+          "predicted": "HYD-HRT-08",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].quantity",
+          "expected": 150,
+          "predicted": 150.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].unit_price",
+          "expected": 109.15,
+          "predicted": 109.15,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].lead_time_days",
+          "expected": 21,
+          "predicted": 21,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].product_code",
+          "expected": "KYS-SPZ-1250",
+          "predicted": "KYS-SPZ-1250",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].quantity",
+          "expected": 24,
+          "predicted": 24.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].unit_price",
+          "expected": 131.36,
+          "predicted": 131.36,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].lead_time_days",
+          "expected": 14,
+          "predicted": 14,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.568
+    },
+    {
+      "id": "ex-016",
+      "file": "ex-016-xlsx_totals.xlsx",
+      "layout": "xlsx_totals",
+      "traps": [],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Karadeniz Zincir San. A.Ş.",
+          "predicted": "Karadeniz Zincir San. A.Ş.",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "KAR-5211",
+          "predicted": "KAR-5211",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-056",
+          "predicted": "SAT-2026-056",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "TRY",
+          "predicted": "TRY",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-11-30",
+          "predicted": "2026-11-30",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": 18559.29,
+          "predicted": 18559.29,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "vat",
+          "expected": 3711.86,
+          "predicted": 3711.86,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "total",
+          "expected": 22271.15,
+          "predicted": 22271.15,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "RLM-6310-ZZ",
+          "predicted": "RLM-6310-ZZ",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 12,
+          "predicted": 12.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 350.7,
+          "predicted": 350.7,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": 4208.4,
+          "predicted": 4208.4,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 21,
+          "predicted": null,
+          "correct": false,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "RLM-6206-2RS",
+          "predicted": "RLM-6206-2RS",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 100,
+          "predicted": 100.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 89.92,
+          "predicted": 89.92,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": 8992.0,
+          "predicted": 8992.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 7,
+          "predicted": null,
+          "correct": false,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].product_code",
+          "expected": "KNV-MKR-89",
+          "predicted": "KNV-MKR-89",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].quantity",
+          "expected": 10,
+          "predicted": 10.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].unit_price",
+          "expected": 390.11,
+          "predicted": 390.11,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].line_total",
+          "expected": 3901.1,
+          "predicted": 3901.1,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].lead_time_days",
+          "expected": 7,
+          "predicted": null,
+          "correct": false,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].product_code",
+          "expected": "RLM-6205-2RS",
+          "predicted": "RLM-6205-2RS",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].quantity",
+          "expected": 12,
+          "predicted": 12.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].unit_price",
+          "expected": 80.57,
+          "predicted": 80.57,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].line_total",
+          "expected": 966.84,
+          "predicted": 966.84,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].lead_time_days",
+          "expected": 7,
+          "predicted": null,
+          "correct": false,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].product_code",
+          "expected": "HYD-HRT-08",
+          "predicted": "HYD-HRT-08",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].quantity",
+          "expected": 5,
+          "predicted": 5.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].unit_price",
+          "expected": 98.19,
+          "predicted": 98.19,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].line_total",
+          "expected": 490.95,
+          "predicted": 490.95,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].lead_time_days",
+          "expected": 10,
+          "predicted": null,
+          "correct": false,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.855
+    },
+    {
+      "id": "ex-017",
+      "file": "ex-017-csv_tr.csv",
+      "layout": "csv_tr",
+      "traps": [],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Özkan Rulman San. ve Tic. Ltd. Şti.",
+          "predicted": "Özkan Rulman San. ve Tic. Ltd. Şti.",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "OZK-8471",
+          "predicted": "OZK-8471",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-068",
+          "predicted": "SAT-2026-068",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "TRY",
+          "predicted": "TRY",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-11-29",
+          "predicted": "2026-11-29",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": 23378.5,
+          "predicted": 23378.5,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "vat",
+          "expected": 4675.7,
+          "predicted": 4675.7,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "total",
+          "expected": 28054.2,
+          "predicted": 28054.2,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "RLM-22216",
+          "predicted": "RLM-22216",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 10,
+          "predicted": 10.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 2051.13,
+          "predicted": 2051.13,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": 20511.3,
+          "predicted": 20511.3,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 21,
+          "predicted": 21,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "RLM-6205-2RS",
+          "predicted": "RLM-6205-2RS",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 40,
+          "predicted": 40.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 71.68,
+          "predicted": 71.68,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": 2867.2,
+          "predicted": 2867.2,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 7,
+          "predicted": 7,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.208
+    },
+    {
+      "id": "ex-018",
+      "file": "ex-018-csv_en.csv",
+      "layout": "csv_en",
+      "traps": [],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Anadolu Rulman A.Ş.",
+          "predicted": "Anadolu Rulman A.Ş.",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "ANA-6415",
+          "predicted": "ANA-6415",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-048",
+          "predicted": "SAT-2026-048",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "USD",
+          "predicted": "USD",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-11-21",
+          "predicted": "2026-11-21",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": 8197.66,
+          "predicted": 8197.66,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "vat",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "HYD-HRT-08",
+          "predicted": "HYD-HRT-08",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 200,
+          "predicted": 200.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 3.0,
+          "predicted": 3.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": 600.0,
+          "predicted": 600.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 3,
+          "predicted": 3,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "ZNC-08B-1",
+          "predicted": "ZNC-08B-1",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 100,
+          "predicted": 100.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 20.52,
+          "predicted": 20.52,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": 2052.0,
+          "predicted": 2052.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 21,
+          "predicted": 21,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].product_code",
+          "expected": "RLM-22216",
+          "predicted": "RLM-22216",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].quantity",
+          "expected": 24,
+          "predicted": 24.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].unit_price",
+          "expected": 73.24,
+          "predicted": 73.24,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].line_total",
+          "expected": 1757.76,
+          "predicted": 1757.76,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].lead_time_days",
+          "expected": 10,
+          "predicted": 10,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].product_code",
+          "expected": "SNS-IND-M18",
+          "predicted": "SNS-IND-M18",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].quantity",
+          "expected": 40,
+          "predicted": 40.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].unit_price",
+          "expected": 20.11,
+          "predicted": 20.11,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].line_total",
+          "expected": 804.4,
+          "predicted": 804.4,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].lead_time_days",
+          "expected": 3,
+          "predicted": 3,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].product_code",
+          "expected": "KPL-N-095",
+          "predicted": "KPL-N-095",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].quantity",
+          "expected": 50,
+          "predicted": 50.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].unit_price",
+          "expected": 59.67,
+          "predicted": 59.67,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].line_total",
+          "expected": 2983.5,
+          "predicted": 2983.5,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].lead_time_days",
+          "expected": 3,
+          "predicted": 3,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.658
+    },
+    {
+      "id": "ex-019",
+      "file": "ex-019-pdf_table.pdf",
+      "layout": "pdf_table",
+      "traps": [],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Kaya Hidrolik Makina Ltd. Şti.",
+          "predicted": "Kaya Hidrolik Makina Ltd. Şti.",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "KAY-3069",
+          "predicted": "KAY-3069",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-052",
+          "predicted": "SAT-2026-052",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "TRY",
+          "predicted": "TRY",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-12-23",
+          "predicted": "2026-12-23",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": 34953.88,
+          "predicted": 34953.88,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "vat",
+          "expected": 6990.78,
+          "predicted": 6990.78,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "total",
+          "expected": 41944.66,
+          "predicted": 41944.66,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "HYD-HRT-08",
+          "predicted": "HYD-HRT-08",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 5,
+          "predicted": 5.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 96.05,
+          "predicted": 96.05,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": 480.25,
+          "predicted": 480.25,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 21,
+          "predicted": 21,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "ZNC-08B-1",
+          "predicted": "ZNC-08B-1",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 12,
+          "predicted": 12.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 785.34,
+          "predicted": 785.34,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": 9424.08,
+          "predicted": 9424.08,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 14,
+          "predicted": 14,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].product_code",
+          "expected": "RLM-6205-2RS",
+          "predicted": "RLM-6205-2RS",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].quantity",
+          "expected": 5,
+          "predicted": 5.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].unit_price",
+          "expected": 61.17,
+          "predicted": 61.17,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].line_total",
+          "expected": 305.85,
+          "predicted": 305.85,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].lead_time_days",
+          "expected": 5,
+          "predicted": 5,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].product_code",
+          "expected": "KYS-SPZ-1250",
+          "predicted": "KYS-SPZ-1250",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].quantity",
+          "expected": 150,
+          "predicted": 150.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].unit_price",
+          "expected": 146.67,
+          "predicted": 146.67,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].line_total",
+          "expected": 22000.5,
+          "predicted": 22000.5,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].lead_time_days",
+          "expected": 21,
+          "predicted": 21,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].product_code",
+          "expected": "ATL-OZEL-77",
+          "predicted": "ATL-OZEL-77",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].quantity",
+          "expected": 24,
+          "predicted": 24.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].unit_price",
+          "expected": 114.3,
+          "predicted": 114.3,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].line_total",
+          "expected": 2743.2,
+          "predicted": 2743.2,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].lead_time_days",
+          "expected": 3,
+          "predicted": 3,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.797
+    },
+    {
+      "id": "ex-020",
+      "file": "ex-020-pdf_table.pdf",
+      "layout": "pdf_table",
+      "traps": [
+        "teklif değil, irsaliye"
+      ],
+      "is_quote_correct": true,
+      "fields": [],
+      "error": null,
+      "seconds": 65.301
+    },
+    {
+      "id": "ex-021",
+      "file": "ex-021-xlsx_plain.xlsx",
+      "layout": "xlsx_plain",
+      "traps": [],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Marmara Konveyör Sistemleri",
+          "predicted": "Marmara Konveyör Sistemleri",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "MAR-6582",
+          "predicted": "MAR-6582",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-070",
+          "predicted": "SAT-2026-070",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "EUR",
+          "predicted": "EUR",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-12-06",
+          "predicted": "2026-12-06",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "vat",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "ATL-OZEL-77",
+          "predicted": "ATL-OZEL-77",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 200,
+          "predicted": 200.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 2.67,
+          "predicted": 2.67,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 28,
+          "predicted": 28,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "RLM-6310-ZZ",
+          "predicted": "RLM-6310-ZZ",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 100,
+          "predicted": 100.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 10.06,
+          "predicted": 10.06,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 28,
+          "predicted": 28,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.196
+    },
+    {
+      "id": "ex-022",
+      "file": "ex-022-xlsx_totals.xlsx",
+      "layout": "xlsx_totals",
+      "traps": [],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Bosphorus Industrial Supply Ltd.",
+          "predicted": "Bosphorus Industrial Supply Ltd.",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "BOS-7538",
+          "predicted": "BOS-7538",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-075",
+          "predicted": "SAT-2026-075",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "TRY",
+          "predicted": "TRY",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-12-16",
+          "predicted": "2026-12-16",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": 34760.52,
+          "predicted": 34760.52,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "vat",
+          "expected": 6952.1,
+          "predicted": 6952.1,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "total",
+          "expected": 41712.62,
+          "predicted": 41712.62,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "KNV-MKR-89",
+          "predicted": "KNV-MKR-89",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 20,
+          "predicted": 20.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 418.05,
+          "predicted": 418.05,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": 8361.0,
+          "predicted": 8361.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 21,
+          "predicted": 21,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "RLM-22216",
+          "predicted": "RLM-22216",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 12,
+          "predicted": 12.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 2199.96,
+          "predicted": 2199.96,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": 26399.52,
+          "predicted": 26399.52,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 21,
+          "predicted": 21,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.284
+    },
+    {
+      "id": "ex-023",
+      "file": "ex-023-pdf_prose.pdf",
+      "layout": "pdf_prose",
+      "traps": [
+        "miktarsız fiyat teklifi"
+      ],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Delta Otomasyon ve Sensör",
+          "predicted": "Delta Otomasyon ve Sensör",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "DEL-9572",
+          "predicted": "DEL-9572",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-074",
+          "predicted": "SAT-2026-074",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "TRY",
+          "predicted": "TRY",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-12-22",
+          "predicted": "2026-12-22",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "vat",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "HYD-HRT-08",
+          "predicted": "HYD-HRT-08",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 105.62,
+          "predicted": 105.62,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 14,
+          "predicted": 14,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "RLM-22216",
+          "predicted": "RLM-22216",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 2426.77,
+          "predicted": 2426.77,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 14,
+          "predicted": 14,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].product_code",
+          "expected": "ATL-OZEL-77",
+          "predicted": "ATL-OZEL-77",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].quantity",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "lines[2].unit_price",
+          "expected": 92.09,
+          "predicted": 92.09,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].lead_time_days",
+          "expected": 21,
+          "predicted": 21,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].product_code",
+          "expected": "KNV-BNT-650",
+          "predicted": "KNV-BNT-650",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].quantity",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "lines[3].unit_price",
+          "expected": 1281.86,
+          "predicted": 1281.86,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].lead_time_days",
+          "expected": 3,
+          "predicted": 3,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.549
+    },
+    {
+      "id": "ex-024",
+      "file": "ex-024-csv_en.csv",
+      "layout": "csv_en",
+      "traps": [],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Karadeniz Zincir San. A.Ş.",
+          "predicted": "Karadeniz Zincir San. A.Ş.",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "KAR-2650",
+          "predicted": "KAR-2650",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-031",
+          "predicted": "SAT-2026-031",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "USD",
+          "predicted": "USD",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-12-04",
+          "predicted": "2026-12-04",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": 537.72,
+          "predicted": 537.72,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "vat",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "KNV-MKR-89",
+          "predicted": "KNV-MKR-89",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 40,
+          "predicted": 40.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 10.41,
+          "predicted": 10.41,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": 416.4,
+          "predicted": 416.4,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 14,
+          "predicted": 14,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "RLM-6310-ZZ",
+          "predicted": "RLM-6310-ZZ",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 12,
+          "predicted": 12.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 10.11,
+          "predicted": 10.11,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": 121.32,
+          "predicted": 121.32,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 21,
+          "predicted": 21,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.058
+    },
+    {
+      "id": "ex-025",
+      "file": "ex-025-pdf_table.pdf",
+      "layout": "pdf_table",
+      "traps": [],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Özkan Rulman San. ve Tic. Ltd. Şti.",
+          "predicted": "Özkan Rulman San. ve Tic. Ltd. Şti.",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "OZK-1681",
+          "predicted": "OZK-1681",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-077",
+          "predicted": "SAT-2026-077",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "EUR",
+          "predicted": "EUR",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-11-27",
+          "predicted": "2026-11-27",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": 7202.6,
+          "predicted": 7202.6,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "vat",
+          "expected": 1440.52,
+          "predicted": 1440.52,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "total",
+          "expected": 8643.12,
+          "predicted": 8643.12,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "ZNC-08B-1",
+          "predicted": "ZNC-08B-1",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 100,
+          "predicted": 100.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 18.14,
+          "predicted": 18.14,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": 1814.0,
+          "predicted": 1814.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 28,
+          "predicted": 28,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "RLM-6205-2RS",
+          "predicted": "RLM-6205-2RS",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 12,
+          "predicted": 12.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 1.96,
+          "predicted": 1.96,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": 23.52,
+          "predicted": 23.52,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 14,
+          "predicted": 14,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].product_code",
+          "expected": "HYD-SIL-63",
+          "predicted": "HYD-SIL-63",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].quantity",
+          "expected": 12,
+          "predicted": 12.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].unit_price",
+          "expected": 164.34,
+          "predicted": 164.34,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].line_total",
+          "expected": 1972.08,
+          "predicted": 1972.08,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].lead_time_days",
+          "expected": 21,
+          "predicted": 21,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].product_code",
+          "expected": "KNV-BNT-650",
+          "predicted": "KNV-BNT-650",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].quantity",
+          "expected": 100,
+          "predicted": 100.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].unit_price",
+          "expected": 33.93,
+          "predicted": 33.93,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].line_total",
+          "expected": 3393.0,
+          "predicted": 3393.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].lead_time_days",
+          "expected": 7,
+          "predicted": 7,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.598
+    },
+    {
+      "id": "ex-026",
+      "file": "ex-026-pdf_prose.pdf",
+      "layout": "pdf_prose",
+      "traps": [],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Anadolu Rulman A.Ş.",
+          "predicted": "Anadolu Rulman A.Ş.",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "ANA-9804",
+          "predicted": "ANA-9804",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-040",
+          "predicted": "SAT-2026-040",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "TRY",
+          "predicted": "TRY",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-11-29",
+          "predicted": "2026-11-29",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "vat",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "HYD-PMP-045",
+          "predicted": "HYD-PMP-045",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 50,
+          "predicted": 50.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 7551.91,
+          "predicted": 7551.91,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 5,
+          "predicted": 5,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "KYS-SPZ-1250",
+          "predicted": "KYS-SPZ-1250",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 200,
+          "predicted": 200.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 169.21,
+          "predicted": 169.21,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 3,
+          "predicted": 3,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].product_code",
+          "expected": "ATL-OZEL-77",
+          "predicted": "ATL-OZEL-77",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].quantity",
+          "expected": 200,
+          "predicted": 200.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].unit_price",
+          "expected": 110.07,
+          "predicted": 110.07,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].lead_time_days",
+          "expected": 10,
+          "predicted": 10,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].product_code",
+          "expected": "HYD-HRT-08",
+          "predicted": "HYD-HRT-08",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].quantity",
+          "expected": 40,
+          "predicted": 40.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].unit_price",
+          "expected": 123.18,
+          "predicted": 123.18,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].line_total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].lead_time_days",
+          "expected": 28,
+          "predicted": 28,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.414
+    },
+    {
+      "id": "ex-027",
+      "file": "ex-027-pdf_table.pdf",
+      "layout": "pdf_table",
+      "traps": [
+        "genel toplam tutmuyor"
+      ],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Kaya Hidrolik Makina Ltd. Şti.",
+          "predicted": "Kaya Hidrolik Makina Ltd. Şti.",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "KAY-5065",
+          "predicted": "KAY-5065",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-038",
+          "predicted": "SAT-2026-038",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "TRY",
+          "predicted": "TRY",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-11-19",
+          "predicted": "2026-11-19",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": 116530.4,
+          "predicted": 116530.4,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "vat",
+          "expected": 23306.08,
+          "predicted": 23306.08,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "total",
+          "expected": 140836.48,
+          "predicted": 140836.48,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "KYS-SPZ-1250",
+          "predicted": "KYS-SPZ-1250",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 100,
+          "predicted": 100.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 164.79,
+          "predicted": 164.79,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": 16479.0,
+          "predicted": 16479.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 21,
+          "predicted": 21,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "RLM-6310-ZZ",
+          "predicted": "RLM-6310-ZZ",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 200,
+          "predicted": 200.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 368.5,
+          "predicted": 368.5,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": 73700.0,
+          "predicted": 73700.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 28,
+          "predicted": 28,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].product_code",
+          "expected": "SNS-IND-M18",
+          "predicted": "SNS-IND-M18",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].quantity",
+          "expected": 40,
+          "predicted": 40.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].unit_price",
+          "expected": 625.26,
+          "predicted": 625.26,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].line_total",
+          "expected": 25010.4,
+          "predicted": 25010.4,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].lead_time_days",
+          "expected": 3,
+          "predicted": 3,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].product_code",
+          "expected": "RLM-6205-2RS",
+          "predicted": "RLM-6205-2RS",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].quantity",
+          "expected": 20,
+          "predicted": 20.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].unit_price",
+          "expected": 67.05,
+          "predicted": 67.05,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].line_total",
+          "expected": 1341.0,
+          "predicted": 1341.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].lead_time_days",
+          "expected": 14,
+          "predicted": 14,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.661
+    },
+    {
+      "id": "ex-028",
+      "file": "ex-028-xlsx_totals.xlsx",
+      "layout": "xlsx_totals",
+      "traps": [],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Ege Güç Aktarma A.Ş.",
+          "predicted": "Ege Güç Aktarma A.Ş.",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "EGE-9107",
+          "predicted": "EGE-9107",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-079",
+          "predicted": "SAT-2026-079",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "TRY",
+          "predicted": "TRY",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-12-03",
+          "predicted": "2026-12-03",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": 583664.7,
+          "predicted": 583664.7,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "vat",
+          "expected": 116732.94,
+          "predicted": 116732.94,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "total",
+          "expected": 700397.64,
+          "predicted": 700397.64,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "RLM-6206-2RS",
+          "predicted": "RLM-6206-2RS",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 200,
+          "predicted": 200.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 89.54,
+          "predicted": 89.54,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": 17908.0,
+          "predicted": 17908.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 3,
+          "predicted": 3,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "KNV-BNT-650",
+          "predicted": "KNV-BNT-650",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 60,
+          "predicted": 60.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 1253.53,
+          "predicted": 1253.53,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": 75211.8,
+          "predicted": 75211.8,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 3,
+          "predicted": 3,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].product_code",
+          "expected": "ATL-OZEL-77",
+          "predicted": "ATL-OZEL-77",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].quantity",
+          "expected": 20,
+          "predicted": 20.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].unit_price",
+          "expected": 100.27,
+          "predicted": 100.27,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].line_total",
+          "expected": 2005.4,
+          "predicted": 2005.4,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].lead_time_days",
+          "expected": 28,
+          "predicted": 28,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].product_code",
+          "expected": "HYD-SIL-63",
+          "predicted": "HYD-SIL-63",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].quantity",
+          "expected": 60,
+          "predicted": 60.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].unit_price",
+          "expected": 6779.98,
+          "predicted": 6779.98,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].line_total",
+          "expected": 406798.8,
+          "predicted": 406798.8,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].lead_time_days",
+          "expected": 14,
+          "predicted": 14,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].product_code",
+          "expected": "HYD-PMP-045",
+          "predicted": "HYD-PMP-045",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].quantity",
+          "expected": 10,
+          "predicted": 10.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].unit_price",
+          "expected": 8174.07,
+          "predicted": 8174.07,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].line_total",
+          "expected": 81740.7,
+          "predicted": 81740.7,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[4].lead_time_days",
+          "expected": 28,
+          "predicted": 28,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.918
+    },
+    {
+      "id": "ex-029",
+      "file": "ex-029-csv_tr.csv",
+      "layout": "csv_tr",
+      "traps": [],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Marmara Konveyör Sistemleri",
+          "predicted": "Marmara Konveyör Sistemleri",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "MAR-4219",
+          "predicted": "MAR-4219",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-059",
+          "predicted": "SAT-2026-059",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "TRY",
+          "predicted": "TRY",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-11-25",
+          "predicted": "2026-11-25",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": 461504.0,
+          "predicted": 461504.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "vat",
+          "expected": 92300.8,
+          "predicted": 92300.8,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "total",
+          "expected": 553804.8,
+          "predicted": 553804.8,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "RLM-6310-ZZ",
+          "predicted": "RLM-6310-ZZ",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 40,
+          "predicted": 40.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 326.65,
+          "predicted": 326.65,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": 13066.0,
+          "predicted": 13066.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 7,
+          "predicted": 7,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "HYD-HRT-08",
+          "predicted": "HYD-HRT-08",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 400,
+          "predicted": 400.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 122.0,
+          "predicted": 122.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": 48800.0,
+          "predicted": 48800.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 21,
+          "predicted": 21,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].product_code",
+          "expected": "HYD-SIL-63",
+          "predicted": "HYD-SIL-63",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].quantity",
+          "expected": 50,
+          "predicted": 50.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].unit_price",
+          "expected": 7992.76,
+          "predicted": 7992.76,
+          "correct": true,
+          "flagged": true
+        },
+        {
+          "field": "lines[2].line_total",
+          "expected": 399638.0,
+          "predicted": 399638.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].lead_time_days",
+          "expected": 7,
+          "predicted": 7,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.38
+    },
+    {
+      "id": "ex-030",
+      "file": "ex-030-csv_en.csv",
+      "layout": "csv_en",
+      "traps": [],
+      "is_quote_correct": true,
+      "fields": [
+        {
+          "field": "supplier",
+          "expected": "Bosphorus Industrial Supply Ltd.",
+          "predicted": "Bosphorus Industrial Supply Ltd.",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "quote_no",
+          "expected": "BOS-6243",
+          "predicted": "BOS-6243",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "request_no",
+          "expected": "SAT-2026-047",
+          "predicted": "SAT-2026-047",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "currency",
+          "expected": "USD",
+          "predicted": "USD",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "valid_until",
+          "expected": "2026-12-18",
+          "predicted": "2026-12-18",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "subtotal",
+          "expected": 13024.0,
+          "predicted": 13024.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "vat",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "total",
+          "expected": null,
+          "predicted": null,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].product_code",
+          "expected": "SNS-IND-M18",
+          "predicted": "SNS-IND-M18",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].quantity",
+          "expected": 150,
+          "predicted": 150.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].unit_price",
+          "expected": 24.1,
+          "predicted": 24.1,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].line_total",
+          "expected": 3615.0,
+          "predicted": 3615.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[0].lead_time_days",
+          "expected": 10,
+          "predicted": 10,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].product_code",
+          "expected": "ATL-OZEL-77",
+          "predicted": "ATL-OZEL-77",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].quantity",
+          "expected": 60,
+          "predicted": 60.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].unit_price",
+          "expected": 2.55,
+          "predicted": 2.55,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].line_total",
+          "expected": 153.0,
+          "predicted": 153.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[1].lead_time_days",
+          "expected": 21,
+          "predicted": 21,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].product_code",
+          "expected": "HYD-HRT-08",
+          "predicted": "HYD-HRT-08",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].quantity",
+          "expected": 400,
+          "predicted": 400.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].unit_price",
+          "expected": 3.15,
+          "predicted": 3.15,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].line_total",
+          "expected": 1260.0,
+          "predicted": 1260.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[2].lead_time_days",
+          "expected": 5,
+          "predicted": 5,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].product_code",
+          "expected": "HYD-SIL-63",
+          "predicted": "HYD-SIL-63",
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].quantity",
+          "expected": 40,
+          "predicted": 40.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].unit_price",
+          "expected": 199.9,
+          "predicted": 199.9,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].line_total",
+          "expected": 7996.0,
+          "predicted": 7996.0,
+          "correct": true,
+          "flagged": false
+        },
+        {
+          "field": "lines[3].lead_time_days",
+          "expected": 28,
+          "predicted": 28,
+          "correct": true,
+          "flagged": false
+        }
+      ],
+      "error": null,
+      "seconds": 1.559
+    }
+  ]
+}

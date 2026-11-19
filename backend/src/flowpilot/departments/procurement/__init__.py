@@ -1,6 +1,13 @@
-"""Satın Alma departmanı (v1: ajanlı — ajan M5'te eklenecek)."""
+"""Satın Alma departmanı (v1: ajanlı; ADR-015).
+
+`DEPARTMENT` ajansız tanımdır (kayıt defteri, karar motoru, testler). Ajanlı hâli `with_agent`.
+"""
+
+from collections.abc import Callable
+from dataclasses import replace
 
 from flowpilot.core.registry import Department, Intent
+from flowpilot.llm import LLMClient
 
 DEPARTMENT = Department(
     key="procurement",
@@ -43,3 +50,17 @@ DEPARTMENT = Department(
         ),
     ),
 )
+
+
+def with_agent(llm_factory: Callable[[], LLMClient]) -> Department:
+    """Ajanlı Satın Alma (ADR-015). Model bileşim kökünde, ilk kullanımda kurulur."""
+    from flowpilot.departments.procurement.actions import PROPOSAL_TYPES
+    from flowpilot.departments.procurement.agent import ProcurementAgent
+    from flowpilot.departments.procurement.tools import TOOLS
+
+    return replace(
+        DEPARTMENT,
+        agent=ProcurementAgent(llm_factory),
+        proposal_types=PROPOSAL_TYPES,
+        tools=TOOLS,
+    )

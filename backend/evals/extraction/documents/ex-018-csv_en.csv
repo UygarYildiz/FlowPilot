@@ -1,0 +1,11 @@
+Supplier,Anadolu Rulman A.Ş.
+Quotation,ANA-6415,Your ref,SAT-2026-048
+Valid until,2026-11-21
+Currency,USD
+Item,Description,Qty,UoM,Unit price,Amount,Lead time (days)
+HYD-HRT-08,Hidrolik hortum 8 mm,200,m,3.00,600.00,3
+ZNC-08B-1,Makaralı zincir 08B-1 (5 m),100,takım,20.52,"2,052.00",21
+RLM-22216,Oynak makaralı rulman 22216,24,adet,73.24,"1,757.76",10
+SNS-IND-M18,İndüktif sensör M18,40,adet,20.11,804.40,3
+KPL-N-095,Kaplin N-Eupex 95,50,adet,59.67,"2,983.50",3
+,,,,Total (excl. VAT),"8,197.66"

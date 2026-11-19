@@ -79,6 +79,29 @@ def _agents(args: argparse.Namespace) -> int:
     return 1 if report.failed else 0
 
 
+def _eval_extraction(args: argparse.Namespace, settings: Settings) -> int:
+    from flowpilot.evals import extraction
+    from flowpilot.llm.factory import build_llm
+
+    dataset = Path(args.dataset)
+    rows = extraction.load(dataset)[: args.limit]
+    llm, model_name = build_llm(settings)
+
+    def progress(index: int, result: extraction.DocResult) -> None:
+        wrong = [f.field for f in result.fields if not f.correct]
+        mark = "✓" if result.is_quote_correct and not wrong and not result.error else "✗"
+        detail = result.error or (", ".join(wrong) if wrong else "")
+        print(f"[{index}/{len(rows)}] {mark} {result.id} ({result.layout}) {detail}", flush=True)
+
+    results = extraction.run(rows, dataset.parent / "documents", llm=llm, progress=progress)
+    summary = extraction.summarize(results)
+    meta = extraction.meta_for(model_name, dataset)
+    path = extraction.write_report(EVALS_DIR / "results", summary, results, meta)
+    print(extraction.render_markdown(summary, results, meta).split("## Tuzaklı")[0])
+    print(f"Rapor: {path}")
+    return 0
+
+
 def _eval_routing(args: argparse.Namespace, settings: Settings) -> int:
     dataset = Path(args.dataset)
     cases = routing.filter_split(routing.load_cases(dataset, Path(settings.seed_dir)), args.split)
@@ -177,6 +200,12 @@ def main(argv: list[str] | None = None) -> int:
         help="Varsayılan: ayarlardaki motor",
     )
 
+    extraction_parser = suites.add_parser("extraction", help="Teklif çıkarma doğruluğu")
+    extraction_parser.add_argument(
+        "--dataset", default=str(EVALS_DIR / "extraction" / "dataset.jsonl")
+    )
+    extraction_parser.add_argument("--limit", type=int, default=None)
+
     rescore = suites.add_parser("rescore", help="Kayıtlı raporları bir yarıda karşılaştır")
     rescore.add_argument("reports", nargs="+", help="evals/results/*.json")
     rescore.add_argument("--split", choices=["all", "dev", "test"], default="test")
@@ -197,6 +226,8 @@ def main(argv: list[str] | None = None) -> int:
         return _users_demo(settings)
     if args.suite == "rescore":
         return _eval_rescore(args)
+    if args.suite == "extraction":
+        return _eval_extraction(args, settings)
     return _eval_routing(args, settings)
 
 

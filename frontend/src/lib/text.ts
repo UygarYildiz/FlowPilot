@@ -73,3 +73,42 @@ export function intentLabel(counts: Counts | undefined, department: string, inte
 export function deptColor(key: string): string {
   return `var(--color-dept-${key}, var(--color-dept-unknown))`
 }
+
+// Öneri verisindeki alan adlarının okunur karşılıkları (bilinmeyen ad olduğu gibi gösterilir).
+const FIELD_LABELS: Record<string, string> = {
+  source_filename: 'Belge',
+  supplier: 'Tedarikçi',
+  quote_no: 'Teklif no',
+  request_no: 'Talep no',
+  currency: 'Para birimi',
+  valid_until: 'Geçerlilik',
+  lines: 'Satırlar',
+  subtotal: 'Ara toplam',
+  vat: 'KDV',
+  total: 'Genel toplam',
+  product_code: 'Kod',
+  description: 'Ürün',
+  quantity: 'Miktar',
+  unit: 'Birim',
+  unit_price: 'Birim fiyat',
+  line_total: 'Tutar',
+  lead_time_days: 'Teslim (gün)',
+  reasoning: 'Gerekçe',
+  fx_note: 'Kur notu',
+  chosen: 'Seçilen teklif',
+  alternatives: 'Alternatifler',
+  line_total_try: 'Tutar (TRY)',
+  unit_price_try: 'Birim fiyat (TRY)',
+}
+
+export function fieldLabel(key: string): string {
+  return FIELD_LABELS[key] ?? key
+}
+
+const FIELD_ORDER = Object.keys(FIELD_LABELS)
+
+/** Alanları sözlükteki sıraya koyar (veritabanı JSON anahtar sırasını korumaz); bilinmeyenler sonda. */
+export function byFieldOrder(a: string, b: string): number {
+  const rank = (k: string) => (FIELD_ORDER.includes(k) ? FIELD_ORDER.indexOf(k) : FIELD_ORDER.length)
+  return rank(a) - rank(b)
+}

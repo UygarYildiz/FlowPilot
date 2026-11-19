@@ -8,6 +8,7 @@ from functools import lru_cache
 
 from flowpilot.core.registry import DepartmentRegistry
 from flowpilot.departments import finance, logistics, procurement, sales_orders
+from flowpilot.llm import LLMClient
 
 DEPARTMENTS = (
     procurement.DEPARTMENT,
@@ -17,6 +18,17 @@ DEPARTMENTS = (
 )
 
 
+def _llm() -> LLMClient:
+    from flowpilot.config import get_settings
+    from flowpilot.llm.factory import build_llm
+
+    return build_llm(get_settings())[0]
+
+
 @lru_cache
 def get_registry() -> DepartmentRegistry:
-    return DepartmentRegistry(DEPARTMENTS)
+    """Çalışan sistemin kayıt defteri: Satın Alma ajanlı (ADR-015); model ilk kullanımda kurulur."""
+    return DepartmentRegistry(
+        procurement.with_agent(_llm) if d.key == procurement.DEPARTMENT.key else d
+        for d in DEPARTMENTS
+    )

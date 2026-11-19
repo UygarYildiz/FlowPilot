@@ -13,6 +13,7 @@ Kurallar:
 
 import hashlib
 import json
+from collections.abc import Iterable
 from datetime import UTC, datetime
 from typing import Any
 
@@ -36,7 +37,10 @@ from flowpilot.core.registry import (
     ApplyContext,
     AttachmentText,
     DepartmentRegistry,
+    NoTools,
     ProposalDraft,
+    Tool,
+    Tools,
 )
 from flowpilot.llm import LLMUnavailableError
 
@@ -60,7 +64,27 @@ def idempotency_key(route_id: object, draft: ProposalDraft) -> str:
     return hashlib.sha256(f"{route_id}|{draft.type}|{canonical}".encode()).hexdigest()
 
 
-def agent_context(route: Route) -> AgentContext:
+class ToolBox:
+    """Departman araçlarını salt-okunur çalıştırır: her çağrı geri alınan SAVEPOINT içindedir."""
+
+    def __init__(self, session: Session, tools: Iterable[Tool]) -> None:
+        self._session = session
+        self._tools = {tool.name: tool for tool in tools}
+        self.calls: list[str] = []
+
+    def call(self, name: str, **kwargs: Any) -> Any:
+        tool = self._tools.get(name)
+        if tool is None:
+            raise KeyError(f"Araç yok: {name}")
+        self.calls.append(name)
+        nested = self._session.begin_nested()
+        try:
+            return tool.fn(self._session, **kwargs)
+        finally:
+            nested.rollback()
+
+
+def agent_context(route: Route, tools: Tools | None = None) -> AgentContext:
     email = route.decision.email
     return AgentContext(
         email_id=str(email.id),
@@ -73,6 +97,7 @@ def agent_context(route: Route) -> AgentContext:
         department=route.department,
         intent=route.intent,
         priority=route.priority.value,
+        tools=tools or NoTools(),
     )
 
 
@@ -116,7 +141,8 @@ def run_agent(session: Session, route: Route, *, registry: DepartmentRegistry) -
     actor = f"agent:{department.key}"
 
     try:
-        drafts = department.agent.handle(agent_context(route))
+        toolbox = ToolBox(session, department.tools)
+        drafts = department.agent.handle(agent_context(route, toolbox))
     except LLMUnavailableError:
         raise
     except Exception as exc:  # ajan departman kodudur; hatası akışı durdurmaz

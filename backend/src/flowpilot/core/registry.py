@@ -3,10 +3,10 @@
 Çekirdek departmanları yalnızca bu sözleşme üzerinden tanır; departman paketlerini import etmez
 (MIMARI.md kural 1). Departmanlar `flowpilot.bootstrap` içinde kayıt defterine eklenir.
 
-Zorunlu: `key/name/description/intents`. İsteğe bağlı (ADR-014): `agent` ve `proposal_types`.
-Ajan veriyi değiştirmez; yalnızca öneri döndürür. Öneriyi onaydan sonra çekirdekteki tek yürütücü
-(`core/proposals.execute`) `ProposalType.apply` ile uygular. Araçlar (`tools`) ve özel görünümler
-(`views`) M5'te eklenecek.
+Zorunlu: `key/name/description/intents`. İsteğe bağlı (ADR-014): `agent` ve `proposal_types`;
+(ADR-015): `tools`. Ajan veriyi değiştirmez; yalnızca öneri döndürür. Öneriyi onaydan sonra
+çekirdekteki tek yürütücü (`core/proposals.execute`) `ProposalType.apply` ile uygular. Araçlar
+salt-okunurdur: her çağrı geri alınan bir SAVEPOINT içinde çalışır.
 """
 
 from collections.abc import Callable, Iterable, Iterator
@@ -28,9 +28,29 @@ class AttachmentText:
     text: str | None
 
 
+class Tools(Protocol):
+    """Ajanın kendi departmanının salt-okunur araçlarını çağırdığı arayüz (ADR-015)."""
+
+    def call(self, name: str, **kwargs: Any) -> Any: ...
+
+
+class NoTools:
+    def call(self, name: str, **kwargs: Any) -> Any:
+        raise KeyError(f"Araç yok: {name}")
+
+
+@dataclass(frozen=True)
+class Tool:
+    """Salt-okunur araç: `fn(session, **kwargs)` düz veri döndürür, ORM nesnesi değil."""
+
+    name: str
+    description: str
+    fn: Callable[..., Any]
+
+
 @dataclass(frozen=True)
 class AgentContext:
-    """Ajanın gördüğü her şey: salt veri, veritabanı erişimi yok."""
+    """Ajanın gördüğü her şey: salt veri ve salt-okunur araçlar; doğrudan veritabanı erişimi yok."""
 
     email_id: str
     from_addr: str
@@ -42,6 +62,7 @@ class AgentContext:
     department: str
     intent: str | None
     priority: str
+    tools: Tools = field(default_factory=NoTools)
 
 
 @dataclass(frozen=True)
@@ -98,6 +119,7 @@ class Department:
     intents: tuple[Intent, ...] = field(default_factory=tuple)
     agent: Agent | None = None
     proposal_types: tuple[ProposalType, ...] = field(default_factory=tuple)
+    tools: tuple[Tool, ...] = field(default_factory=tuple)
 
     def intent_keys(self) -> set[str]:
         return {intent.key for intent in self.intents}

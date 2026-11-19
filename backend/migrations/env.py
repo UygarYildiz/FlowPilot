@@ -2,6 +2,7 @@ from alembic import context
 from sqlalchemy import engine_from_config, pool
 
 import flowpilot.core.models  # noqa: F401  (tabloları metadata'ya kaydeder)
+import flowpilot.departments.procurement.models  # noqa: F401  (departman tabloları, ADR-015)
 from flowpilot.config import get_settings
 from flowpilot.core.db import Base
 
