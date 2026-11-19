@@ -25,7 +25,8 @@ Rapor: `backend/evals/results/routing-20261119-100854-*.md`. 6 hatanın 4'ü faz
 - Büyük Clef: 17 hatanın 10'u Satış e-postasına "hiçbir departman" (unknown, 0,50–0,81) demek; müşteri↔tedarikçi
   karışıklığı yerine aşırı temkin. Hepsi incelemede, otomatik hata yok.
 - SubQ dev yarısı: departman %97,4, otomatik hata %0, inceleme %26,3. Test yarısında incelemeye giden 22 e-postanın
-  8'i ilgisiz (tasarım gereği); kalanların çoğu 0,5–0,75 arası "belki" departman kuralından.
+  8'i ilgisiz (tasarım gereği), 8'i rotası 0,50–0,75 arası (eşik altı), 6'sı rotasız ama p ≥ 0,25 "belirsiz" departman
+  (`typed.py:147`, `1 − eşik`); 22'nin 19'u aslında doğruydu. Gemini 9 (7 ilgisiz + 2 eşik altı).
 - Raporlar: `evals/results/routing-20261119-13{1857,1938}-subq-*`, `...132028-cloudflare-clef-flash.*`, `...132725-cloudflare-clef.*`.
 - Öneri: Gemini kalsın, SubQ yedek motor (`--engine subq`); iki Clef modeli de elendi.
   Kullanıcı onaylarsa ADR yazılır. SubQ incelemeyi azaltma (eşik/"belki" kuralı) yalnızca dev'e bakarak denenebilir.
