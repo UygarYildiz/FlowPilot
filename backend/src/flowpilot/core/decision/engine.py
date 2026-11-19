@@ -163,6 +163,7 @@ def decide(
             )
         )
     session.add(decision)
+    email.current_decision = decision
     email.status = EmailStatus.NEEDS_REVIEW if result.needs_review else EmailStatus.ROUTED
     session.flush()
 

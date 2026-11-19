@@ -5,7 +5,7 @@
 
 **Son güncelleme:** 2026-11-19
 **Aktif sürüm:** v1 — Çekirdek + Procurement ([kapsam](surumler/v1.md))
-**Aşama:** M0, M1 bitti; M2 (karar) büyük ölçüde bitti — yönlendirme seti 56/150. M3 (panel) başlamadı.
+**Aşama:** M0, M1, M3 bitti; M2 büyük ölçüde bitti (yönlendirme seti 56/150). M4 (onay) başlamadı.
 **Yığın:** ADR-009 — Python/FastAPI, PostgreSQL, React/Vite, LLM: Gemini `gemini-3.5-flash-lite` (ücretsiz katman).
 **Uzak depo:** https://github.com/UygarYildiz/FlowPilot (`main`, CI: GitHub Actions)
 
@@ -17,16 +17,18 @@ Departman %98,2 (hedef ≥90) · otomatik yönlendirilenlerde hata %2,1 (≤5) �
 - Yok. Sıradaki adımı bekliyor.
 
 ## Sıradaki adım
-1. Yönlendirme setini 150'ye çıkar: yanlış adrese gelen, yarım/kısa, İngilizce, iletilmiş (FW:), çok departmanlı,
-   sınırda (procurement ↔ logistics, finance ↔ sales) örnekler. Etiketleri sonuca bakmadan yaz.
-2. M3 panel: API uç noktaları (inbox listesi, e-posta ayrıntısı, manuel inceleme, rota düzeltme), `User` + giriş,
-   React ekranları. Rota başına durum.
+1. M4: departman sözleşmesine `agent` ve `proposal_types` (v1 kapsamı 3.3), `AgentRun` / `Proposal` modelleri,
+   öneri yaşam döngüsü (pending → approved → executed / rejected / failed), tek yürütücü (idempotency),
+   panelde onay/ret ve tüm sistem için denetim kaydı ekranı. Başarı kriteri 7 testle.
+2. Yönlendirme setini 150'ye çıkar (kullanıcı önce bunu isteyebilir).
 
 ## Açık sorular
-- Panel dili: Türkçe mi, İngilizce mi (başvurulacak ilanlara göre)?
+- Panel dili Türkçe yapıldı (ADR-012); kullanıcı İngilizce isterse `frontend/src/lib/text.ts` + sayfalar çevrilir.
 - Değerlendirme setine kullanıcının da (Claude dışında) birkaç gerçekçi e-posta eklemesi ölçümü daha güvenilir yapar.
 
 ## Notlar
+- Panel yerelde: `.claude/launch.json` (api :8000, panel :5173). Demo hesaplar `uv run flowpilot users demo`, şifre `flowpilot-demo`.
+- Tarayıcı denemeleri geliştirme veritabanını değiştirdi (1 e-posta kapatıldı, 1 düzeltildi, 1 rota kapatıldı). Sıfırlama komutu yok (M6).
 - Kullanıcıya her oturum sonunda `ILERLEME.md` sade dille güncellenir (ADR-011); Stop/pre-commit kontrolü ister.
 - Gemini ücretsiz katmanına yalnızca kurgusal veri gönderilir (ADR-009). `.env` gitignore'da.
 - Docker Desktop kapanınca DB testleri atlanır (yerelde); `docker compose up -d` gerekir. DB `localhost:5433`.

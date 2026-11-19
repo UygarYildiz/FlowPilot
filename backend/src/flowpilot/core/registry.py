@@ -18,6 +18,7 @@ class Intent:
     key: str
     description: str
     examples: tuple[str, ...] = ()
+    label: str = ""  # panelde gösterilen kısa ad; boşsa anahtar gösterilir
 
 
 @dataclass(frozen=True)

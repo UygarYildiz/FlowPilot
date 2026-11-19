@@ -1,8 +1,112 @@
-:root {
-  font-family: system-ui, sans-serif;
-  color: #1f2328;
-  background: #f6f8fa;
+@import 'tailwindcss';
+
+/*
+ * FlowPilot paneli — fabrika operasyon masası.
+ * Zemin soğuk çelik, yazı teknik çizim laciverti. Sarı yalnızca "insan baksın" demektir.
+ * Her departmanın kendi sinyal rengi vardır; başka hiçbir yerde renk süs olarak kullanılmaz.
+ */
+@theme static {
+  --font-sans: 'Archivo', ui-sans-serif, system-ui, sans-serif;
+
+  --color-ground: #eef2f5;
+  --color-panel: #ffffff;
+  --color-ink: #16263a;
+  --color-steel: #5a6b7d;
+  --color-rule: #d5dde5;
+  --color-signal: #f2b705;
+  --color-signal-soft: #fdf3d0;
+  --color-danger: #b3261e;
+
+  --color-dept-procurement: #0e7c7b;
+  --color-dept-finance: #4c4fb5;
+  --color-dept-sales_orders: #a33b6f;
+  --color-dept-logistics: #2f7d3a;
+  --color-dept-unknown: #8a96a3;
 }
-body {
-  margin: 0;
+
+@layer base {
+  html {
+    background: var(--color-ground);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0ms !important;
+      animation-duration: 0ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Başlıklarda geniş kesim: endüstriyel etiket hissi. */
+  .wide {
+    font-stretch: 118%;
+    letter-spacing: -0.01em;
+  }
+
+  .narrow {
+    font-stretch: 82%;
+  }
+
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .field {
+    width: 100%;
+    border: 1px solid var(--color-rule);
+    border-radius: 6px;
+    background: var(--color-panel);
+    padding: 0.5rem 0.65rem;
+    color: var(--color-ink);
+  }
+
+  .field:focus {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 0;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-radius: 6px;
+    padding: 0.45rem 0.85rem;
+    font-weight: 600;
+    border: 1px solid var(--color-ink);
+    background: var(--color-ink);
+    color: white;
+    cursor: pointer;
+  }
+
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  .btn-quiet {
+    background: transparent;
+    color: var(--color-ink);
+    border-color: var(--color-rule);
+  }
+
+  .btn-quiet:hover:not(:disabled) {
+    border-color: var(--color-steel);
+  }
 }

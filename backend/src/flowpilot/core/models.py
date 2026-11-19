@@ -52,6 +52,16 @@ class RouteOrigin(enum.StrEnum):
     MANUAL = "manual"
 
 
+class RouteStatus(enum.StrEnum):
+    OPEN = "open"
+    DONE = "done"
+
+
+class UserRole(enum.StrEnum):
+    ADMIN = "admin"
+    DEPARTMENT_USER = "department_user"
+
+
 class Email(Base):
     __tablename__ = "email"
 
@@ -67,12 +77,24 @@ class Email(Base):
     received_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
     status: Mapped[EmailStatus] = mapped_column(_enum(EmailStatus), default=EmailStatus.RECEIVED)
+    # Geçerli karar: en son verilen (AI ya da manuel düzeltme). Eski kararlar geçmiş olarak kalır.
+    current_decision_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey(
+            "decision.id", ondelete="SET NULL", use_alter=True, name="fk_email_current_decision"
+        )
+    )
 
     attachments: Mapped[list["Attachment"]] = relationship(
         back_populates="email", cascade="all, delete-orphan", order_by="Attachment.position"
     )
     decisions: Mapped[list["Decision"]] = relationship(
-        back_populates="email", cascade="all, delete-orphan", order_by="Decision.created_at"
+        back_populates="email",
+        cascade="all, delete-orphan",
+        order_by="Decision.created_at",
+        foreign_keys="Decision.email_id",
+    )
+    current_decision: Mapped["Decision | None"] = relationship(
+        foreign_keys=[current_decision_id], post_update=True
     )
 
 
@@ -112,7 +134,7 @@ class Decision(Base):
     attempts: Mapped[int]
     raw_output: Mapped[dict[str, Any] | None] = mapped_column(JSONB)
 
-    email: Mapped[Email] = relationship(back_populates="decisions")
+    email: Mapped[Email] = relationship(back_populates="decisions", foreign_keys=[email_id])
     routes: Mapped[list["Route"]] = relationship(
         back_populates="decision", cascade="all, delete-orphan", order_by="Route.position"
     )
@@ -132,6 +154,9 @@ class Route(Base):
     confidence: Mapped[float] = mapped_column(Float)
     suggested_action: Mapped[str] = mapped_column(Text, default="")
     origin: Mapped[RouteOrigin] = mapped_column(_enum(RouteOrigin), default=RouteOrigin.AI)
+    status: Mapped[RouteStatus] = mapped_column(_enum(RouteStatus), default=RouteStatus.OPEN)
+    done_by: Mapped[str | None] = mapped_column(String(320))
+    done_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
     decision: Mapped[Decision] = relationship(back_populates="routes")
 
@@ -139,6 +164,39 @@ class Route(Base):
         Index("ix_route_decision_id", "decision_id"),
         Index("ix_route_department", "department"),
     )
+
+
+class Correction(Base):
+    """Bir kullanıcının yönlendirme düzeltmesi; değerlendirme setine aday örnektir."""
+
+    __tablename__ = "correction"
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    email_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("email.id", ondelete="CASCADE"))
+    from_decision_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("decision.id", ondelete="SET NULL")
+    )
+    to_decision_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("decision.id", ondelete="CASCADE"))
+    user_email: Mapped[str] = mapped_column(String(320))
+    reason: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
+
+    __table_args__ = (Index("ix_correction_email_id", "email_id"),)
+
+
+class User(Base):
+    __tablename__ = "app_user"
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    email: Mapped[str] = mapped_column(String(320), unique=True)
+    name: Mapped[str] = mapped_column(String(200))
+    role: Mapped[UserRole] = mapped_column(_enum(UserRole))
+    departments: Mapped[list[str]] = mapped_column(ARRAY(String(64)), default=list)
+    password_hash: Mapped[str] = mapped_column(String(255))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
+
+    def can_see(self, department: str) -> bool:
+        return self.role is UserRole.ADMIN or department in self.departments
 
 
 class AuditEvent(Base):

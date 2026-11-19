@@ -24,9 +24,19 @@ Bir örnekle:
 5. Emin olmadığında ya da e-posta hiçbir departmanla ilgili değilse (reklam, iş başvurusu…)
    tahmin yürütmüyor, **"bir insan baksın"** diye ayırıyor.
 
-**Henüz olmayanlar:** Bunları görebileceğin bir ekran (panel) yok — şimdilik her şey komut satırından
-çalışıyor. Satın Alma "ajanı" (teklifleri karşılaştırıp sipariş taslağı hazırlayan kısım) ve onay
-akışı da henüz yok.
+6. **Artık bunların hepsini bir ekranda (panelde) görebiliyorsun:**
+   - Yönetici her e-postayı görür. Ayrıca "İnsan baksın" kutusunda yapay zekânın emin olamadıklarını
+     bulur; doğru departmana yönlendirir ya da ilgisizse kapatır.
+   - Bir departman çalışanı (ör. Satın Alma) yalnızca kendi departmanına gelenleri görür. İşini
+     bitirince "İşlendi olarak kapat" der.
+   - Her e-postanın yanında bir **yönlendirme fişi** var: hangi departmana gittiği, ne tür bir e-posta
+     olduğu, yapay zekânın ne kadar emin olduğu ve nedenini yazdığı gerekçe.
+   - Yapay zekâ yanlış yönlendirdiyse düzeltebiliyorsun; düzeltme ve gerekçesi kaydedilir. Kim ne zaman
+     ne yaptı, her e-postanın "Geçmiş" bölümünde görünür.
+
+**Henüz olmayanlar:** Satın Alma "ajanı" (teklifleri karşılaştırıp sipariş taslağı hazırlayan kısım) ve
+onun önerilerini onaylama/reddetme ekranı. Panel şimdilik yalnızca senin bilgisayarında çalışıyor
+(internette değil).
 
 ## Ne kadar iyi çalışıyor?
 56 örnek e-postayla ölçtük:
@@ -49,14 +59,23 @@ gerçek hayattaki e-postalar daha dağınık. Hedef 150 e-postaya çıkmak ve se
 | M0 | Projenin iskeleti, otomatik testler (GitHub'da her yüklemede çalışır) | ✅ Bitti |
 | M1 | E-postaları ve eklerini içeri alma, tekrarları ayıklama | ✅ Bitti |
 | M2 | Yapay zekâyla departmana yönlendirme + ölçüm | 🔄 Neredeyse bitti (örnek seti 56/150) |
-| M3 | **Panel:** e-postaları, kararları ve gerekçelerini ekranda görme, yanlışı düzeltme, giriş | ⬜ Sırada |
-| M4 | Onay/ret akışı ve "kim ne zaman ne yaptı" kaydının ekranı | ⬜ |
+| M3 | **Panel:** e-postaları, kararları ve gerekçelerini ekranda görme, yanlışı düzeltme, giriş | ✅ Bitti |
+| M4 | Ajan önerilerini onaylama/reddetme ve tüm sistemin "kim ne yaptı" ekranı | ⬜ Sırada |
 | M5 | **Satın Alma ajanı:** tekliften ürün/fiyat çıkarma, teklifleri karşılaştırma, sipariş taslağı | ⬜ |
 | M6 | İnternette herkesin açabileceği canlı demo | ⬜ |
 
 v1 bitince sırayla Finans (v2), Satış ve Sipariş (v3), Lojistik (v4) departmanlarının ajanları eklenecek.
 
 ## Son oturumlarda ne yaptık?
+
+**19 Kasım — Panel (M3)**
+- Giriş ekranı ve demo hesapları: yönetici ile Satın Alma, Finans, Satış ve Lojistik çalışanları.
+  Her biri yalnızca görmesi gerekeni görüyor; bunu otomatik testlerle de kontrol ediyoruz.
+- E-posta listeleri, e-posta ayrıntısı, yönlendirme fişi, düzeltme ve "işlendi" akışı.
+- Hepsini tarayıcıda tek tek denedik: giriş, bir departmanın işini kapatma, reklam e-postasını kapatma,
+  yanlış yönlendirmeyi düzeltme, telefon ekranı. Bu denemeler senin bilgisayarındaki deneme verisini
+  değiştirdi (örn. fuar e-postası kapandı); istersen veriyi sıfırlarız.
+- Panel dilini Türkçe yaptık. İngilizceye çevirmek gerekirse metinler tek yerde duruyor.
 
 **19 Kasım — Bu belge**
 - Projeyi kolay takip edebilmen için bu dosyayı yazdık. Her çalışmanın sonunda güncelleniyor; güncellenmezse
@@ -70,18 +89,17 @@ v1 bitince sırayla Finans (v2), Satış ve Sipariş (v3), Lojistik (v4) departm
 - İnternet bir ara koptu ve bir sorunu gösterdi: bağlantı yokken e-postalar yanlışlıkla "insan baksın"
   yığınına düşebilirdi. Düzelttik: artık bağlantı gelince kaldığı yerden devam ediyor.
 
-**18 Kasım — Başlangıç (Hazırlık, M0, M1)**
-- Belge sistemini ve "belgeler güncellenmeden iş bitmesin" kontrollerini kurduk.
-- Projeyi GitHub'a bağladık, teknoloji yığınını seçtik (yapay zekâ olarak Gemini senin tercihin).
-- E-postaları içeri alan kısmı yazdık; Atlas Endüstri için 15 kurgusal e-posta hazırladık.
+(Daha eski çalışmalar: `docs/gunluk/`.)
 
 ## Sırada ne var?
-1. Örnek e-posta setini 56'dan 150'ye çıkarmak (daha zor, daha dağınık örneklerle).
-2. **M3 — Panel:** Sistemi ilk kez bir ekranda göreceğin adım.
+1. **M4 — Onay akışı:** Ajanların önerilerini (ör. "bu tekliften sipariş taslağı hazırladım") onaylama
+   veya reddetme ekranı ve bütün sistemin "kim ne yaptı" kaydı.
+2. Örnek e-posta setini 56'dan 150'ye çıkarmak (daha zor, daha dağınık örneklerle). Bu, M4'ten önce de
+   yapılabilir; senin tercihin.
 
 ## Senden beklenenler
-- **Karar:** Önce örnek seti mi büyütelim, panele mi geçelim?
-- **Karar:** Panel Türkçe mi olsun, İngilizce mi? (Başvuracağın ilanlara göre.)
+- **Karar:** Sırada M4 mü, yoksa önce örnek seti mi büyütelim?
+- **Onay:** Panel Türkçe yapıldı. İlanlar İngilizce ise çevirebiliriz, söylemen yeterli.
 - **İsteğe bağlı:** Şirketlere gelebilecek 5–10 gerçekçi e-posta yazarsan ölçüm çok daha güvenilir olur.
   Gerçek kişi/şirket bilgisi koyma; Gemini'nin ücretsiz katmanına yalnızca kurgusal veri gönderiyoruz.
 
@@ -104,6 +122,24 @@ uv run flowpilot eval routing
 Sırasıyla: veritabanını başlatır, kurgusal e-postaları içeri alır, yapay zekâya sınıflandırtır, doğruluğu
 ölçer. Gerçek Gemini için `backend/.env` içinde `FLOWPILOT_LLM_PROVIDER=gemini` olmalı (şu an `fake`).
 
+**Paneli açmak için** üç şey çalışmalı: veritabanı (yukarıda), API ve panel. `backend` klasöründe:
+
+```powershell
+uv run flowpilot users demo
+```
+```powershell
+uv run uvicorn flowpilot.main:app --port 8000
+```
+
+Ayrı bir pencerede, `frontend` klasöründe:
+
+```powershell
+npm run dev
+```
+
+Sonra tarayıcıda http://localhost:5173 adresini aç ve giriş sayfasındaki demo hesaplardan birine tıkla
+(şifre otomatik dolar: `flowpilot-demo`).
+
 ## Küçük sözlük
 | Terim | Anlamı |
 |---|---|
@@ -111,7 +147,9 @@ Sırasıyla: veritabanını başlatır, kurgusal e-postaları içeri alır, yapa
 | Intent | E-postanın amacı: teklif mi, şikâyet mi, sipariş mi… |
 | Rota | "Bu e-posta şu departmana gitsin" kararı. Bir e-postanın birden çok rotası olabilir. |
 | Güven skoru | Yapay zekânın kararından ne kadar emin olduğu (0–1). 0,75'in altı insana gider. |
-| Manuel inceleme | Sistemin emin olamadığı e-postaları bir insanın bakması için ayırdığı yığın. |
+| Manuel inceleme | Sistemin emin olamadığı e-postaları bir insanın bakması için ayırdığı yığın. Panelde "İnsan baksın". |
+| Yönlendirme fişi | Panelde her e-postanın yanındaki kart: hangi departmana, neden, ne kadar emin. |
+| API | Panelin arka planda veri aldığı/gönderdiği kısım. |
 | Ajan | Departmanın işini hazırlayan yapay zekâ (M5'te gelecek). Sadece **önerir**, onay insanındır. |
 | Seed | Demo için hazırladığımız kurgusal şirket verisi (Atlas Endüstri). |
 | Değerlendirme seti | Doğru cevabını bildiğimiz örnek e-postalar; sistemin ne kadar doğru çalıştığını ölçmek için. |

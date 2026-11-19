@@ -34,9 +34,10 @@ cd backend && uv sync
 uv run alembic upgrade head                           # şemayı kur
 uv run flowpilot ingest seed                          # kurgusal Atlas Endüstri e-postaları
 uv run flowpilot classify                             # bekleyenleri Decision Engine'den geçir*
+uv run flowpilot users demo                           # demo panel hesapları (şifre: flowpilot-demo)
 uv run flowpilot eval routing                         # yönlendirme ölçümü → backend/evals/results/*
 uv run uvicorn flowpilot.main:app --reload
-cd frontend && npm install && npm run dev             # http://localhost:5173
+cd frontend && npm install && npm run dev             # panel: http://localhost:5173
 ```
 
 \* Gerçek model için `backend/.env` içinde `FLOWPILOT_LLM_PROVIDER=gemini`, `FLOWPILOT_LLM_MODEL` ve `GEMINI_API_KEY` ayarlanır (bkz. `backend/.env.example`). Varsayılan `fake` modeldir; kayıtlı cevabı olmadığı için her e-postayı manuel incelemeye gönderir.

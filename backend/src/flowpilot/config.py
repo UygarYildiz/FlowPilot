@@ -14,6 +14,10 @@ class Settings(BaseSettings):
     llm_model: str = ""
     gemini_api_key: str = Field(default="", validation_alias="GEMINI_API_KEY")
     decision_threshold: float = 0.75
+    # Oturum çerezini imzalar. Canlıda mutlaka değiştirilir.
+    secret_key: str = "dev-secret-change-me"
+    # Demo kullanıcılarının şifresi (`flowpilot users demo`). Yalnızca kurgusal demo içindir.
+    demo_password: str = "flowpilot-demo"
     database_url: str = "postgresql+psycopg://flowpilot:flowpilot@localhost:5433/flowpilot"
     storage_dir: str = "var/attachments"
     seed_dir: str = "seed/atlas"

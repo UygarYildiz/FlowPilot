@@ -1,8 +1,14 @@
+import { QueryClientProvider } from '@tanstack/react-query'
+import { createBrowserRouter, RouterProvider } from 'react-router'
+import { createQueryClient, routes } from './router'
+
+const router = createBrowserRouter(routes)
+const queryClient = createQueryClient()
+
 export default function App() {
   return (
-    <main style={{ padding: 24 }}>
-      <h1>FlowPilot</h1>
-      <p>Operasyon paneli — iskelet (M0).</p>
-    </main>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   )
 }

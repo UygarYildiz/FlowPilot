@@ -1,11 +1,12 @@
+import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
   server: {
-    // Geliştirmede API isteklerini FastAPI'ye yönlendir.
-    proxy: { '/api': { target: 'http://localhost:8000', rewrite: (p) => p.replace(/^\/api/, '') } },
+    // Geliştirmede API isteklerini FastAPI'ye yönlendir (çerez aynı kökenden gider).
+    proxy: { '/api': 'http://127.0.0.1:8000' },
   },
   test: { environment: 'jsdom' },
 })

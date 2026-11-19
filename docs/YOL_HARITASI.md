@@ -11,10 +11,10 @@ Amaç: Platformun iskeleti ve ilk gerçek ajan canlıda.
 - [x] Teknoloji yığını kararı (ADR-009; LLM: Gemini ücretsiz katman)
 - [x] E-posta girişi: seed + IMAP adaptörü, ekler, tekrar önleme (ADR-007) — M1; IMAP yalnızca sahte sunucuyla test edildi
 - [x] Decision Engine: departman, kategori, intent, öncelik, güven skoru, çoklu departman — M2
-- [ ] Ajanı olmayan departmanlar için inbox + manuel işleme
+- [x] Ajanı olmayan departmanlar için inbox + manuel işleme — M3
 - [~] Departman sözleşmesi (yeni departman = yeni modül, çekirdeğe dokunmadan) — key/name/intents ve kayıt defteri var (ADR-010); ajan/öneri alanları M4–M5
-- [ ] Merkezi inbox ve departman inbox'ları (panel)
-- [ ] Onay / ret akışı ve denetim kaydı
+- [x] Merkezi inbox ve departman inbox'ları (panel) — M3; giriş, inceleme kuyruğu, düzeltme
+- [~] Onay / ret akışı ve denetim kaydı — denetim kaydı ve e-posta geçmişi var; öneri onay/ret M4
 - [ ] Procurement Agent: PDF/Excel tekliften veri çıkarma, karşılaştırma, satın alma taslağı
 - [~] Değerlendirme seti + yönlendirme doğruluğu ölçümü — ölçüm aracı var; set 56/150 e-posta
 - [~] CI/CD ve canlı demo (kurgusal şirket) — CI kuruldu (M0), yayın M6'da

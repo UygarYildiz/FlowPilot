@@ -3,6 +3,7 @@
     uv run flowpilot ingest seed | imap        e-postaları içeri al
     uv run flowpilot classify [--limit N]      bekleyen e-postaları Decision Engine'den geçir
     uv run flowpilot eval routing [--limit N]  yönlendirme değerlendirmesi (rapor: evals/results/)
+    uv run flowpilot users demo                demo panel kullanıcılarını oluştur/güncelle
 
 LLM sağlayıcısı `FLOWPILOT_LLM_PROVIDER` ile seçilir (fake | gemini).
 """
@@ -22,6 +23,7 @@ from flowpilot.core.ingestion.sources.imap import ImapSource
 from flowpilot.core.ingestion.sources.seed import SeedSource
 from flowpilot.core.ingestion.types import EmailSource
 from flowpilot.core.storage import LocalStorage
+from flowpilot.core.users import ensure_demo_users
 from flowpilot.evals import routing
 from flowpilot.llm.factory import build_llm
 
@@ -102,6 +104,15 @@ def _eval_routing(args: argparse.Namespace, settings: Settings) -> int:
     return 0
 
 
+def _users_demo(settings: Settings) -> int:
+    with session_scope() as session:
+        emails = ensure_demo_users(session, settings.demo_password)
+    print("Demo kullanıcıları hazır (şifre: FLOWPILOT_DEMO_PASSWORD):")
+    for email in emails:
+        print(f"  {email}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     # Windows konsolunda Türkçe karakterler bozulmasın.
     if hasattr(sys.stdout, "reconfigure"):
@@ -126,12 +137,18 @@ def main(argv: list[str] | None = None) -> int:
     routing_parser.add_argument("--dataset", default=str(EVALS_DIR / "routing" / "dataset.jsonl"))
     routing_parser.add_argument("--limit", type=int, default=None)
 
+    users = commands.add_parser("users", help="Panel kullanıcıları")
+    users_commands = users.add_subparsers(dest="users_command", required=True)
+    users_commands.add_parser("demo", help="Demo kullanıcılarını oluştur/güncelle")
+
     args = parser.parse_args(argv)
     settings = get_settings()
     if args.command == "ingest":
         return _ingest(args, settings, parser)
     if args.command == "classify":
         return _classify(args, settings)
+    if args.command == "users":
+        return _users_demo(settings)
     return _eval_routing(args, settings)
 
 

@@ -92,3 +92,12 @@
 **Bağlam:** Teknik belgeler (DURUM, MIMARI, günlük) güncel olsa da proje sahibi ilerlemeyi takip etmekte zorlanıyor ve projeden koptuğunu söyledi.
 **Karar:** Kök dizinde `ILERLEME.md`: teknik olmayan dille sistemin bugün ne yaptığı (örnekle), yol haritasında nerede olunduğu, son en fazla 3 oturum, sıradaki adım, kullanıcıdan beklenen kararlar ve küçük bir sözlük. ADR-006'daki Stop ve pre-commit kontrolleri artık `docs/DURUM.md` ile birlikte bu dosyayı da ister. Oturum sonu mesajları da aynı sade dille yazılır (CLAUDE.md).
 **Sonuçlar:** Her oturumda birkaç dakikalık ek yazım; karşılığında proje sahibi teknik belgeleri okumadan güncel kalır.
+
+## ADR-012: Panel oturumu, geçerli karar ve panel dili
+**Tarih:** 2026-11-19 · **Durum:** Kabul edildi
+**Bağlam:** M3 paneli için giriş, yetki ve "e-postanın şu anki yönlendirmesi" tanımı gerekiyordu. Panel dili için kullanıcıdan karar gelmedi.
+**Karar:**
+- Giriş: argon2 şifre özeti + Starlette `SessionMiddleware` ile imzalı çerez (yalnızca kullanıcı kimliği; 12 saat, `SameSite=Lax`, canlıda `Secure`). Panel ve API aynı kökenden sunulduğu için CSRF belirteci şimdilik yok; ayrı kökene geçilirse eklenir.
+- Kararlar silinmez. `Email.current_decision_id` geçerli kararı gösterir; düzeltme yeni bir manuel karar ekler ve `Correction` kaydı açar (değerlendirme setine aday). Her rotanın kendi durumu (`open`/`done`) vardır.
+- Panel dili Türkçe; tüm sabit metinler `frontend/src/lib/text.ts` ve sayfa bileşenlerinde, departman/intent adları API'den gelir. İngilizce gerekirse çeviri bu noktalardan yapılır.
+**Sonuçlar:** Basit ve test edilebilir oturum; düzeltme geçmişi kaybolmaz. Bedeli: liste sorguları `current_decision_id` işaretçisinin güncel tutulmasına bağlı (`decide` ve `correct_routes` dışında karar ekleyen kod bunu da yapmalı).

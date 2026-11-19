@@ -14,21 +14,25 @@ DEPARTMENT = Department(
             "invoice_received",
             "Bir tedarikçi şirketimize fatura gönderiyor (e-fatura, PDF fatura).",
             ("OZR2026000412 numaralı e-faturanız ektedir.",),
+            label="Gelen fatura",
         ),
         Intent(
             "payment_notice",
             "Bir müşteri ödeme yaptığını bildiriyor (EFT/havale dekontu).",
             ("ATL-2026-1156 faturasının ödemesi bugün EFT ile gönderildi.",),
+            label="Ödeme bildirimi",
         ),
         Intent(
             "payment_status_inquiry",
             "Bir tedarikçi kendisine yapılacak ödemenin durumunu soruyor.",
             ("Vadesi geçen faturamızın ödemesi ne zaman yapılacak?",),
+            label="Ödeme durumu sorusu",
         ),
         Intent(
             "invoice_dispute",
             "Bir müşteri kendisine kesilen faturada hata bildiriyor veya düzeltme istiyor.",
             ("Faturada teslim edilmeyen ürünler de faturalandırılmış.",),
+            label="Fatura itirazı",
         ),
     ),
 )
