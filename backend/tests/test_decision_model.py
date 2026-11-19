@@ -8,7 +8,7 @@ from flowpilot.bootstrap import get_registry
 from flowpilot.core.decision.prompt import EmailForDecision
 from flowpilot.core.decision.typed import DecisionModelClassifier, build_questions
 from flowpilot.llm import LLMError, LLMUnavailableError
-from flowpilot.llm.decision_model import ClefClient, FakeDecisionModel
+from flowpilot.llm.decision_model import ClefClient, FakeDecisionModel, SubQClient
 
 EMAIL = EmailForDecision(
     from_addr="satinalma@bilgemakina.example",
@@ -112,6 +112,34 @@ def test_unknown_model_or_missing_credentials_rejected() -> None:
         ClefClient(account_id="a", api_token="t", model="gpt")
     with pytest.raises(LLMError):
         ClefClient(account_id="", api_token="")
+
+
+def test_subq_client_posts_to_systemone_and_parses_flat_body() -> None:
+    body = {
+        "model": "subq-snap-1.2",
+        "answers": OK.json()["result"]["answers"],
+        "usage": {"input_tokens": 120, "output_tokens": 0},
+    }
+    http = FakeHttp(FakeResponse(200, body))
+    client = SubQClient(api_key="", client=http, sleep=lambda _: None)
+    answers = client.ask(state="durum", questions={"urgent": {"type": "noul", "instructions": "?"}})
+    url, sent = http.posts[0]
+    assert url == "https://api.subq.ai/v1/systemone"
+    assert sent["model"] == "subq-snap-1.2" and sent["state"] == "durum"
+    assert answers.choice("team")[0] == "billing" and answers.input_tokens == 120
+
+
+def test_subq_errors_show_detail_and_bad_config_rejected() -> None:
+    bad = FakeResponse(
+        422, {"detail": {"error_type": "validation_error", "message": "criteria yok"}}
+    )
+    client = SubQClient(api_key="", client=FakeHttp(bad), sleep=lambda _: None)
+    with pytest.raises(LLMError, match="validation_error: criteria yok"):
+        client.ask(state="s", questions={})
+    with pytest.raises(LLMError):
+        SubQClient(api_key="k", model="subq-savant-1.4")
+    with pytest.raises(LLMError):
+        SubQClient(api_key="")
 
 
 # ---------- sınıflandırıcı ----------

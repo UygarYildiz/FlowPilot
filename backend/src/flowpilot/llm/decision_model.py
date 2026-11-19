@@ -1,4 +1,4 @@
-"""Karar modelleri (System One API): Cloudflare Clef, TypeSafe Jev.
+"""Karar modelleri (System One API): Cloudflare Clef, SubQ Snap.
 
 Generatif LLM'den farkı: metin üretmez. Bir durum (state) ve tipli sorular alır, her izinli
 cevap için olasılık döndürür. Soru türleri:
@@ -20,6 +20,7 @@ from flowpilot.llm.base import LLMError, LLMUnavailableError
 RETRYABLE = {429, 500, 502, 503, 504}
 CLOUDFLARE_API = "https://api.cloudflare.com/client/v4"
 CLEF_MODELS = {"clef", "clef-flash"}
+SUBQ_API = "https://api.subq.ai/v1"
 
 
 @dataclass(frozen=True)
@@ -81,44 +82,93 @@ class ClefClient:
 
     def ask(self, *, state: str, questions: dict[str, dict[str, Any]]) -> DecisionAnswers:
         body = {"model": self.model, "state": state, "questions": questions}
-        for attempt in range(self._max_retries + 1):
-            try:
-                response = self._client.post(self._url, json=body)
-            except (OSError, httpx2.TransportError) as exc:
-                if attempt == self._max_retries:
-                    raise LLMUnavailableError(f"Cloudflare'e bağlanılamadı: {exc}") from exc
-                self._sleep(_backoff(attempt))
-                continue
-            if response.status_code in RETRYABLE:
-                if attempt == self._max_retries:
-                    raise LLMUnavailableError(f"Clef erişilemez: HTTP {response.status_code}")
-                retry_after = response.headers.get("retry-after")
-                self._sleep(float(retry_after) if retry_after else _backoff(attempt))
-                continue
-            if response.status_code >= 400:
-                raise LLMError(f"Clef hatası: HTTP {response.status_code} {_errors(response)}")
-            return _parse(response.json())
-        raise LLMUnavailableError("Clef yanıt vermedi")  # pragma: no cover
+        return _post(self, self._url, body, "Clef", _cloudflare_errors)
+
+
+class SubQClient:
+    """SubQ Decisions API (POST /v1/systemone); SUBQ_API_KEY gerekir. Model: subq-snap-1.2."""
+
+    def __init__(
+        self,
+        *,
+        api_key: str,
+        model: str = "subq-snap-1.2",
+        max_retries: int = 5,
+        timeout: float = 60.0,
+        client: Any = None,
+        sleep: Callable[[float], None] = time.sleep,
+    ) -> None:
+        if not model.startswith("subq-snap"):
+            raise LLMError(f"SubQ karar modeli değil: {model}")
+        if client is None and not api_key:
+            raise LLMError("SUBQ_API_KEY ayarlanmamış")
+        self.model = model
+        self._url = f"{SUBQ_API}/systemone"
+        self._client = client or httpx2.Client(
+            timeout=timeout, headers={"Authorization": f"Bearer {api_key}"}
+        )
+        self._max_retries = max_retries
+        self._sleep = sleep
+
+    def ask(self, *, state: str, questions: dict[str, dict[str, Any]]) -> DecisionAnswers:
+        body = {"model": self.model, "state": state, "questions": questions}
+        return _post(self, self._url, body, "SubQ", _subq_errors)
+
+
+def _post(
+    owner: Any, url: str, body: dict[str, Any], name: str, errors: Callable[[Any], str]
+) -> DecisionAnswers:
+    """İki istemcinin ortak isteği: geçici hatalarda (ağ, 429, 5xx) bekleyip yeniden dener."""
+    for attempt in range(owner._max_retries + 1):
+        try:
+            response = owner._client.post(url, json=body)
+        except (OSError, httpx2.TransportError) as exc:
+            if attempt == owner._max_retries:
+                raise LLMUnavailableError(f"{name} sunucusuna bağlanılamadı: {exc}") from exc
+            owner._sleep(_backoff(attempt))
+            continue
+        if response.status_code in RETRYABLE:
+            if attempt == owner._max_retries:
+                raise LLMUnavailableError(f"{name} erişilemez: HTTP {response.status_code}")
+            retry_after = response.headers.get("retry-after")
+            owner._sleep(float(retry_after) if retry_after else _backoff(attempt))
+            continue
+        if response.status_code >= 400:
+            raise LLMError(f"{name} hatası: HTTP {response.status_code} {errors(response)}")
+        return _parse(response.json())
+    raise LLMUnavailableError(f"{name} yanıt vermedi")  # pragma: no cover
 
 
 def _backoff(attempt: int) -> float:
     return min(2.0**attempt, 30.0) + random.uniform(0, 0.5)
 
 
-def _errors(response: Any) -> str:
+def _cloudflare_errors(response: Any) -> str:
     try:
         return "; ".join(e.get("message", "") for e in response.json().get("errors", []))[:300]
     except ValueError:
         return ""
 
 
+def _subq_errors(response: Any) -> str:
+    # SubQ hata gövdesi: {"detail": {"error_type": ..., "message": ...}}
+    try:
+        detail = response.json().get("detail")
+    except ValueError:
+        return ""
+    if isinstance(detail, dict):
+        return f"{detail.get('error_type', '')}: {detail.get('message', '')}"[:300]
+    return str(detail or "")[:300]
+
+
 def _parse(payload: dict[str, Any]) -> DecisionAnswers:
-    # Workers AI REST cevabı {"success", "result": {...}} zarfındadır.
+    # Workers AI REST cevabı {"success", "result": {...}} zarfındadır; SubQ cevabı zarfsızdır.
     result = payload.get("result", payload)
     if not isinstance(result, dict) or not isinstance(result.get("answers"), dict):
         raise LLMError("Karar modeli cevabında 'answers' yok")
     usage = result.get("usage") or {}
-    return DecisionAnswers(result["answers"], usage.get("total_input_tokens"))
+    tokens = usage.get("total_input_tokens", usage.get("input_tokens"))
+    return DecisionAnswers(result["answers"], tokens)
 
 
 class FakeDecisionModel:

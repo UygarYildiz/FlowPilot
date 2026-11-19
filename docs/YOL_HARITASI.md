@@ -30,7 +30,7 @@ Amaç: Platformun iskeleti ve ilk gerçek ajan canlıda.
 - [ ] Logistics Agent: sevkiyat bilgisi, gecikme tespiti, lojistik taslakları
 
 ## Deneme (v1 içinde, karar bekliyor)
-- [~] Karar modeli (Cloudflare Clef) ile sınıflandırma; Gemini ile 150 e-postada karşılaştırma. Kod hazır, Cloudflare anahtarı bekleniyor.
+- [~] Karar modelleri (Cloudflare Clef, SubQ Snap 1.2) ile sınıflandırma; Gemini ile karşılaştırma. Test yarısında ölçüldü: Gemini %97,3, SubQ %95,9, Clef-flash %71,6; seçim kullanıcıda.
 
 ## Sonrası (sıralanmadı)
 - ERP olayları, web formları ve diğer giriş kaynakları

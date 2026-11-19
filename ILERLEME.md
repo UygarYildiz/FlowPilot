@@ -74,6 +74,10 @@ v1 bitince sırayla Finans (v2), Satış ve Sipariş (v3), Lojistik (v4) departm
 
 ## Son oturumlarda ne yaptık?
 
+**19 Kasım — Yapay zekâ yarışı: Gemini, SubQ, Clef**
+- Clef ve SubQ Snap 1.2'yi sisteme bağladık, üçünü tarafsız yarıda ölçtük (sonuçlar "Şu an" bölümünde).
+- Gemini ile SubQ başa baş çıktı; Clef çok geride kaldı.
+
 **19 Kasım — Örnek seti 150'ye çıktı (M2 bitti)**
 - 94 yeni, bilerek daha zor örnek e-posta yazdık; doğru cevaplarını sonuçlara bakmadan belirledik.
 - Ölçüm yaptık: üç hedef de tuttu (yukarıdaki tablo). Hataları inceledik ve en sık hatanın "fazladan
@@ -91,13 +95,24 @@ v1 bitince sırayla Finans (v2), Satış ve Sipariş (v3), Lojistik (v4) departm
 (Daha eski çalışmalar: `docs/gunluk/`.)
 
 ## Şu an
-**Karar modeli (Cloudflare Clef) denemesi yarıda.** İlk denemede Clef, Gemini'den çok daha kötü çıktı
-(%73 doğru, Gemini %96). Sebebini bulduk: Clef müşteriyi tedarikçiyle karıştırıyor; örneğin bir müşterinin
-"sipariş veriyoruz" e-postasını Satın Alma'ya gönderiyor. Sorulara "Atlas kime satar, kimden alır" bilgisini
-ekledik ama bu düzeltmeyi henüz ölçmedik.
+**Üç yapay zekâyı aynı 74 e-postayla yarıştırdık.** Bu yarıya daha önce hiç bakmamıştık, yani sınav
+tarafsız. Sonuçlar:
 
-Ölçümün kendini kandırmaması için örnek seti ikiye böldük: düzeltmeleri yalnızca bir yarıya bakarak
-yapıyoruz, son karşılaştırmayı diğer yarıyla yapacağız.
+| Ne ölçtük | Gemini (şu anki) | SubQ Snap 1.2 | Cloudflare Clef |
+|---|---|---|---|
+| Doğru departmana gönderme | **%97** | %96 | %72 |
+| "Eminim" deyip yanlış gönderme | %0 | %0 | %8 |
+| İki departmanlı e-postada ikisini de bulma | %100 | %100 | %71 |
+| "Bir insan baksın" diye ayırdıkları | **%12** | %30 | %49 |
+| E-posta başına süre | — | 0,3 sn | 0,6 sn |
+
+- **SubQ neredeyse Gemini kadar isabetli** ve çok hızlı. Ama emin olmadığında daha sık insana soruyor.
+  Örnek: "Sipariş durumumuz ne?" diye soran bir müşteri e-postasında "belki Lojistik de bakmalı" diye
+  tereddüt ediyor ve e-postayı insana ayırıyor. Yanlış yere göndermiyor, sadece işi artırıyor.
+- **Clef elendi.** Sorularını iyileştirdikten sonra da müşteriyi tedarikçiyle karıştırmaya devam etti.
+
+**Öneri:** Gemini kalsın. SubQ yedek olarak hazırda dursun; Gemini'nin ücretsiz kotası biterse tek ayarla
+geçeriz.
 
 ## Sırada ne var?
 1. **M4 — Onay akışı:** Ajanların önerilerini (ör. "bu tekliften sipariş taslağı hazırladım") onaylama
@@ -106,7 +121,8 @@ yapıyoruz, son karşılaştırmayı diğer yarıyla yapacağız.
    yaparken ölçümün kendini kandırmaması için örnek seti ikiye ayıracağız.
 
 ## Senden beklenenler
-- Şimdilik bir şey yok. Clef/Gemini karşılaştırması bitince hangisinin kalacağını birlikte seçeriz, sonra M4.
+- **Karar:** Hangi yapay zekâ kalsın? Önerim Gemini (SubQ yedekte). Onaylarsan "neden böyle yaptık"
+  kaydını yazıp M4'e geçeriz.
 - **Onay:** Panel Türkçe yapıldı. İlanlar İngilizce ise çevirebiliriz, söylemen yeterli.
 - **İsteğe bağlı:** Şirketlere gelebilecek 5–10 gerçekçi e-posta yazarsan ölçüm çok daha güvenilir olur.
   Gerçek kişi/şirket bilgisi koyma; Gemini'nin ücretsiz katmanına yalnızca kurgusal veri gönderiyoruz.
@@ -158,7 +174,7 @@ Sonra tarayıcıda http://localhost:5173 adresini aç ve giriş sayfasındaki de
 | Manuel inceleme | Sistemin emin olamadığı e-postaları bir insanın bakması için ayırdığı yığın. Panelde "İnsan baksın". |
 | Yönlendirme fişi | Panelde her e-postanın yanındaki kart: hangi departmana, neden, ne kadar emin. |
 | API | Panelin arka planda veri aldığı/gönderdiği kısım. |
-| Karar modeli | Metin yazmayan, seçeneklere olasılık veren yapay zekâ türü (Cloudflare Clef, TypeSafe Jev). |
+| Karar modeli | Metin yazmayan, seçeneklere olasılık veren yapay zekâ türü (Cloudflare Clef, SubQ Snap). |
 | Ajan | Departmanın işini hazırlayan yapay zekâ (M5'te gelecek). Sadece **önerir**, onay insanındır. |
 | Seed | Demo için hazırladığımız kurgusal şirket verisi (Atlas Endüstri). |
 | Değerlendirme seti | Doğru cevabını bildiğimiz örnek e-postalar; sistemin ne kadar doğru çalıştığını ölçmek için. |

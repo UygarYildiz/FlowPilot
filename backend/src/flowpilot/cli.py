@@ -155,7 +155,10 @@ def main(argv: list[str] | None = None) -> int:
         "--split", choices=["all", "dev", "test"], default="all", help="Geliştirme/test yarısı"
     )
     routing_parser.add_argument(
-        "--engine", choices=["llm", "clef"], default=None, help="Varsayılan: ayarlardaki motor"
+        "--engine",
+        choices=["llm", "clef", "subq"],
+        default=None,
+        help="Varsayılan: ayarlardaki motor",
     )
 
     rescore = suites.add_parser("rescore", help="Kayıtlı raporları bir yarıda karşılaştır")
