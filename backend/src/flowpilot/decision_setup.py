@@ -33,12 +33,17 @@ def build_classifier(
             registry,
             f"cloudflare:{settings.clef_model}",
             threshold=settings.decision_threshold,
+            prompt_version=settings.typed_prompt,
         )
     if engine == "subq":
         from flowpilot.llm.decision_model import SubQClient
 
         subq = SubQClient(api_key=settings.subq_api_key, model=settings.subq_model)
         return DecisionModelClassifier(
-            subq, registry, f"subq:{settings.subq_model}", threshold=settings.decision_threshold
+            subq,
+            registry,
+            f"subq:{settings.subq_model}",
+            threshold=settings.decision_threshold,
+            prompt_version=settings.typed_prompt,
         )
     raise LLMError(f"Bilinmeyen karar motoru: {engine}")

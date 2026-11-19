@@ -34,6 +34,11 @@ Rapor: `backend/evals/results/routing-20261119-100854-*.md`. 6 hatanın 4'ü faz
   %26,3 → %21,1, otomatik hata %0 (kural dev'de hiçbir hatayı yakalamamıştı). Test'te tek kontrol: %29,7 → %23,0,
   otomatik hata %0 → %1,8 (ev-100: Lojistik %84, doğru olan Satış %44). Kod değişmedi; kazanç küçük, Gemini
   (%12,2) yine önde. Kalan incelemenin çoğu ilgisiz e-postalar (tasarım gereği) + ikinci departmanda düşük güven.
+- Kalibrasyon (kayıtlı raporlar): SubQ p 0,50–0,75 → %53 doğru, 0,25–0,50 → %13, ≥0,9 → %100 (122); kalibre.
+  Gemini kendi beyanı: 154 rotanın 143.ü ≥0,9 (bunların %96,5.i doğru); nadiren şüphe gösteriyor.
+- `typed-v3` (asıl departman choice + `also.<d>` noul, `FLOWPILOT_TYPED_PROMPT`), SubQ dev: departman %96,1,
+  otomatik hata %0, çok dep. %92,9, inceleme %28,9 → v2'den kötü ("ayrıca" sorusu ikinci departman olasılığını
+  artırdı). Test yarısında ölçülmedi; varsayılan typed-v2 kaldı. Rapor `...140823-subq-*`.
 
 ## Sıradaki adım
 0. Kullanıcı motoru seçince ADR (karar modeli karşılaştırması).

@@ -198,6 +198,53 @@ def test_borderline_route_or_maybe_department_is_reviewed() -> None:
     assert maybe.needs_review and "belirsiz departman: logistics" in (maybe.review_reason or "")
 
 
+def v3_respond(primary: dict[str, float], also: dict[str, float]):  # noqa: ANN201
+    def answer(state: str, questions: dict[str, dict[str, Any]]) -> dict[str, Any]:
+        top = max(primary, key=lambda k: primary[k])
+        out: dict[str, Any] = {
+            "priority": {"type": "score", "score": 1.0},
+            "primary": {"type": "choice", "choice": top, "probabilities": primary},
+        }
+        for qid, q in questions.items():
+            if qid.startswith("also."):
+                out[qid] = {"type": "noul", "noul": also.get(qid[5:], 0.02)}
+            elif qid.startswith("intent."):
+                first = next(iter(q["criteria"]))
+                out[qid] = {"type": "choice", "choice": first, "probabilities": {first: 0.9}}
+        return out
+
+    return answer
+
+
+def test_v3_asks_primary_then_additional_departments() -> None:
+    questions = build_questions(get_registry(), "typed-v3")
+    assert set(questions["primary"]["criteria"]) == {d.key for d in get_registry()} | {"none"}
+    assert all(
+        f"also.{d.key}" in questions and f"act.{d.key}" not in questions for d in get_registry()
+    )
+    with pytest.raises(ValueError):
+        build_questions(get_registry(), "typed-v9")
+
+
+def test_v3_combines_primary_and_additional_probabilities() -> None:
+    model = FakeDecisionModel(
+        v3_respond({"logistics": 0.8, "finance": 0.2}, {"finance": 0.9, "logistics": 0.05})
+    )
+    result = DecisionModelClassifier(model, get_registry(), "fake", prompt_version="typed-v3")(
+        EMAIL
+    )
+    conf = {r.department: r.confidence for r in result.routes}
+    # lojistik: 0,8 + 0,2·0,05 = 0,81; finans: 0,2 + 0,8·0,9 = 0,92
+    assert conf == {"finance": 0.92, "logistics": 0.81}
+    assert not result.needs_review
+
+    model = FakeDecisionModel(v3_respond({"none": 0.97, "sales_orders": 0.03}, {}))
+    result = DecisionModelClassifier(model, get_registry(), "fake", prompt_version="typed-v3")(
+        EMAIL
+    )
+    assert [r.department for r in result.routes] == ["unknown"] and result.needs_review
+
+
 def test_broken_answer_goes_to_review_instead_of_crashing() -> None:
     model = FakeDecisionModel(lambda state, questions: {})
     result = DecisionModelClassifier(model, get_registry(), "fake")(EMAIL)

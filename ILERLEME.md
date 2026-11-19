@@ -112,6 +112,11 @@ tarafsız. Sonuçlar:
 - SubQ'nun fazla sorması kısmen bizim temkinli bir kuralımızdan geliyordu. Kuralı gevşetmeyi denedik:
   insana ayrılanlar %30'dan %23'e indi, ama bir e-posta yanlış departmana gitti. Kazanç küçük olduğu için
   kuralı değiştirmedik.
+- **SubQ'nun olasılıkları dürüst çıktı:** "%50–75 eminim" dediği durumların gerçekten yarısında haklı.
+  Yani insana sorduğu e-postalarda gerçekten tereddüt ediyor. Gemini ise neredeyse her zaman "%90+
+  eminim" diyor; bu sette çoğunlukla haklı, ama yanıldığında bunu belli etmiyor.
+- SubQ'ya soruyu farklı sormayı da denedik: önce "asıl departman hangisi?", sonra "başka departmanın da
+  işi var mı?". Daha iyi olmadı, ikinci departmanlarda tereddüt arttı. Eski soru biçiminde kaldık.
 - **Clef elendi.** Küçük model, soruları iyileştirdikten sonra da müşteriyi tedarikçiyle karıştırdı.
   Büyük model bu hatayı yapmıyor, ama müşteri e-postalarının çoğuna "bu hiçbir departmanın işi değil"
   diyip insana bırakıyor. Yanlış yere göndermiyor, ama e-postaların yarısını insana bırakıyor.

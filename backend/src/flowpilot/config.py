@@ -18,6 +18,8 @@ class Settings(BaseSettings):
     decision_engine: str = "llm"
     clef_model: str = "clef-flash"
     subq_model: str = "subq-snap-1.2"
+    # Karar modeli soru sürümü: typed-v2 (departman başına evet/hayır), typed-v3 (asıl + ek)
+    typed_prompt: str = "typed-v2"
     subq_api_key: str = Field(default="", validation_alias="SUBQ_API_KEY")
     cloudflare_account_id: str = Field(default="", validation_alias="CLOUDFLARE_ACCOUNT_ID")
     cloudflare_api_token: str = Field(default="", validation_alias="CLOUDFLARE_API_TOKEN")

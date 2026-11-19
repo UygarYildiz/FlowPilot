@@ -6,6 +6,7 @@ Sorular kayıt defterinden kurulur:
     intent.<departman>  choice — departmanın intent'lerinden hangisi?
     priority            score  — düşük / normal / yüksek / acil
 Bir departman p(act) ≥ 0,5 ise rota olur; rotanın güveni p(act)'tır.
+typed-v3: act yerine `primary` (choice) + `also.<departman>` (noul); p(act) bunlardan hesaplanır.
 İnsan incelemesi: rotası olan bir departmanın güveni eşiğin altındaysa, rotası olmayan bir
 departman "belki"yse (p ≥ 1 − eşik) ya da hiçbir departman çıkmadıysa.
 """
@@ -21,6 +22,10 @@ from flowpilot.llm import LLMError
 from flowpilot.llm.decision_model import DecisionModelClient
 
 PROMPT_VERSION = "typed-v2"
+# typed-v3: önce "asıl departman hangisi?" (tek seçim), sonra departman başına "ayrıca iş var mı?".
+# P(departman) = P(asıl) + (1 − P(asıl)) · P(ayrıca); sonrası (rota, eşik, inceleme) v2 ile aynı.
+PROMPT_VERSIONS = ("typed-v2", "typed-v3")
+NO_DEPARTMENT = "none"
 
 # typed-v1 bağlamsızdı: model müşteriyi tedarikçiyle karıştırdı (satış e-postaları Satın Alma'ya).
 # v2: e-postanın kime geldiği ve kimin satıcı/alıcı olduğu baştan söylenir; gönderen rolü de sorulur.
@@ -52,7 +57,11 @@ PRIORITY_CRITERIA = [
 ]
 
 
-def build_questions(registry: DepartmentRegistry) -> dict[str, dict[str, Any]]:
+def build_questions(
+    registry: DepartmentRegistry, version: str = PROMPT_VERSION
+) -> dict[str, dict[str, Any]]:
+    if version not in PROMPT_VERSIONS:
+        raise ValueError(f"Bilinmeyen soru sürümü: {version}")
     questions: dict[str, dict[str, Any]] = {
         "sender_role": {
             "type": "choice",
@@ -60,16 +69,40 @@ def build_questions(registry: DepartmentRegistry) -> dict[str, dict[str, Any]]:
             "criteria": SENDER_ROLES,
         }
     }
-    for department in registry:
-        questions[f"act.{department.key}"] = {
-            "type": "noul",
+    if version == "typed-v3":
+        questions["primary"] = {
+            "type": "choice",
             "instructions": (
-                f"Does the {department.name} department of Atlas Endüstri need to take action on "
-                f"this email? {department.name} handles: {department.description} "
-                "Answer yes only if this department must do some work; being copied for "
-                f"information is not enough. {DIRECTION_HINT}"
+                "Which department of Atlas Endüstri is mainly responsible for acting on this "
+                f"email? Choose none if no department needs to act. {DIRECTION_HINT}"
             ),
+            "criteria": {
+                **{d.key: f"{d.name}: {d.description}" for d in registry},
+                NO_DEPARTMENT: "No department needs to act (ads, newsletters, spam, job "
+                "applications, misdirected or automated messages)",
+            },
         }
+    for department in registry:
+        if version == "typed-v3":
+            questions[f"also.{department.key}"] = {
+                "type": "noul",
+                "instructions": (
+                    f"Besides the email's main department, does the {department.name} department "
+                    f"ALSO have its own work to do on this email? {department.name} handles: "
+                    f"{department.description} Answer no if {department.name} is itself the main "
+                    "department, or would only be informed."
+                ),
+            }
+        else:
+            questions[f"act.{department.key}"] = {
+                "type": "noul",
+                "instructions": (
+                    f"Does the {department.name} department of Atlas Endüstri need to take "
+                    f"action on this email? {department.name} handles: {department.description} "
+                    "Answer yes only if this department must do some work; being copied for "
+                    f"information is not enough. {DIRECTION_HINT}"
+                ),
+            }
         questions[f"intent.{department.key}"] = {
             "type": "choice",
             "instructions": (
@@ -97,8 +130,16 @@ class DecisionModelClassifier:
     def __call__(self, email: EmailForDecision) -> Classification:
         state = f"{COMPANY_CONTEXT}\n\n{build_user_prompt(email)}"
         try:
-            answers = self.client.ask(state=state, questions=build_questions(self.registry))
-            act = {d.key: answers.noul(f"act.{d.key}") for d in self.registry}
+            questions = build_questions(self.registry, self.prompt_version)
+            answers = self.client.ask(state=state, questions=questions)
+            if self.prompt_version == "typed-v3":
+                _, primary = answers.choice("primary")
+                act = {}
+                for d in self.registry:
+                    main = primary.get(d.key, 0.0)
+                    act[d.key] = main + (1 - main) * answers.noul(f"also.{d.key}")
+            else:
+                act = {d.key: answers.noul(f"act.{d.key}") for d in self.registry}
             intents = {d.key: answers.choice(f"intent.{d.key}") for d in self.registry}
             priority_score, _ = answers.score("priority")
         except LLMError as exc:
