@@ -6,42 +6,23 @@
 **Son güncelleme:** 2026-11-19
 **Aktif sürüm:** v1 — Çekirdek + Procurement ([kapsam](surumler/v1.md))
 **Aşama:** M0–M3 bitti (yönlendirme seti 150, hedefler tuttu). M4 (onay) başlamadı.
-**Yığın:** ADR-009 — Python/FastAPI, PostgreSQL, React/Vite, LLM: Gemini `gemini-3.5-flash-lite` (ücretsiz katman).
+**Yığın:** ADR-009 — Python/FastAPI, PostgreSQL, React/Vite. Sınıflandırma: ADR-013 kademeli — SubQ `subq-snap-1.2` → Gemini `gemini-3.5-flash-lite` → insan.
 **Uzak depo:** https://github.com/UygarYildiz/FlowPilot (`main`, CI: GitHub Actions)
 
-## Son ölçüm (yönlendirme, 150 e-posta, `decision-v1`, 2026-11-19)
-Departman %96,0 (hedef ≥90) · otomatik yönlendirilenlerde hata %3,1 (≤5) · Procurement intent %100 (≥85)
-· tüm intent %98,6 · çok departmanlı geri çağırma %96,4 · manuel inceleme %12,7.
-Rapor: `backend/evals/results/routing-20261119-100854-*.md`. 6 hatanın 4'ü fazladan departman ekleme.
+## Son ölçüm (kademeli motor, test yarısı 74 e-posta, canlı, 2026-11-19)
+Departman %97,3 (hedef ≥90) · otomatik yönlendirilenlerde hata %1,5 (≤5; 1 e-posta) · Procurement intent %100 (≥85)
+· tüm intent %97,3 · çok departmanlı geri çağırma %100 · manuel inceleme %10,8. SubQ 58 e-postada karar verdi
+(52 otomatik), Gemini 16'da (14 otomatik): Gemini çağrısı tek başına Gemini'ye göre ~%78 az.
+Rapor: `backend/evals/results/routing-20261119-150223-cascade-*.md`. Tek otomatik hata ev-107: SubQ doğru ama
+emin değildi (Satış %59); Gemini bu sefer Lojistik'i %85 ile ekledi (önceki çalıştırmada %60 → inceleme).
+Gemini'nin güveni çalıştırmadan çalıştırmaya değişiyor.
 
-## Karar modeli karşılaştırması (test yarısı, 74 e-posta, 2026-11-19) — kullanıcı kararı bekliyor
-| | Gemini `decision-v1` | SubQ `subq-snap-1.2` `typed-v2` | Clef-flash `typed-v2` | Clef `typed-v2` |
-|---|---|---|---|---|
-| Departman | %97,3 | %95,9 | %71,6 | %77,0 |
-| Otomatik hata | %0,0 | %0,0 | %7,9 | %0,0 |
-| Çok dep. geri çağırma | %100 | %100 | %71,4 | %78,6 |
-| Manuel inceleme | %12,2 | %29,7 | %48,6 | %48,6 |
-| Ortanca süre | — | 0,28 sn | 0,57 sn | 0,42 sn |
-- Büyük Clef: 17 hatanın 10'u Satış e-postasına "hiçbir departman" (unknown, 0,50–0,81) demek; müşteri↔tedarikçi
-  karışıklığı yerine aşırı temkin. Hepsi incelemede, otomatik hata yok.
-- SubQ dev yarısı: departman %97,4, otomatik hata %0, inceleme %26,3. Test yarısında incelemeye giden 22 e-postanın
-  8'i ilgisiz (tasarım gereği), 8'i rotası 0,50–0,75 arası (eşik altı), 6'sı rotasız ama p ≥ 0,25 "belirsiz" departman
-  (`typed.py:147`, `1 − eşik`); 22'nin 19'u aslında doğruydu. Gemini 9 (7 ilgisiz + 2 eşik altı).
-- Raporlar: `evals/results/routing-20261119-13{1857,1938}-subq-*`, `...132028-cloudflare-clef-flash.*`, `...132725-cloudflare-clef.*`.
-- Öneri: Gemini kalsın, SubQ yedek motor (`--engine subq`); iki Clef modeli de elendi.
-  Kullanıcı onaylarsa ADR yazılır.
-- "Belirsiz" eşiği denemesi (kayıtlı olasılıklardan çevrimdışı, API çağrısı yok): dev'de 0,25 → 0,45 inceleme
-  %26,3 → %21,1, otomatik hata %0 (kural dev'de hiçbir hatayı yakalamamıştı). Test'te tek kontrol: %29,7 → %23,0,
-  otomatik hata %0 → %1,8 (ev-100: Lojistik %84, doğru olan Satış %44). Kod değişmedi; kazanç küçük, Gemini
-  (%12,2) yine önde. Kalan incelemenin çoğu ilgisiz e-postalar (tasarım gereği) + ikinci departmanda düşük güven.
-- Kalibrasyon (kayıtlı raporlar): SubQ p 0,50–0,75 → %53 doğru, 0,25–0,50 → %13, ≥0,9 → %100 (122); kalibre.
-  Gemini kendi beyanı: 154 rotanın 143.ü ≥0,9 (bunların %96,5.i doğru); nadiren şüphe gösteriyor.
-- `typed-v3` (asıl departman choice + `also.<d>` noul, `FLOWPILOT_TYPED_PROMPT`), SubQ dev: departman %96,1,
-  otomatik hata %0, çok dep. %92,9, inceleme %28,9 → v2'den kötü ("ayrıca" sorusu ikinci departman olasılığını
-  artırdı). Test yarısında ölçülmedi; varsayılan typed-v2 kaldı. Rapor `...140823-subq-*`.
+## Motor karşılaştırması (özet; ayrıntı `gunluk/2026-11.md` 6–12, ADR-013)
+Test yarısı: Gemini %97,3 / otomatik hata %0 / inceleme %12,2 · SubQ %95,9 / %0 / %29,7 · Clef-flash %71,6 · Clef %77,0.
+150 e-posta: Gemini 4 yanlış otomatik, SubQ 0. SubQ kalibre (p 0,50–0,75 → %53 doğru); Gemini neredeyse hep ≥0,9 der.
+Denenip bırakılanlar: "belirsiz" eşiğini gevşetmek, `typed-v3` (asıl + ek departman soruları).
 
 ## Sıradaki adım
-0. Kullanıcı motoru seçince ADR (karar modeli karşılaştırması).
 1. M4: departman sözleşmesine `agent` ve `proposal_types` (v1 kapsamı 3.3), `AgentRun` / `Proposal` modelleri,
    öneri yaşam döngüsü (pending → approved → executed / rejected / failed), tek yürütücü (idempotency),
    panelde onay/ret ve tüm sistem için denetim kaydı ekranı. Başarı kriteri 7 testle.
@@ -59,6 +40,8 @@ Rapor: `backend/evals/results/routing-20261119-100854-*.md`. 6 hatanın 4'ü faz
 - Gemini ücretsiz katmanına yalnızca kurgusal veri gönderilir (ADR-009). `.env` gitignore'da.
 - Docker Desktop kapanınca DB testleri atlanır (yerelde); `docker compose up -d` gerekir. DB `localhost:5433`.
 - IMAP adaptörü yalnızca sahte sunucuyla test edildi.
+- `backend/.env`: `FLOWPILOT_DECISION_ENGINE=cascade`, `FLOWPILOT_LLM_PROVIDER=gemini` (önceden `fake`); `SUBQ_API_KEY` dolu.
+  Kademeli kararla paneldeki fiş tarayıcıda görülmedi (geliştirme DB'sinde bekleyen e-posta yoktu).
 
 ## Engeller
 - Yok.

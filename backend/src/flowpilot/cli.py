@@ -156,7 +156,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     routing_parser.add_argument(
         "--engine",
-        choices=["llm", "clef", "subq"],
+        choices=["llm", "clef", "subq", "cascade"],
         default=None,
         help="Varsayılan: ayarlardaki motor",
     )

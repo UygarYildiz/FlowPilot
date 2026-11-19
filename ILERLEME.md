@@ -17,7 +17,8 @@ Bir örnekle:
 1. Kurgusal şirketimiz **Atlas Endüstri**'ye bir tedarikçiden PDF ekli bir fiyat teklifi geliyor.
 2. Sistem e-postayı ve ekini kaydediyor, PDF'in içindeki yazıyı okuyor.
    Aynı e-posta ikinci kez gelirse fark ediyor ve iki kez kaydetmiyor.
-3. Yapay zekâ (Google Gemini) e-postayı okuyor ve karar veriyor:
+3. Yapay zekâ e-postayı okuyor ve karar veriyor. Önce ucuz ve hızlı model (SubQ) bakıyor; emin değilse
+   daha güçlü model (Google Gemini) bakıyor; o da emin değilse e-posta insana gidiyor:
    *"Bu Satın Alma'nın işi, bir fiyat teklifi, öncelik normal, %99 eminim."*
 4. Bir e-posta iki departmanı ilgilendiriyorsa ikisine de gönderiyor.
    Örnek: *"Eksik ürün geldi ve faturada da hata var"* → hem **Lojistik** hem **Finans**.
@@ -74,9 +75,10 @@ v1 bitince sırayla Finans (v2), Satış ve Sipariş (v3), Lojistik (v4) departm
 
 ## Son oturumlarda ne yaptık?
 
-**19 Kasım — Yapay zekâ yarışı: Gemini, SubQ, Clef**
-- Clef ve SubQ Snap 1.2'yi sisteme bağladık, üçünü tarafsız yarıda ölçtük (sonuçlar "Şu an" bölümünde).
-- Gemini ile SubQ başa baş çıktı; Clef çok geride kaldı.
+**19 Kasım — Yapay zekâ yarışı ve yeni düzen**
+- Clef ve SubQ'yu sisteme bağladık, Gemini ile tarafsız yarıda yarıştırdık; Clef elendi.
+- SubQ'nun neden fazla insana sorduğunu inceledik: model dürüst, sınırdaki e-postalarda gerçekten tereddüt ediyor.
+- Önce SubQ, sonra Gemini, sonra insan düzenini kurduk ve gerçek ölçümle doğruladık (sonuçlar "Şu an" bölümünde).
 
 **19 Kasım — Örnek seti 150'ye çıktı (M2 bitti)**
 - 94 yeni, bilerek daha zor örnek e-posta yazdık; doğru cevaplarını sonuçlara bakmadan belirledik.
@@ -95,34 +97,31 @@ v1 bitince sırayla Finans (v2), Satış ve Sipariş (v3), Lojistik (v4) departm
 (Daha eski çalışmalar: `docs/gunluk/`.)
 
 ## Şu an
-**Üç yapay zekâyı aynı 74 e-postayla yarıştırdık.** Bu yarıya daha önce hiç bakmamıştık, yani sınav
-tarafsız. Sonuçlar:
+**Yapay zekâ seçimi bitti: iki model birlikte, sırayla çalışıyor.**
 
-| Ne ölçtük | Gemini (şu anki) | SubQ Snap 1.2 | Clef (küçük) | Clef (büyük) |
-|---|---|---|---|---|
-| Doğru departmana gönderme | **%97** | %96 | %72 | %77 |
-| "Eminim" deyip yanlış gönderme | %0 | %0 | %8 | %0 |
-| İki departmanlı e-postada ikisini de bulma | %100 | %100 | %71 | %79 |
-| "Bir insan baksın" diye ayırdıkları | **%12** | %30 | %49 | %49 |
-| E-posta başına süre | — | 0,3 sn | 0,6 sn | 0,4 sn |
+Üç modeli (Gemini, SubQ, Clef) aynı örneklerle yarıştırdık. Gemini ve SubQ başa baş çıktı, Clef elendi.
+İkisinin güçlü yanlarını birleştirdik:
 
-- **SubQ neredeyse Gemini kadar isabetli** ve çok hızlı. Ama emin olmadığında daha sık insana soruyor.
-  Örnek: "Sipariş durumumuz ne?" diye soran bir müşteri e-postasında "belki Lojistik de bakmalı" diye
-  tereddüt ediyor ve e-postayı insana ayırıyor. Yanlış yere göndermiyor, sadece işi artırıyor.
-- SubQ'nun fazla sorması kısmen bizim temkinli bir kuralımızdan geliyordu. Kuralı gevşetmeyi denedik:
-  insana ayrılanlar %30'dan %23'e indi, ama bir e-posta yanlış departmana gitti. Kazanç küçük olduğu için
-  kuralı değiştirmedik.
-- **SubQ'nun olasılıkları dürüst çıktı:** "%50–75 eminim" dediği durumların gerçekten yarısında haklı.
-  Yani insana sorduğu e-postalarda gerçekten tereddüt ediyor. Gemini ise neredeyse her zaman "%90+
-  eminim" diyor; bu sette çoğunlukla haklı, ama yanıldığında bunu belli etmiyor.
-- SubQ'ya soruyu farklı sormayı da denedik: önce "asıl departman hangisi?", sonra "başka departmanın da
-  işi var mı?". Daha iyi olmadı, ikinci departmanlarda tereddüt arttı. Eski soru biçiminde kaldık.
-- **Clef elendi.** Küçük model, soruları iyileştirdikten sonra da müşteriyi tedarikçiyle karıştırdı.
-  Büyük model bu hatayı yapmıyor, ama müşteri e-postalarının çoğuna "bu hiçbir departmanın işi değil"
-  diyip insana bırakıyor. Yanlış yere göndermiyor, ama e-postaların yarısını insana bırakıyor.
+- **Önce SubQ bakıyor.** Çok ucuz, çok hızlı ve ne kadar emin olduğunu dürüst söylüyor. Eminse karar onun.
+- **SubQ tereddüt ederse Gemini bakıyor.** Gemini e-postayı bütün olarak yorumlamakta daha iyi.
+  Örnek: müşterinin satın alma bölümünden gelen "fiyat önerinizi bekliyoruz" e-postasında SubQ "Satış mı,
+  Satın Alma mı?" diye kalıyor; Gemini "bu bir müşteri talebi" deyip Satış'a gönderiyor.
+- **İkisi de emin değilse insan bakıyor.** Panelde iki modelin görüşü de yazıyor.
 
-**Öneri:** Gemini kalsın. SubQ yedek olarak hazırda dursun; Gemini'nin ücretsiz kotası biterse tek ayarla
-geçeriz.
+Tarafsız 74 e-postayla gerçek ölçüm:
+
+| Ne ölçtük | Yalnız Gemini | Yeni düzen | Hedefimiz |
+|---|---|---|---|
+| Doğru departmana gönderme | %97 | %97 | en az %90 ✅ |
+| "Eminim" deyip yanlış gönderme | %0 | %1,5 (1 e-posta) | en fazla %5 ✅ |
+| "Bir insan baksın" diye ayırdıkları | %12 | **%11** | |
+| Gemini'ye sorulan e-posta | 74 | **16** | |
+
+Yani insana kalan iş aynı, ama Gemini'ye dörtte bir oranında soruluyor. Bu, Gemini'nin ücretsiz kotasının
+çok daha geç dolması (ileride paralıya geçince de daha az ödeme) demek.
+
+Tek hata: bir müşteri "makaralar ses çıkarıyor" diye yazdı. SubQ doğru departmanı (Satış) bulmuştu ama emin
+değildi; Gemini Satış'ın yanına Lojistik'i de ekledi. Zararı sınırlı: doğru departman yine e-postayı aldı.
 
 ## Sırada ne var?
 1. **M4 — Onay akışı:** Ajanların önerilerini (ör. "bu tekliften sipariş taslağı hazırladım") onaylama
@@ -131,8 +130,8 @@ geçeriz.
    yaparken ölçümün kendini kandırmaması için örnek seti ikiye ayıracağız.
 
 ## Senden beklenenler
-- **Karar:** Hangi yapay zekâ kalsın? Önerim Gemini (SubQ yedekte). Onaylarsan "neden böyle yaptık"
-  kaydını yazıp M4'e geçeriz.
+- **Bilgi:** Bilgisayarındaki ayarı yeni düzene çevirdim; artık gerçek Gemini kullanılıyor (önceden sahte
+  bir model ayarlıydı). Gemini'ye yalnızca kurgusal veri gönderiyoruz.
 - **Onay:** Panel Türkçe yapıldı. İlanlar İngilizce ise çevirebiliriz, söylemen yeterli.
 - **İsteğe bağlı:** Şirketlere gelebilecek 5–10 gerçekçi e-posta yazarsan ölçüm çok daha güvenilir olur.
   Gerçek kişi/şirket bilgisi koyma; Gemini'nin ücretsiz katmanına yalnızca kurgusal veri gönderiyoruz.
@@ -154,7 +153,8 @@ uv run flowpilot eval routing
 ```
 
 Sırasıyla: veritabanını başlatır, kurgusal e-postaları içeri alır, yapay zekâya sınıflandırtır, doğruluğu
-ölçer. Gerçek Gemini için `backend/.env` içinde `FLOWPILOT_LLM_PROVIDER=gemini` olmalı (şu an `fake`).
+ölçer. Ayar `backend/.env` içinde: `FLOWPILOT_DECISION_ENGINE=cascade` (önce SubQ, sonra Gemini) ve
+`FLOWPILOT_LLM_PROVIDER=gemini`. Sahte modele dönmek için ikincisini `fake` yap.
 
 **Paneli açmak için** üç şey çalışmalı: veritabanı (yukarıda), API ve panel. `backend` klasöründe:
 
@@ -185,6 +185,7 @@ Sonra tarayıcıda http://localhost:5173 adresini aç ve giriş sayfasındaki de
 | Yönlendirme fişi | Panelde her e-postanın yanındaki kart: hangi departmana, neden, ne kadar emin. |
 | API | Panelin arka planda veri aldığı/gönderdiği kısım. |
 | Karar modeli | Metin yazmayan, seçeneklere olasılık veren yapay zekâ türü (Cloudflare Clef, SubQ Snap). |
+| Kademeli yönlendirme | Önce ucuz model bakar, emin değilse güçlü model, o da emin değilse insan. |
 | Ajan | Departmanın işini hazırlayan yapay zekâ (M5'te gelecek). Sadece **önerir**, onay insanındır. |
 | Seed | Demo için hazırladığımız kurgusal şirket verisi (Atlas Endüstri). |
 | Değerlendirme seti | Doğru cevabını bildiğimiz örnek e-postalar; sistemin ne kadar doğru çalıştığını ölçmek için. |

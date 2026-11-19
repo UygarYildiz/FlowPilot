@@ -3,6 +3,7 @@
 FLOWPILOT_DECISION_ENGINE=llm       → generatif model (FLOWPILOT_LLM_PROVIDER: fake | gemini)
 FLOWPILOT_DECISION_ENGINE=clef      → Cloudflare Clef karar modeli (FLOWPILOT_CLEF_MODEL)
 FLOWPILOT_DECISION_ENGINE=subq      → SubQ Snap karar modeli (FLOWPILOT_SUBQ_MODEL, SUBQ_API_KEY)
+FLOWPILOT_DECISION_ENGINE=cascade   → önce subq, emin değilse llm, sonra insan (ADR-013)
 """
 
 from flowpilot.config import Settings
@@ -45,5 +46,13 @@ def build_classifier(
             f"subq:{settings.subq_model}",
             threshold=settings.decision_threshold,
             prompt_version=settings.typed_prompt,
+        )
+    if engine == "cascade":
+        # ADR-013: önce SubQ, emin değilse generatif model (FLOWPILOT_LLM_PROVIDER), sonra insan.
+        from flowpilot.core.decision.cascade import CascadeClassifier
+
+        return CascadeClassifier(
+            first=build_classifier(settings, registry, "subq"),
+            second=build_classifier(settings, registry, "llm"),
         )
     raise LLMError(f"Bilinmeyen karar motoru: {engine}")

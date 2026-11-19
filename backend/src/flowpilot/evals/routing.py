@@ -14,6 +14,7 @@ ve her ikisinde:
 
 import hashlib
 import json
+import re
 import statistics
 import time
 from collections.abc import Callable, Iterable
@@ -51,6 +52,7 @@ class CaseResult:
     reasoning: str
     errors: list[str] = field(default_factory=list)
     seconds: float = 0.0
+    decided_by: str | None = None
 
 
 def split_of(case_id: str) -> str:
@@ -142,6 +144,7 @@ def score(case: Case, result: Classification) -> CaseResult:
         intent_correct=intent_correct,
         reasoning=result.reasoning,
         errors=result.errors,
+        decided_by=result.decided_by,
     )
 
 
@@ -171,6 +174,14 @@ def summarize(results: list[CaseResult]) -> dict[str, Any]:
         ),
         "no_decision": sum(not r.predicted for r in results),
         "median_seconds": statistics.median(r.seconds for r in results) if results else None,
+        # Kademeli motorda: kararı hangi alt motor verdi, kaçı otomatik gitti (ADR-013).
+        "decided_by": {
+            model: {
+                "cases": sum(r.decided_by == model for r in results),
+                "auto": sum(r.decided_by == model and not r.needs_review for r in results),
+            }
+            for model in sorted({r.decided_by for r in results if r.decided_by})
+        },
     }
 
 
@@ -234,6 +245,10 @@ def render_markdown(
         f"(bunların {summary['review_that_was_correct']} tanesi aslında doğruydu) | |",
         f"| Karar üretilemeyen | {summary['no_decision']} | |",
         f"| Ortanca süre (e-posta başına) | {_seconds(summary.get('median_seconds'))} | |",
+        *[
+            f"| Kararı veren: `{model}` | {n['cases']} e-posta, {n['auto']} otomatik | |"
+            for model, n in summary.get("decided_by", {}).items()
+        ],
         "",
         "## Hatalar",
         "",
@@ -255,7 +270,7 @@ def write_report(
 ) -> Path:
     out_dir.mkdir(parents=True, exist_ok=True)
     stamp = datetime.now(UTC).strftime("%Y%m%d-%H%M%S")
-    slug = meta["model"].replace(":", "-").replace("/", "-")
+    slug = re.sub(r"[^A-Za-z0-9._-]+", "-", meta["model"])
     path = out_dir / f"routing-{stamp}-{slug}.md"
     path.write_text(render_markdown(summary, results, meta), encoding="utf-8")
     path.with_suffix(".json").write_text(

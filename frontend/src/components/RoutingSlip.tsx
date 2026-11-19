@@ -49,7 +49,7 @@ export default function RoutingSlip({ decision, counts, user, onDone, donePendin
       <div className="flex items-baseline justify-between gap-4 border-b border-dashed border-rule px-5 py-3">
         <h2 className="wide font-extrabold">Yönlendirme fişi</h2>
         <p className="text-xs text-steel text-right">
-          {manual ? 'Elle düzeltildi' : `Yapay zekâ: ${decision.model.replace(/^gemini:/, '')}`}
+          {manual ? 'Elle düzeltildi' : `Yapay zekâ: ${decision.model.replace(/^[a-z]+:/, '')}`}
           <br />
           {fullTime(decision.created_at)}
         </p>
@@ -126,7 +126,7 @@ export default function RoutingSlip({ decision, counts, user, onDone, donePendin
       {decision.reasoning && (
         <div className="border-t border-dashed border-rule px-5 py-3 text-sm">
           <p className="text-steel">{manual ? 'Düzeltme gerekçesi' : 'Yapay zekânın gerekçesi'}</p>
-          <p className="mt-1 leading-relaxed">{decision.reasoning}</p>
+          <p className="mt-1 leading-relaxed whitespace-pre-line">{decision.reasoning}</p>
         </div>
       )}
     </div>

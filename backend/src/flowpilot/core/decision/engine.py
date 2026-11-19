@@ -37,6 +37,8 @@ class Classification:
     attempts: int
     raw_output: dict[str, Any] | None = None
     errors: list[str] = field(default_factory=list)
+    # Kademeli motorda kararı veren alt motor (ADR-013); boşsa sınıflandırıcının kendi adı.
+    decided_by: str | None = None
 
     def departments(self) -> set[str]:
         return {route.department for route in self.routes}
@@ -159,7 +161,7 @@ def decide(
 ) -> Decision:
     email.status = EmailStatus.CLASSIFYING
     result = classifier(email_for_decision(email))
-    model_name = classifier.model_name
+    model_name = result.decided_by or classifier.model_name
 
     decision = Decision(
         email=email,

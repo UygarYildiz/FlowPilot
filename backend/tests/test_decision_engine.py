@@ -168,6 +168,33 @@ def test_decide_persists_routes_status_and_audit(session: Session) -> None:
     assert event.data["needs_review"] is False
 
 
+def test_decide_with_cascade_records_deciding_engine_and_both_views(session: Session) -> None:
+    from flowpilot.core.decision.cascade import CascadeClassifier
+
+    incoming = IncomingEmail(
+        message_id="<d3@x.example>", from_addr="a@b.example", subject="Fiyat", body_text="?"
+    )
+    email = ingest(session, MemoryStorage(), incoming, source="test").email
+    unsure = ScriptedLLM(_decision(route("procurement", "new_quote", 0.6)))
+    sure = ScriptedLLM(_decision(route("sales_orders", "customer_request", 0.95)))
+    cascade = CascadeClassifier(
+        first=LLMClassifier(unsure, get_registry(), "subq:snap"),
+        second=LLMClassifier(sure, get_registry(), "gemini:flash"),
+    )
+
+    decision = decide(session, email, classifier=cascade)
+
+    assert email.status is EmailStatus.ROUTED
+    assert decision.model == "gemini:flash"
+    assert decision.prompt_version == "decision-v1>decision-v1"
+    assert [r.department for r in decision.routes] == ["sales_orders"]
+    assert decision.reasoning == "SubQ: gerekçe\nGemini: gerekçe"
+    assert decision.raw_output is not None
+    assert [s["model"] for s in decision.raw_output["stages"]] == ["subq:snap", "gemini:flash"]
+    event = session.scalars(select(AuditEvent).where(AuditEvent.action == "email.classified")).one()
+    assert event.actor == "decision_engine:gemini:flash"
+
+
 def test_decide_marks_needs_review(session: Session) -> None:
     incoming = IncomingEmail(
         message_id="<d2@x.example>", from_addr="a@b.example", subject="?", body_text="?"
