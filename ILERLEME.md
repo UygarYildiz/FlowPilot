@@ -98,18 +98,20 @@ v1 bitince sırayla Finans (v2), Satış ve Sipariş (v3), Lojistik (v4) departm
 **Üç yapay zekâyı aynı 74 e-postayla yarıştırdık.** Bu yarıya daha önce hiç bakmamıştık, yani sınav
 tarafsız. Sonuçlar:
 
-| Ne ölçtük | Gemini (şu anki) | SubQ Snap 1.2 | Cloudflare Clef |
-|---|---|---|---|
-| Doğru departmana gönderme | **%97** | %96 | %72 |
-| "Eminim" deyip yanlış gönderme | %0 | %0 | %8 |
-| İki departmanlı e-postada ikisini de bulma | %100 | %100 | %71 |
-| "Bir insan baksın" diye ayırdıkları | **%12** | %30 | %49 |
-| E-posta başına süre | — | 0,3 sn | 0,6 sn |
+| Ne ölçtük | Gemini (şu anki) | SubQ Snap 1.2 | Clef (küçük) | Clef (büyük) |
+|---|---|---|---|---|
+| Doğru departmana gönderme | **%97** | %96 | %72 | %77 |
+| "Eminim" deyip yanlış gönderme | %0 | %0 | %8 | %0 |
+| İki departmanlı e-postada ikisini de bulma | %100 | %100 | %71 | %79 |
+| "Bir insan baksın" diye ayırdıkları | **%12** | %30 | %49 | %49 |
+| E-posta başına süre | — | 0,3 sn | 0,6 sn | 0,4 sn |
 
 - **SubQ neredeyse Gemini kadar isabetli** ve çok hızlı. Ama emin olmadığında daha sık insana soruyor.
   Örnek: "Sipariş durumumuz ne?" diye soran bir müşteri e-postasında "belki Lojistik de bakmalı" diye
   tereddüt ediyor ve e-postayı insana ayırıyor. Yanlış yere göndermiyor, sadece işi artırıyor.
-- **Clef elendi.** Sorularını iyileştirdikten sonra da müşteriyi tedarikçiyle karıştırmaya devam etti.
+- **Clef elendi.** Küçük model, soruları iyileştirdikten sonra da müşteriyi tedarikçiyle karıştırdı.
+  Büyük model bu hatayı yapmıyor, ama müşteri e-postalarının çoğuna "bu hiçbir departmanın işi değil"
+  diyip insana bırakıyor. Yanlış yere göndermiyor, ama e-postaların yarısını insana bırakıyor.
 
 **Öneri:** Gemini kalsın. SubQ yedek olarak hazırda dursun; Gemini'nin ücretsiz kotası biterse tek ayarla
 geçeriz.

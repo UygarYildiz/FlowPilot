@@ -15,17 +15,19 @@ Departman %96,0 (hedef ≥90) · otomatik yönlendirilenlerde hata %3,1 (≤5) �
 Rapor: `backend/evals/results/routing-20261119-100854-*.md`. 6 hatanın 4'ü fazladan departman ekleme.
 
 ## Karar modeli karşılaştırması (test yarısı, 74 e-posta, 2026-11-19) — kullanıcı kararı bekliyor
-| | Gemini `decision-v1` | SubQ `subq-snap-1.2` `typed-v2` | Clef-flash `typed-v2` |
-|---|---|---|---|
-| Departman | %97,3 | %95,9 | %71,6 |
-| Otomatik hata | %0,0 | %0,0 | %7,9 |
-| Çok dep. geri çağırma | %100 | %100 | %71,4 |
-| Manuel inceleme | %12,2 | %29,7 | %48,6 |
-| Ortanca süre | — | 0,28 sn | 0,57 sn |
+| | Gemini `decision-v1` | SubQ `subq-snap-1.2` `typed-v2` | Clef-flash `typed-v2` | Clef `typed-v2` |
+|---|---|---|---|---|
+| Departman | %97,3 | %95,9 | %71,6 | %77,0 |
+| Otomatik hata | %0,0 | %0,0 | %7,9 | %0,0 |
+| Çok dep. geri çağırma | %100 | %100 | %71,4 | %78,6 |
+| Manuel inceleme | %12,2 | %29,7 | %48,6 | %48,6 |
+| Ortanca süre | — | 0,28 sn | 0,57 sn | 0,42 sn |
+- Büyük Clef: 17 hatanın 10'u Satış e-postasına "hiçbir departman" (unknown, 0,50–0,81) demek; müşteri↔tedarikçi
+  karışıklığı yerine aşırı temkin. Hepsi incelemede, otomatik hata yok.
 - SubQ dev yarısı: departman %97,4, otomatik hata %0, inceleme %26,3. Test yarısında incelemeye giden 22 e-postanın
   8'i ilgisiz (tasarım gereği); kalanların çoğu 0,5–0,75 arası "belki" departman kuralından.
-- Raporlar: `evals/results/routing-20261119-13{1857,1938}-subq-*`, `...132028-cloudflare-clef-flash.*`.
-- Öneri: Gemini kalsın, SubQ yedek motor (`--engine subq`); Clef elendi, büyük `clef` ölçülmedi.
+- Raporlar: `evals/results/routing-20261119-13{1857,1938}-subq-*`, `...132028-cloudflare-clef-flash.*`, `...132725-cloudflare-clef.*`.
+- Öneri: Gemini kalsın, SubQ yedek motor (`--engine subq`); iki Clef modeli de elendi.
   Kullanıcı onaylarsa ADR yazılır. SubQ incelemeyi azaltma (eşik/"belki" kuralı) yalnızca dev'e bakarak denenebilir.
 
 ## Sıradaki adım

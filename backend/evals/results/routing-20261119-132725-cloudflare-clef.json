@@ -1,0 +1,1502 @@
+{
+  "meta": {
+    "model": "cloudflare:clef",
+    "date": "2026-11-19T13:27:25+00:00",
+    "dataset": "evals/routing/dataset.jsonl",
+    "prompt_version": "typed-v2",
+    "threshold": 0.75,
+    "split": "test"
+  },
+  "summary": {
+    "cases": 74,
+    "department_accuracy": 0.7702702702702703,
+    "auto_routed": 38,
+    "auto_routed_error_rate": 0.0,
+    "review_rate": 0.4864864864864865,
+    "review_that_was_correct": 19,
+    "procurement_intent": 1.0,
+    "intent_accuracy_all": 0.9827586206896551,
+    "multi_department_recall": 0.7857142857142857,
+    "no_decision": 0,
+    "median_seconds": 0.4185
+  },
+  "results": [
+    {
+      "id": "seed-004",
+      "expected": {
+        "procurement": "order_status_inquiry"
+      },
+      "predicted": {
+        "procurement": "order_status_inquiry"
+      },
+      "confidences": {
+        "procurement": 0.9143
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Departman olasılıkları: Satın Alma %91, Satış ve Sipariş %3, Finans %2, Lojistik %1",
+      "errors": [],
+      "seconds": 0.657
+    },
+    {
+      "id": "seed-005",
+      "expected": {
+        "procurement": "supplier_complaint"
+      },
+      "predicted": {
+        "procurement": "supplier_complaint"
+      },
+      "confidences": {
+        "procurement": 0.7686
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Departman olasılıkları: Satın Alma %77, Lojistik %3, Finans %2, Satış ve Sipariş %1",
+      "errors": [],
+      "seconds": 0.658
+    },
+    {
+      "id": "seed-006",
+      "expected": {
+        "procurement": "purchase_request"
+      },
+      "predicted": {
+        "procurement": "purchase_request"
+      },
+      "confidences": {
+        "procurement": 0.9508
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Departman olasılıkları: Satın Alma %95, Lojistik %10, Finans %1, Satış ve Sipariş %1",
+      "errors": [],
+      "seconds": 0.952
+    },
+    {
+      "id": "seed-007",
+      "expected": {
+        "finance": "invoice_received"
+      },
+      "predicted": {
+        "finance": "invoice_received"
+      },
+      "confidences": {
+        "finance": 0.9353
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "finance": true
+      },
+      "reasoning": "Departman olasılıkları: Finans %94, Satın Alma %15, Lojistik %1, Satış ve Sipariş %1",
+      "errors": [],
+      "seconds": 0.4
+    },
+    {
+      "id": "seed-008",
+      "expected": {
+        "finance": "payment_notice"
+      },
+      "predicted": {
+        "finance": "payment_notice"
+      },
+      "confidences": {
+        "finance": 0.894
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "finance": true
+      },
+      "reasoning": "Departman olasılıkları: Finans %89, Satın Alma %6, Satış ve Sipariş %1, Lojistik %1",
+      "errors": [],
+      "seconds": 0.363
+    },
+    {
+      "id": "seed-010",
+      "expected": {
+        "sales_orders": "order_change"
+      },
+      "predicted": {
+        "sales_orders": "order_change"
+      },
+      "confidences": {
+        "sales_orders": 0.6016
+      },
+      "needs_review": true,
+      "department_correct": true,
+      "intent_correct": {
+        "sales_orders": true
+      },
+      "reasoning": "Departman olasılıkları: Satış ve Sipariş %60, Lojistik %11, Satın Alma %7, Finans %1",
+      "errors": [],
+      "seconds": 0.403
+    },
+    {
+      "id": "seed-011",
+      "expected": {
+        "logistics": "delivery_delay"
+      },
+      "predicted": {
+        "logistics": "delivery_delay"
+      },
+      "confidences": {
+        "logistics": 0.9718
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "logistics": true
+      },
+      "reasoning": "Departman olasılıkları: Lojistik %97, Satış ve Sipariş %3, Satın Alma %2, Finans %2",
+      "errors": [],
+      "seconds": 0.322
+    },
+    {
+      "id": "seed-013",
+      "expected": {
+        "logistics": "delivery_issue",
+        "finance": "invoice_dispute"
+      },
+      "predicted": {
+        "procurement": "supplier_complaint",
+        "finance": "invoice_dispute",
+        "logistics": "delivery_issue"
+      },
+      "confidences": {
+        "procurement": 0.7674,
+        "finance": 0.7064,
+        "logistics": 0.5154
+      },
+      "needs_review": true,
+      "department_correct": false,
+      "intent_correct": {
+        "logistics": true,
+        "finance": true
+      },
+      "reasoning": "Departman olasılıkları: Satın Alma %77, Finans %71, Lojistik %52, Satış ve Sipariş %27",
+      "errors": [],
+      "seconds": 0.354
+    },
+    {
+      "id": "seed-015",
+      "expected": {
+        "unknown": null
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 0.9777
+      },
+      "needs_review": true,
+      "department_correct": true,
+      "intent_correct": {},
+      "reasoning": "Departman olasılıkları: Satış ve Sipariş %2, Satın Alma %2, Lojistik %2, Finans %2",
+      "errors": [],
+      "seconds": 0.309
+    },
+    {
+      "id": "ev-018",
+      "expected": {
+        "procurement": "price_update"
+      },
+      "predicted": {
+        "procurement": "price_update"
+      },
+      "confidences": {
+        "procurement": 0.9236
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Departman olasılıkları: Satın Alma %92, Finans %6, Satış ve Sipariş %2, Lojistik %1",
+      "errors": [],
+      "seconds": 0.284
+    },
+    {
+      "id": "ev-021",
+      "expected": {
+        "procurement": "supplier_complaint"
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 0.5517
+      },
+      "needs_review": true,
+      "department_correct": false,
+      "intent_correct": {},
+      "reasoning": "Departman olasılıkları: Satın Alma %45, Satış ve Sipariş %34, Finans %7, Lojistik %2",
+      "errors": [],
+      "seconds": 0.358
+    },
+    {
+      "id": "ev-024",
+      "expected": {
+        "procurement": "new_quote"
+      },
+      "predicted": {
+        "procurement": "new_quote"
+      },
+      "confidences": {
+        "procurement": 0.9329
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Departman olasılıkları: Satın Alma %93, Satış ve Sipariş %2, Finans %2, Lojistik %1",
+      "errors": [],
+      "seconds": 0.969
+    },
+    {
+      "id": "ev-026",
+      "expected": {
+        "finance": "invoice_received"
+      },
+      "predicted": {
+        "finance": "invoice_received"
+      },
+      "confidences": {
+        "finance": 0.9791
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "finance": true
+      },
+      "reasoning": "Departman olasılıkları: Finans %98, Satın Alma %11, Lojistik %3, Satış ve Sipariş %1",
+      "errors": [],
+      "seconds": 1.011
+    },
+    {
+      "id": "ev-031",
+      "expected": {
+        "finance": "invoice_dispute"
+      },
+      "predicted": {
+        "finance": "invoice_dispute"
+      },
+      "confidences": {
+        "finance": 0.8736
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "finance": true
+      },
+      "reasoning": "Departman olasılıkları: Finans %87, Satın Alma %7, Satış ve Sipariş %3, Lojistik %1",
+      "errors": [],
+      "seconds": 0.582
+    },
+    {
+      "id": "ev-032",
+      "expected": {
+        "finance": "invoice_dispute"
+      },
+      "predicted": {
+        "finance": "invoice_dispute"
+      },
+      "confidences": {
+        "finance": 0.9129
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "finance": true
+      },
+      "reasoning": "Departman olasılıkları: Finans %91, Satın Alma %3, Satış ve Sipariş %1, Lojistik %1",
+      "errors": [],
+      "seconds": 0.312
+    },
+    {
+      "id": "ev-037",
+      "expected": {
+        "sales_orders": "order_status_inquiry"
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 0.7085
+      },
+      "needs_review": true,
+      "department_correct": false,
+      "intent_correct": {},
+      "reasoning": "Departman olasılıkları: Satın Alma %29, Lojistik %25, Satış ve Sipariş %18, Finans %2",
+      "errors": [],
+      "seconds": 0.333
+    },
+    {
+      "id": "ev-039",
+      "expected": {
+        "sales_orders": "customer_request"
+      },
+      "predicted": {
+        "sales_orders": "customer_request"
+      },
+      "confidences": {
+        "sales_orders": 0.9522
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "sales_orders": true
+      },
+      "reasoning": "Departman olasılıkları: Satış ve Sipariş %95, Satın Alma %2, Finans %1, Lojistik %1",
+      "errors": [],
+      "seconds": 0.316
+    },
+    {
+      "id": "ev-040",
+      "expected": {
+        "sales_orders": "customer_request"
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 0.7907
+      },
+      "needs_review": true,
+      "department_correct": false,
+      "intent_correct": {},
+      "reasoning": "Departman olasılıkları: Satış ve Sipariş %21, Finans %3, Lojistik %2, Satın Alma %1",
+      "errors": [],
+      "seconds": 0.876
+    },
+    {
+      "id": "ev-041",
+      "expected": {
+        "sales_orders": "new_order"
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 0.5701
+      },
+      "needs_review": true,
+      "department_correct": false,
+      "intent_correct": {},
+      "reasoning": "Departman olasılıkları: Satın Alma %43, Satış ve Sipariş %14, Lojistik %8, Finans %5",
+      "errors": [],
+      "seconds": 0.378
+    },
+    {
+      "id": "ev-042",
+      "expected": {
+        "logistics": "delivery_delay"
+      },
+      "predicted": {
+        "logistics": "delivery_delay"
+      },
+      "confidences": {
+        "logistics": 0.9593
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "logistics": true
+      },
+      "reasoning": "Departman olasılıkları: Lojistik %96, Satın Alma %4, Finans %2, Satış ve Sipariş %1",
+      "errors": [],
+      "seconds": 0.293
+    },
+    {
+      "id": "ev-044",
+      "expected": {
+        "logistics": "delivery_issue"
+      },
+      "predicted": {
+        "logistics": "delivery_issue"
+      },
+      "confidences": {
+        "logistics": 0.9445
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "logistics": true
+      },
+      "reasoning": "Departman olasılıkları: Lojistik %94, Satın Alma %17, Satış ve Sipariş %9, Finans %5",
+      "errors": [],
+      "seconds": 0.306
+    },
+    {
+      "id": "ev-045",
+      "expected": {
+        "logistics": "shipping_info"
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 0.5034
+      },
+      "needs_review": true,
+      "department_correct": false,
+      "intent_correct": {},
+      "reasoning": "Departman olasılıkları: Lojistik %50, Satış ve Sipariş %3, Finans %1, Satın Alma %1",
+      "errors": [],
+      "seconds": 0.639
+    },
+    {
+      "id": "ev-046",
+      "expected": {
+        "logistics": "shipping_info"
+      },
+      "predicted": {
+        "logistics": "shipping_info"
+      },
+      "confidences": {
+        "logistics": 0.9845
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "logistics": true
+      },
+      "reasoning": "Departman olasılıkları: Lojistik %98, Satış ve Sipariş %5, Finans %4, Satın Alma %2",
+      "errors": [],
+      "seconds": 0.309
+    },
+    {
+      "id": "ev-048",
+      "expected": {
+        "finance": "invoice_received",
+        "logistics": "delivery_delay"
+      },
+      "predicted": {
+        "procurement": "order_status_inquiry",
+        "finance": "invoice_received"
+      },
+      "confidences": {
+        "procurement": 0.8716,
+        "finance": 0.8523
+      },
+      "needs_review": true,
+      "department_correct": false,
+      "intent_correct": {
+        "finance": true
+      },
+      "reasoning": "Departman olasılıkları: Satın Alma %87, Finans %85, Lojistik %29, Satış ve Sipariş %2",
+      "errors": [],
+      "seconds": 0.459
+    },
+    {
+      "id": "ev-049",
+      "expected": {
+        "sales_orders": "new_order",
+        "finance": "invoice_dispute"
+      },
+      "predicted": {
+        "sales_orders": "new_order"
+      },
+      "confidences": {
+        "sales_orders": 0.9561
+      },
+      "needs_review": true,
+      "department_correct": false,
+      "intent_correct": {
+        "sales_orders": true
+      },
+      "reasoning": "Departman olasılıkları: Satış ve Sipariş %96, Finans %50, Lojistik %10, Satın Alma %2",
+      "errors": [],
+      "seconds": 0.302
+    },
+    {
+      "id": "ev-050",
+      "expected": {
+        "procurement": "purchase_request",
+        "logistics": "shipment_request"
+      },
+      "predicted": {
+        "procurement": "purchase_request",
+        "logistics": "shipment_request"
+      },
+      "confidences": {
+        "procurement": 0.9632,
+        "logistics": 0.9585
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true,
+        "logistics": true
+      },
+      "reasoning": "Departman olasılıkları: Satın Alma %96, Lojistik %96, Satış ve Sipariş %1, Finans %1",
+      "errors": [],
+      "seconds": 0.295
+    },
+    {
+      "id": "ev-057",
+      "expected": {
+        "procurement": "new_quote"
+      },
+      "predicted": {
+        "procurement": "new_quote"
+      },
+      "confidences": {
+        "procurement": 0.84
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Departman olasılıkları: Satın Alma %84, Lojistik %2, Satış ve Sipariş %2, Finans %1",
+      "errors": [],
+      "seconds": 0.799
+    },
+    {
+      "id": "ev-060",
+      "expected": {
+        "procurement": "new_quote"
+      },
+      "predicted": {
+        "procurement": "new_quote"
+      },
+      "confidences": {
+        "procurement": 0.896
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Departman olasılıkları: Satın Alma %90, Satış ve Sipariş %2, Finans %2, Lojistik %1",
+      "errors": [],
+      "seconds": 0.366
+    },
+    {
+      "id": "ev-061",
+      "expected": {
+        "procurement": "price_update"
+      },
+      "predicted": {
+        "procurement": "price_update"
+      },
+      "confidences": {
+        "procurement": 0.9501
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Departman olasılıkları: Satın Alma %95, Finans %4, Satış ve Sipariş %1, Lojistik %1",
+      "errors": [],
+      "seconds": 0.337
+    },
+    {
+      "id": "ev-063",
+      "expected": {
+        "procurement": "price_update"
+      },
+      "predicted": {
+        "procurement": "price_update"
+      },
+      "confidences": {
+        "procurement": 0.9499
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Departman olasılıkları: Satın Alma %95, Finans %2, Satış ve Sipariş %1, Lojistik %1",
+      "errors": [],
+      "seconds": 0.846
+    },
+    {
+      "id": "ev-066",
+      "expected": {
+        "procurement": "supplier_complaint"
+      },
+      "predicted": {
+        "procurement": "supplier_complaint"
+      },
+      "confidences": {
+        "procurement": 0.6927
+      },
+      "needs_review": true,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Departman olasılıkları: Satın Alma %69, Lojistik %2, Finans %2, Satış ve Sipariş %1",
+      "errors": [],
+      "seconds": 0.421
+    },
+    {
+      "id": "ev-068",
+      "expected": {
+        "procurement": "purchase_request"
+      },
+      "predicted": {
+        "procurement": "purchase_request"
+      },
+      "confidences": {
+        "procurement": 0.9671
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Departman olasılıkları: Satın Alma %97, Lojistik %1, Satış ve Sipariş %1, Finans %1",
+      "errors": [],
+      "seconds": 0.447
+    },
+    {
+      "id": "ev-069",
+      "expected": {
+        "procurement": "purchase_request"
+      },
+      "predicted": {
+        "procurement": "purchase_request"
+      },
+      "confidences": {
+        "procurement": 0.8564
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Departman olasılıkları: Satın Alma %86, Finans %1, Lojistik %1, Satış ve Sipariş %1",
+      "errors": [],
+      "seconds": 0.74
+    },
+    {
+      "id": "ev-071",
+      "expected": {
+        "procurement": "new_quote"
+      },
+      "predicted": {
+        "procurement": "new_quote"
+      },
+      "confidences": {
+        "procurement": 0.7953
+      },
+      "needs_review": true,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Departman olasılıkları: Satın Alma %80, Finans %31, Satış ve Sipariş %2, Lojistik %1",
+      "errors": [],
+      "seconds": 2.194
+    },
+    {
+      "id": "ev-072",
+      "expected": {
+        "procurement": "new_quote"
+      },
+      "predicted": {
+        "procurement": "new_quote",
+        "logistics": "shipment_request"
+      },
+      "confidences": {
+        "procurement": 0.8897,
+        "logistics": 0.637
+      },
+      "needs_review": true,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Departman olasılıkları: Satın Alma %89, Lojistik %64, Satış ve Sipariş %2, Finans %1",
+      "errors": [],
+      "seconds": 0.361
+    },
+    {
+      "id": "ev-074",
+      "expected": {
+        "procurement": "price_update"
+      },
+      "predicted": {
+        "procurement": "price_update"
+      },
+      "confidences": {
+        "procurement": 0.9107
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Departman olasılıkları: Satın Alma %91, Satış ve Sipariş %2, Finans %2, Lojistik %1",
+      "errors": [],
+      "seconds": 0.846
+    },
+    {
+      "id": "ev-075",
+      "expected": {
+        "procurement": "supplier_complaint"
+      },
+      "predicted": {
+        "procurement": "supplier_complaint"
+      },
+      "confidences": {
+        "procurement": 0.885
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Departman olasılıkları: Satın Alma %88, Satış ve Sipariş %4, Lojistik %3, Finans %1",
+      "errors": [],
+      "seconds": 0.573
+    },
+    {
+      "id": "ev-077",
+      "expected": {
+        "finance": "invoice_received"
+      },
+      "predicted": {
+        "finance": "invoice_received"
+      },
+      "confidences": {
+        "finance": 0.9221
+      },
+      "needs_review": true,
+      "department_correct": true,
+      "intent_correct": {
+        "finance": true
+      },
+      "reasoning": "Departman olasılıkları: Finans %92, Satın Alma %42, Satış ve Sipariş %1, Lojistik %1",
+      "errors": [],
+      "seconds": 4.374
+    },
+    {
+      "id": "ev-085",
+      "expected": {
+        "finance": "payment_status_inquiry"
+      },
+      "predicted": {
+        "finance": "payment_status_inquiry"
+      },
+      "confidences": {
+        "finance": 0.9482
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "finance": true
+      },
+      "reasoning": "Departman olasılıkları: Finans %95, Satın Alma %10, Satış ve Sipariş %1, Lojistik %1",
+      "errors": [],
+      "seconds": 0.334
+    },
+    {
+      "id": "ev-088",
+      "expected": {
+        "finance": "invoice_dispute"
+      },
+      "predicted": {
+        "finance": "invoice_dispute"
+      },
+      "confidences": {
+        "finance": 0.9149
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "finance": true
+      },
+      "reasoning": "Departman olasılıkları: Finans %91, Satın Alma %15, Lojistik %4, Satış ve Sipariş %3",
+      "errors": [],
+      "seconds": 2.486
+    },
+    {
+      "id": "ev-089",
+      "expected": {
+        "finance": "invoice_dispute"
+      },
+      "predicted": {
+        "finance": "invoice_dispute"
+      },
+      "confidences": {
+        "finance": 0.9299
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "finance": true
+      },
+      "reasoning": "Departman olasılıkları: Finans %93, Satın Alma %8, Satış ve Sipariş %1, Lojistik %1",
+      "errors": [],
+      "seconds": 0.38
+    },
+    {
+      "id": "ev-091",
+      "expected": {
+        "finance": "invoice_received"
+      },
+      "predicted": {
+        "finance": "invoice_received"
+      },
+      "confidences": {
+        "finance": 0.9375
+      },
+      "needs_review": true,
+      "department_correct": true,
+      "intent_correct": {
+        "finance": true
+      },
+      "reasoning": "Departman olasılıkları: Finans %94, Satın Alma %41, Satış ve Sipariş %1, Lojistik %1",
+      "errors": [],
+      "seconds": 0.738
+    },
+    {
+      "id": "ev-093",
+      "expected": {
+        "finance": "payment_status_inquiry"
+      },
+      "predicted": {
+        "finance": "payment_status_inquiry",
+        "procurement": "supplier_complaint"
+      },
+      "confidences": {
+        "finance": 0.8835,
+        "procurement": 0.5078
+      },
+      "needs_review": true,
+      "department_correct": true,
+      "intent_correct": {
+        "finance": true
+      },
+      "reasoning": "Departman olasılıkları: Finans %88, Satın Alma %51, Satış ve Sipariş %1, Lojistik %1",
+      "errors": [],
+      "seconds": 0.597
+    },
+    {
+      "id": "ev-094",
+      "expected": {
+        "finance": "invoice_dispute"
+      },
+      "predicted": {
+        "finance": "invoice_dispute",
+        "procurement": "supplier_complaint"
+      },
+      "confidences": {
+        "finance": 0.9062,
+        "procurement": 0.6153
+      },
+      "needs_review": true,
+      "department_correct": false,
+      "intent_correct": {
+        "finance": true
+      },
+      "reasoning": "Departman olasılıkları: Finans %91, Satın Alma %62, Satış ve Sipariş %8, Lojistik %1",
+      "errors": [],
+      "seconds": 0.295
+    },
+    {
+      "id": "ev-095",
+      "expected": {
+        "sales_orders": "new_order"
+      },
+      "predicted": {
+        "sales_orders": "new_order"
+      },
+      "confidences": {
+        "sales_orders": 0.7896
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "sales_orders": true
+      },
+      "reasoning": "Departman olasılıkları: Satış ve Sipariş %79, Lojistik %21, Satın Alma %4, Finans %3",
+      "errors": [],
+      "seconds": 3.092
+    },
+    {
+      "id": "ev-096",
+      "expected": {
+        "sales_orders": "new_order"
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 0.51
+      },
+      "needs_review": true,
+      "department_correct": false,
+      "intent_correct": {},
+      "reasoning": "Departman olasılıkları: Satış ve Sipariş %49, Lojistik %20, Satın Alma %11, Finans %3",
+      "errors": [],
+      "seconds": 0.484
+    },
+    {
+      "id": "ev-097",
+      "expected": {
+        "sales_orders": "new_order"
+      },
+      "predicted": {
+        "sales_orders": "new_order"
+      },
+      "confidences": {
+        "sales_orders": 0.8268
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "sales_orders": true
+      },
+      "reasoning": "Departman olasılıkları: Satış ve Sipariş %83, Lojistik %9, Satın Alma %3, Finans %3",
+      "errors": [],
+      "seconds": 2.119
+    },
+    {
+      "id": "ev-100",
+      "expected": {
+        "sales_orders": "order_change"
+      },
+      "predicted": {
+        "sales_orders": "order_change",
+        "logistics": "delivery_delay"
+      },
+      "confidences": {
+        "sales_orders": 0.9774,
+        "logistics": 0.8426
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "sales_orders": true
+      },
+      "reasoning": "Departman olasılıkları: Satış ve Sipariş %98, Lojistik %84, Finans %2, Satın Alma %2",
+      "errors": [],
+      "seconds": 0.29
+    },
+    {
+      "id": "ev-102",
+      "expected": {
+        "sales_orders": "order_status_inquiry"
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 0.5259
+      },
+      "needs_review": true,
+      "department_correct": false,
+      "intent_correct": {},
+      "reasoning": "Departman olasılıkları: Satış ve Sipariş %47, Satın Alma %7, Lojistik %3, Finans %2",
+      "errors": [],
+      "seconds": 0.406
+    },
+    {
+      "id": "ev-103",
+      "expected": {
+        "sales_orders": "order_status_inquiry"
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 0.6077
+      },
+      "needs_review": true,
+      "department_correct": false,
+      "intent_correct": {},
+      "reasoning": "Departman olasılıkları: Lojistik %39, Satış ve Sipariş %34, Satın Alma %20, Finans %2",
+      "errors": [],
+      "seconds": 0.551
+    },
+    {
+      "id": "ev-104",
+      "expected": {
+        "sales_orders": "order_status_inquiry"
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 0.693
+      },
+      "needs_review": true,
+      "department_correct": false,
+      "intent_correct": {},
+      "reasoning": "Departman olasılıkları: Satış ve Sipariş %31, Satın Alma %20, Finans %3, Lojistik %2",
+      "errors": [],
+      "seconds": 0.381
+    },
+    {
+      "id": "ev-107",
+      "expected": {
+        "sales_orders": "customer_request"
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 0.8149
+      },
+      "needs_review": true,
+      "department_correct": false,
+      "intent_correct": {},
+      "reasoning": "Departman olasılıkları: Satış ve Sipariş %19, Satın Alma %5, Lojistik %2, Finans %1",
+      "errors": [],
+      "seconds": 1.075
+    },
+    {
+      "id": "ev-110",
+      "expected": {
+        "sales_orders": "new_order"
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 0.6685
+      },
+      "needs_review": true,
+      "department_correct": false,
+      "intent_correct": {},
+      "reasoning": "Departman olasılıkları: Satış ve Sipariş %33, Satın Alma %17, Finans %11, Lojistik %1",
+      "errors": [],
+      "seconds": 1.101
+    },
+    {
+      "id": "ev-111",
+      "expected": {
+        "sales_orders": "customer_request"
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 0.6513
+      },
+      "needs_review": true,
+      "department_correct": false,
+      "intent_correct": {},
+      "reasoning": "Departman olasılıkları: Satın Alma %35, Satış ve Sipariş %20, Finans %2, Lojistik %1",
+      "errors": [],
+      "seconds": 0.333
+    },
+    {
+      "id": "ev-112",
+      "expected": {
+        "sales_orders": "order_status_inquiry"
+      },
+      "predicted": {
+        "sales_orders": "order_change",
+        "logistics": "shipment_request"
+      },
+      "confidences": {
+        "sales_orders": 0.929,
+        "logistics": 0.5912
+      },
+      "needs_review": true,
+      "department_correct": true,
+      "intent_correct": {
+        "sales_orders": false
+      },
+      "reasoning": "Departman olasılıkları: Satış ve Sipariş %93, Lojistik %59, Satın Alma %2, Finans %1",
+      "errors": [],
+      "seconds": 0.624
+    },
+    {
+      "id": "ev-114",
+      "expected": {
+        "logistics": "delivery_delay"
+      },
+      "predicted": {
+        "logistics": "delivery_delay"
+      },
+      "confidences": {
+        "logistics": 0.973
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "logistics": true
+      },
+      "reasoning": "Departman olasılıkları: Lojistik %97, Satış ve Sipariş %3, Satın Alma %3, Finans %1",
+      "errors": [],
+      "seconds": 0.554
+    },
+    {
+      "id": "ev-117",
+      "expected": {
+        "logistics": "shipment_request"
+      },
+      "predicted": {
+        "logistics": "shipment_request"
+      },
+      "confidences": {
+        "logistics": 0.9647
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "logistics": true
+      },
+      "reasoning": "Departman olasılıkları: Lojistik %96, Satın Alma %12, Satış ve Sipariş %9, Finans %1",
+      "errors": [],
+      "seconds": 4.641
+    },
+    {
+      "id": "ev-119",
+      "expected": {
+        "logistics": "delivery_issue"
+      },
+      "predicted": {
+        "logistics": "delivery_issue"
+      },
+      "confidences": {
+        "logistics": 0.787
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "logistics": true
+      },
+      "reasoning": "Departman olasılıkları: Lojistik %79, Satış ve Sipariş %20, Satın Alma %8, Finans %1",
+      "errors": [],
+      "seconds": 0.416
+    },
+    {
+      "id": "ev-120",
+      "expected": {
+        "logistics": "delivery_issue"
+      },
+      "predicted": {
+        "logistics": "delivery_issue",
+        "procurement": "supplier_complaint"
+      },
+      "confidences": {
+        "logistics": 0.9521,
+        "procurement": 0.7041
+      },
+      "needs_review": true,
+      "department_correct": true,
+      "intent_correct": {
+        "logistics": true
+      },
+      "reasoning": "Departman olasılıkları: Lojistik %95, Satın Alma %70, Finans %4, Satış ve Sipariş %1",
+      "errors": [],
+      "seconds": 0.395
+    },
+    {
+      "id": "ev-121",
+      "expected": {
+        "logistics": "delivery_issue"
+      },
+      "predicted": {
+        "logistics": "delivery_issue"
+      },
+      "confidences": {
+        "logistics": 0.9305
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "logistics": true
+      },
+      "reasoning": "Departman olasılıkları: Lojistik %93, Satış ve Sipariş %25, Satın Alma %2, Finans %1",
+      "errors": [],
+      "seconds": 0.319
+    },
+    {
+      "id": "ev-123",
+      "expected": {
+        "logistics": "shipping_info"
+      },
+      "predicted": {
+        "logistics": "shipping_info"
+      },
+      "confidences": {
+        "logistics": 0.9471
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "logistics": true
+      },
+      "reasoning": "Departman olasılıkları: Lojistik %95, Satış ve Sipariş %6, Satın Alma %3, Finans %1",
+      "errors": [],
+      "seconds": 0.333
+    },
+    {
+      "id": "ev-125",
+      "expected": {
+        "logistics": "shipping_info"
+      },
+      "predicted": {
+        "logistics": "shipping_info",
+        "procurement": "order_status_inquiry"
+      },
+      "confidences": {
+        "logistics": 0.8062,
+        "procurement": 0.6165
+      },
+      "needs_review": true,
+      "department_correct": true,
+      "intent_correct": {
+        "logistics": true
+      },
+      "reasoning": "Departman olasılıkları: Lojistik %81, Satın Alma %62, Finans %4, Satış ve Sipariş %1",
+      "errors": [],
+      "seconds": 0.398
+    },
+    {
+      "id": "ev-128",
+      "expected": {
+        "logistics": "delivery_issue"
+      },
+      "predicted": {
+        "logistics": "delivery_issue"
+      },
+      "confidences": {
+        "logistics": 0.8146
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "logistics": true
+      },
+      "reasoning": "Departman olasılıkları: Lojistik %81, Satın Alma %15, Satış ve Sipariş %14, Finans %2",
+      "errors": [],
+      "seconds": 0.578
+    },
+    {
+      "id": "ev-130",
+      "expected": {
+        "logistics": "shipment_request"
+      },
+      "predicted": {
+        "logistics": "shipment_request"
+      },
+      "confidences": {
+        "logistics": 0.9786
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "logistics": true
+      },
+      "reasoning": "Departman olasılıkları: Lojistik %98, Satın Alma %2, Satış ve Sipariş %1, Finans %1",
+      "errors": [],
+      "seconds": 0.605
+    },
+    {
+      "id": "ev-133",
+      "expected": {
+        "logistics": "delivery_delay",
+        "finance": "invoice_received"
+      },
+      "predicted": {
+        "finance": "invoice_received"
+      },
+      "confidences": {
+        "finance": 0.9156
+      },
+      "needs_review": true,
+      "department_correct": false,
+      "intent_correct": {
+        "finance": true
+      },
+      "reasoning": "Departman olasılıkları: Finans %92, Lojistik %47, Satın Alma %21, Satış ve Sipariş %1",
+      "errors": [],
+      "seconds": 0.516
+    },
+    {
+      "id": "ev-138",
+      "expected": {
+        "sales_orders": "customer_request",
+        "logistics": "shipment_request"
+      },
+      "predicted": {
+        "logistics": "shipment_request",
+        "sales_orders": "customer_request"
+      },
+      "confidences": {
+        "logistics": 0.8507,
+        "sales_orders": 0.6854
+      },
+      "needs_review": true,
+      "department_correct": true,
+      "intent_correct": {
+        "sales_orders": true,
+        "logistics": true
+      },
+      "reasoning": "Departman olasılıkları: Lojistik %85, Satış ve Sipariş %69, Satın Alma %11, Finans %1",
+      "errors": [],
+      "seconds": 0.725
+    },
+    {
+      "id": "ev-140",
+      "expected": {
+        "logistics": "shipping_info",
+        "finance": "invoice_received"
+      },
+      "predicted": {
+        "logistics": "shipping_info",
+        "finance": "invoice_received"
+      },
+      "confidences": {
+        "logistics": 0.9447,
+        "finance": 0.943
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "logistics": true,
+        "finance": true
+      },
+      "reasoning": "Departman olasılıkları: Lojistik %94, Finans %94, Satın Alma %15, Satış ve Sipariş %1",
+      "errors": [],
+      "seconds": 0.733
+    },
+    {
+      "id": "ev-141",
+      "expected": {
+        "unknown": null
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 0.9799
+      },
+      "needs_review": true,
+      "department_correct": true,
+      "intent_correct": {},
+      "reasoning": "Departman olasılıkları: Satın Alma %2, Satış ve Sipariş %2, Lojistik %1, Finans %1",
+      "errors": [],
+      "seconds": 0.43
+    },
+    {
+      "id": "ev-142",
+      "expected": {
+        "unknown": null
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 0.7078
+      },
+      "needs_review": true,
+      "department_correct": true,
+      "intent_correct": {},
+      "reasoning": "Departman olasılıkları: Finans %29, Satın Alma %1, Lojistik %1, Satış ve Sipariş %1",
+      "errors": [],
+      "seconds": 0.305
+    },
+    {
+      "id": "ev-143",
+      "expected": {
+        "unknown": null
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 0.9684
+      },
+      "needs_review": true,
+      "department_correct": true,
+      "intent_correct": {},
+      "reasoning": "Departman olasılıkları: Finans %3, Satın Alma %1, Lojistik %1, Satış ve Sipariş %1",
+      "errors": [],
+      "seconds": 0.286
+    },
+    {
+      "id": "ev-144",
+      "expected": {
+        "unknown": null
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 0.9847
+      },
+      "needs_review": true,
+      "department_correct": true,
+      "intent_correct": {},
+      "reasoning": "Departman olasılıkları: Satın Alma %2, Satış ve Sipariş %1, Finans %1, Lojistik %1",
+      "errors": [],
+      "seconds": 0.299
+    },
+    {
+      "id": "ev-145",
+      "expected": {
+        "unknown": null
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 0.9742
+      },
+      "needs_review": true,
+      "department_correct": true,
+      "intent_correct": {},
+      "reasoning": "Departman olasılıkları: Finans %3, Satın Alma %2, Satış ve Sipariş %1, Lojistik %1",
+      "errors": [],
+      "seconds": 0.342
+    },
+    {
+      "id": "ev-146",
+      "expected": {
+        "unknown": null
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 0.8832
+      },
+      "needs_review": true,
+      "department_correct": true,
+      "intent_correct": {},
+      "reasoning": "Departman olasılıkları: Satın Alma %12, Satış ve Sipariş %7, Lojistik %2, Finans %2",
+      "errors": [],
+      "seconds": 0.532
+    },
+    {
+      "id": "ev-150",
+      "expected": {
+        "unknown": null
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 0.5878
+      },
+      "needs_review": true,
+      "department_correct": true,
+      "intent_correct": {},
+      "reasoning": "Departman olasılıkları: Satın Alma %41, Lojistik %3, Satış ve Sipariş %2, Finans %2",
+      "errors": [],
+      "seconds": 0.332
+    }
+  ]
+}
