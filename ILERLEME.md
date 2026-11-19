@@ -109,6 +109,9 @@ tarafsız. Sonuçlar:
 - **SubQ neredeyse Gemini kadar isabetli** ve çok hızlı. Ama emin olmadığında daha sık insana soruyor.
   Örnek: "Sipariş durumumuz ne?" diye soran bir müşteri e-postasında "belki Lojistik de bakmalı" diye
   tereddüt ediyor ve e-postayı insana ayırıyor. Yanlış yere göndermiyor, sadece işi artırıyor.
+- SubQ'nun fazla sorması kısmen bizim temkinli bir kuralımızdan geliyordu. Kuralı gevşetmeyi denedik:
+  insana ayrılanlar %30'dan %23'e indi, ama bir e-posta yanlış departmana gitti. Kazanç küçük olduğu için
+  kuralı değiştirmedik.
 - **Clef elendi.** Küçük model, soruları iyileştirdikten sonra da müşteriyi tedarikçiyle karıştırdı.
   Büyük model bu hatayı yapmıyor, ama müşteri e-postalarının çoğuna "bu hiçbir departmanın işi değil"
   diyip insana bırakıyor. Yanlış yere göndermiyor, ama e-postaların yarısını insana bırakıyor.

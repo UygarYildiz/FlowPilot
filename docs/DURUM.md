@@ -29,7 +29,11 @@ Rapor: `backend/evals/results/routing-20261119-100854-*.md`. 6 hatanın 4'ü faz
   (`typed.py:147`, `1 − eşik`); 22'nin 19'u aslında doğruydu. Gemini 9 (7 ilgisiz + 2 eşik altı).
 - Raporlar: `evals/results/routing-20261119-13{1857,1938}-subq-*`, `...132028-cloudflare-clef-flash.*`, `...132725-cloudflare-clef.*`.
 - Öneri: Gemini kalsın, SubQ yedek motor (`--engine subq`); iki Clef modeli de elendi.
-  Kullanıcı onaylarsa ADR yazılır. SubQ incelemeyi azaltma (eşik/"belki" kuralı) yalnızca dev'e bakarak denenebilir.
+  Kullanıcı onaylarsa ADR yazılır.
+- "Belirsiz" eşiği denemesi (kayıtlı olasılıklardan çevrimdışı, API çağrısı yok): dev'de 0,25 → 0,45 inceleme
+  %26,3 → %21,1, otomatik hata %0 (kural dev'de hiçbir hatayı yakalamamıştı). Test'te tek kontrol: %29,7 → %23,0,
+  otomatik hata %0 → %1,8 (ev-100: Lojistik %84, doğru olan Satış %44). Kod değişmedi; kazanç küçük, Gemini
+  (%12,2) yine önde. Kalan incelemenin çoğu ilgisiz e-postalar (tasarım gereği) + ikinci departmanda düşük güven.
 
 ## Sıradaki adım
 0. Kullanıcı motoru seçince ADR (karar modeli karşılaştırması).
