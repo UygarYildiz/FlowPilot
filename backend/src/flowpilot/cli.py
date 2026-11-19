@@ -5,7 +5,8 @@
     uv run flowpilot eval routing [--limit N]  yönlendirme değerlendirmesi (rapor: evals/results/)
     uv run flowpilot users demo                demo panel kullanıcılarını oluştur/güncelle
 
-LLM sağlayıcısı `FLOWPILOT_LLM_PROVIDER` ile seçilir (fake | gemini).
+Sınıflandırma motoru `FLOWPILOT_DECISION_ENGINE` ile seçilir (llm | clef); llm için sağlayıcı
+`FLOWPILOT_LLM_PROVIDER` (fake | gemini).
 """
 
 import argparse
@@ -16,7 +17,6 @@ from pathlib import Path
 from flowpilot.bootstrap import get_registry
 from flowpilot.config import Settings, get_settings
 from flowpilot.core.db import session_scope
-from flowpilot.core.decision.prompt import PROMPT_VERSION
 from flowpilot.core.decision.runner import classify_pending
 from flowpilot.core.ingestion.runner import run_source
 from flowpilot.core.ingestion.sources.imap import ImapSource
@@ -24,8 +24,8 @@ from flowpilot.core.ingestion.sources.seed import SeedSource
 from flowpilot.core.ingestion.types import EmailSource
 from flowpilot.core.storage import LocalStorage
 from flowpilot.core.users import ensure_demo_users
+from flowpilot.decision_setup import build_classifier
 from flowpilot.evals import routing
-from flowpilot.llm.factory import build_llm
 
 EVALS_DIR = Path("evals")
 
@@ -55,17 +55,10 @@ def _ingest(args: argparse.Namespace, settings: Settings, parser: argparse.Argum
 
 
 def _classify(args: argparse.Namespace, settings: Settings) -> int:
-    llm, model_name = build_llm(settings)
-    report = classify_pending(
-        session_scope,
-        llm=llm,
-        model_name=model_name,
-        registry=get_registry(),
-        threshold=settings.decision_threshold,
-        limit=args.limit,
-    )
+    classifier = build_classifier(settings, get_registry())
+    report = classify_pending(session_scope, classifier=classifier, limit=args.limit)
     print(
-        f"Model: {model_name}  Yönlendirildi: {report.routed}  "
+        f"Model: {classifier.model_name}  Yönlendirildi: {report.routed}  "
         f"Manuel inceleme: {report.needs_review}  Hata: {len(report.failed)}"
     )
     for line in report.failed:
@@ -76,26 +69,20 @@ def _classify(args: argparse.Namespace, settings: Settings) -> int:
 def _eval_routing(args: argparse.Namespace, settings: Settings) -> int:
     dataset = Path(args.dataset)
     cases = routing.load_cases(dataset, Path(settings.seed_dir))[: args.limit]
-    llm, model_name = build_llm(settings)
+    classifier = build_classifier(settings, get_registry(), engine=args.engine)
 
     def progress(index: int, result: routing.CaseResult) -> None:
         mark = "✓" if result.department_correct else "✗"
         review = " (inceleme)" if result.needs_review else ""
         print(f"[{index}/{len(cases)}] {mark} {result.id}: {result.predicted}{review}", flush=True)
 
-    results = routing.run(
-        cases,
-        llm=llm,
-        registry=get_registry(),
-        threshold=settings.decision_threshold,
-        progress=progress,
-    )
+    results = routing.run(cases, classifier=classifier, progress=progress)
     summary = routing.summarize(results)
     meta = {
-        "model": model_name,
+        "model": classifier.model_name,
         "date": datetime.now(UTC).isoformat(timespec="seconds"),
         "dataset": dataset.as_posix(),
-        "prompt_version": PROMPT_VERSION,
+        "prompt_version": classifier.prompt_version,
         "threshold": settings.decision_threshold,
     }
     path = routing.write_report(EVALS_DIR / "results", summary, results, meta)
@@ -136,6 +123,9 @@ def main(argv: list[str] | None = None) -> int:
     routing_parser = suites.add_parser("routing", help="Yönlendirme doğruluğu")
     routing_parser.add_argument("--dataset", default=str(EVALS_DIR / "routing" / "dataset.jsonl"))
     routing_parser.add_argument("--limit", type=int, default=None)
+    routing_parser.add_argument(
+        "--engine", choices=["llm", "clef"], default=None, help="Varsayılan: ayarlardaki motor"
+    )
 
     users = commands.add_parser("users", help="Panel kullanıcıları")
     users_commands = users.add_subparsers(dest="users_command", required=True)

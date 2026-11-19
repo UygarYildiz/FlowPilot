@@ -6,7 +6,7 @@ denetim kaydını günceller.
 """
 
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, Protocol
 
 from sqlalchemy.orm import Session
 
@@ -115,6 +115,28 @@ def classify(
     )
 
 
+class Classifier(Protocol):
+    """Bir e-postayı sınıflandıran motor: generatif LLM (`LLMClassifier`) ya da karar modeli
+    (`typed.DecisionModelClassifier`). `decide` ve değerlendirme aracı yalnızca bunu bilir."""
+
+    model_name: str
+    prompt_version: str
+
+    def __call__(self, email: EmailForDecision) -> Classification: ...
+
+
+@dataclass
+class LLMClassifier:
+    llm: LLMClient
+    registry: DepartmentRegistry
+    model_name: str
+    threshold: float = DEFAULT_THRESHOLD
+    prompt_version: str = PROMPT_VERSION
+
+    def __call__(self, email: EmailForDecision) -> Classification:
+        return classify(email, llm=self.llm, registry=self.registry, threshold=self.threshold)
+
+
 def email_for_decision(email: Email) -> EmailForDecision:
     return EmailForDecision(
         from_addr=email.from_addr,
@@ -133,18 +155,16 @@ def decide(
     session: Session,
     email: Email,
     *,
-    llm: LLMClient,
-    model_name: str,
-    registry: DepartmentRegistry,
-    threshold: float = DEFAULT_THRESHOLD,
+    classifier: Classifier,
 ) -> Decision:
     email.status = EmailStatus.CLASSIFYING
-    result = classify(email_for_decision(email), llm=llm, registry=registry, threshold=threshold)
+    result = classifier(email_for_decision(email))
+    model_name = classifier.model_name
 
     decision = Decision(
         email=email,
         model=model_name,
-        prompt_version=PROMPT_VERSION,
+        prompt_version=classifier.prompt_version,
         reasoning=result.reasoning,
         needs_review=result.needs_review,
         review_reason=result.review_reason,

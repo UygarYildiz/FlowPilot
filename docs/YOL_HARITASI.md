@@ -29,6 +29,9 @@ Amaç: Platformun iskeleti ve ilk gerçek ajan canlıda.
 ## v4 — Logistics
 - [ ] Logistics Agent: sevkiyat bilgisi, gecikme tespiti, lojistik taslakları
 
+## Deneme (v1 içinde, karar bekliyor)
+- [~] Karar modeli (Cloudflare Clef) ile sınıflandırma; Gemini ile 150 e-postada karşılaştırma. Kod hazır, Cloudflare anahtarı bekleniyor.
+
 ## Sonrası (sıralanmadı)
 - ERP olayları, web formları ve diğer giriş kaynakları
 - n8n / Make gibi iş akışı araçlarına webhook ile tetikleme

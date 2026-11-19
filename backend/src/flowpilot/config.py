@@ -14,6 +14,11 @@ class Settings(BaseSettings):
     llm_model: str = ""
     gemini_api_key: str = Field(default="", validation_alias="GEMINI_API_KEY")
     decision_threshold: float = 0.75
+    # Sınıflandırma motoru: "llm" (generatif, llm_provider ile) ya da "clef" (karar modeli).
+    decision_engine: str = "llm"
+    clef_model: str = "clef-flash"
+    cloudflare_account_id: str = Field(default="", validation_alias="CLOUDFLARE_ACCOUNT_ID")
+    cloudflare_api_token: str = Field(default="", validation_alias="CLOUDFLARE_API_TOKEN")
     # Oturum çerezini imzalar. Canlıda mutlaka değiştirilir.
     secret_key: str = "dev-secret-change-me"
     # Demo kullanıcılarının şifresi (`flowpilot users demo`). Yalnızca kurgusal demo içindir.

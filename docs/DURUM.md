@@ -15,7 +15,12 @@ Departman %96,0 (hedef ≥90) · otomatik yönlendirilenlerde hata %3,1 (≤5) �
 Rapor: `backend/evals/results/routing-20261119-100854-*.md`. 6 hatanın 4'ü fazladan departman ekleme.
 
 ## Şu an yapılan
-- Yok. Sıradaki adımı bekliyor.
+- Karar modeli denemesi: Cloudflare Clef ile ikinci bir sınıflandırıcı yazıldı (`core/decision/typed.py`,
+  `llm/decision_model.py`), testli. **Engel:** kullanıcının Cloudflare API anahtarı (`CLOUDFLARE_API_TOKEN`,
+  "Workers AI" şablonu) `backend/.env`'ye girilmeli. Hesap: `c7213f99b71f72b2b4da8ecef5e5070c`.
+- Anahtar gelince: `uv run flowpilot eval routing --engine clef` (clef-flash), sonra gerekirse `FLOWPILOT_CLEF_MODEL=clef`;
+  Gemini raporuyla karşılaştır, seçimi ADR ile yaz.
+- Cloudflare MCP eklentisi Clef'i "üçüncü taraf model" sanıp çağırmıyor; deneme eklentiyle yapılamadı.
 
 ## Sıradaki adım
 1. M4: departman sözleşmesine `agent` ve `proposal_types` (v1 kapsamı 3.3), `AgentRun` / `Proposal` modelleri,
@@ -37,4 +42,4 @@ Rapor: `backend/evals/results/routing-20261119-100854-*.md`. 6 hatanın 4'ü faz
 - IMAP adaptörü yalnızca sahte sunucuyla test edildi.
 
 ## Engeller
-- Yok.
+- Clef ölçümü için Cloudflare API anahtarı (kullanıcıdan).

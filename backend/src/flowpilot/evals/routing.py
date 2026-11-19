@@ -13,18 +13,19 @@ ve her ikisinde:
 """
 
 import json
+import statistics
+import time
 from collections.abc import Callable, Iterable
 from dataclasses import asdict, dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from flowpilot.core.decision.engine import Classification, classify
+from flowpilot.core.decision.engine import Classification, Classifier
 from flowpilot.core.decision.prompt import AttachmentForDecision, EmailForDecision
 from flowpilot.core.ingestion.extract import extract_text
 from flowpilot.core.ingestion.sources.seed import SeedSource
-from flowpilot.core.registry import UNKNOWN, DepartmentRegistry
-from flowpilot.llm import LLMClient
+from flowpilot.core.registry import UNKNOWN
 
 TARGETS = {"department_accuracy": 0.90, "auto_routed_error_rate": 0.05, "procurement_intent": 0.85}
 
@@ -48,6 +49,7 @@ class CaseResult:
     intent_correct: dict[str, bool]
     reasoning: str
     errors: list[str] = field(default_factory=list)
+    seconds: float = 0.0
 
 
 def load_cases(dataset: Path, seed_dir: Path) -> list[Case]:
@@ -147,24 +149,30 @@ def summarize(results: list[CaseResult]) -> dict[str, Any]:
             sum(len(r.expected) for r in multi),
         ),
         "no_decision": sum(not r.predicted for r in results),
+        "median_seconds": statistics.median(r.seconds for r in results) if results else None,
     }
 
 
 def run(
     cases: Iterable[Case],
     *,
-    llm: LLMClient,
-    registry: DepartmentRegistry,
-    threshold: float,
+    classifier: Classifier,
     progress: Callable[[int, CaseResult], None] | None = None,
 ) -> list[CaseResult]:
     results = []
     for index, case in enumerate(cases, start=1):
-        result = score(case, classify(case.email, llm=llm, registry=registry, threshold=threshold))
+        started = time.perf_counter()
+        classification = classifier(case.email)
+        result = score(case, classification)
+        result.seconds = round(time.perf_counter() - started, 3)
         results.append(result)
         if progress:
             progress(index, result)
     return results
+
+
+def _seconds(value: float | None) -> str:
+    return "—" if value is None else f"{value:.2f} sn"
 
 
 def _pct(value: float | None) -> str:
@@ -200,6 +208,7 @@ def render_markdown(
         f"| Manuel incelemeye giden | {_pct(summary['review_rate'])} "
         f"(bunların {summary['review_that_was_correct']} tanesi aslında doğruydu) | |",
         f"| Karar üretilemeyen | {summary['no_decision']} | |",
+        f"| Ortanca süre (e-posta başına) | {_seconds(summary.get('median_seconds'))} | |",
         "",
         "## Hatalar",
         "",

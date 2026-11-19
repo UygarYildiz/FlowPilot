@@ -90,6 +90,16 @@ v1 bitince sırayla Finans (v2), Satış ve Sipariş (v3), Lojistik (v4) departm
 
 (Daha eski çalışmalar: `docs/gunluk/`.)
 
+## Şu an
+**Yeni bir yapay zekâ türünü deniyoruz: "karar modeli" (Cloudflare Clef).** Gemini cevabı metin olarak
+yazıyor ve "ne kadar emin olduğunu" kendisi söylüyor. Clef ise metin yazmıyor; her seçeneğe gerçek bir
+olasılık veriyor ("Satın Alma'nın işi mi? %93 evet") ve listede olmayan bir cevap veremiyor. Bu, "insan baksın"
+kararını daha sağlam hâle getirebilir ve en sık hatamızı (fazladan departman) azaltabilir.
+
+Clef'le çalışan ikinci sınıflandırıcı hazır. Şimdi aynı 150 e-postada Gemini'yle yarıştıracağız; hangisi
+iyiyse onu seçeceğiz. Bunun için senden bir Cloudflare anahtarı gerekiyor (aşağıda). Cloudflare'in günlük
+ücretsiz kotası bu deneme için yetiyor.
+
 ## Sırada ne var?
 1. **M4 — Onay akışı:** Ajanların önerilerini (ör. "bu tekliften sipariş taslağı hazırladım") onaylama
    veya reddetme ekranı ve bütün sistemin "kim ne yaptı" kaydı.
@@ -97,7 +107,9 @@ v1 bitince sırayla Finans (v2), Satış ve Sipariş (v3), Lojistik (v4) departm
    yaparken ölçümün kendini kandırmaması için örnek seti ikiye ayıracağız.
 
 ## Senden beklenenler
-- **Karar:** M4'e geçelim mi?
+- **Yapman gereken:** Cloudflare'de bir API anahtarı oluşturup `backend/.env` dosyasına eklemek (adımlar
+  sohbette). Anahtarı sohbete yapıştırma, yalnızca dosyaya yaz.
+- **Karar (sonra):** Clef/Gemini karşılaştırmasından sonra M4'e geçmek.
 - **Onay:** Panel Türkçe yapıldı. İlanlar İngilizce ise çevirebiliriz, söylemen yeterli.
 - **İsteğe bağlı:** Şirketlere gelebilecek 5–10 gerçekçi e-posta yazarsan ölçüm çok daha güvenilir olur.
   Gerçek kişi/şirket bilgisi koyma; Gemini'nin ücretsiz katmanına yalnızca kurgusal veri gönderiyoruz.
@@ -149,6 +161,7 @@ Sonra tarayıcıda http://localhost:5173 adresini aç ve giriş sayfasındaki de
 | Manuel inceleme | Sistemin emin olamadığı e-postaları bir insanın bakması için ayırdığı yığın. Panelde "İnsan baksın". |
 | Yönlendirme fişi | Panelde her e-postanın yanındaki kart: hangi departmana, neden, ne kadar emin. |
 | API | Panelin arka planda veri aldığı/gönderdiği kısım. |
+| Karar modeli | Metin yazmayan, seçeneklere olasılık veren yapay zekâ türü (Cloudflare Clef, TypeSafe Jev). |
 | Ajan | Departmanın işini hazırlayan yapay zekâ (M5'te gelecek). Sadece **önerir**, onay insanındır. |
 | Seed | Demo için hazırladığımız kurgusal şirket verisi (Atlas Endüstri). |
 | Değerlendirme seti | Doğru cevabını bildiğimiz örnek e-postalar; sistemin ne kadar doğru çalıştığını ölçmek için. |

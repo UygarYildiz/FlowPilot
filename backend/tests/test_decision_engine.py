@@ -6,7 +6,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from flowpilot.bootstrap import get_registry
-from flowpilot.core.decision.engine import MAX_ATTEMPTS, classify, decide
+from flowpilot.core.decision.engine import MAX_ATTEMPTS, LLMClassifier, classify, decide
 from flowpilot.core.decision.prompt import (
     ATTACHMENT_EXCERPT_CHARS,
     AttachmentForDecision,
@@ -157,7 +157,7 @@ def test_decide_persists_routes_status_and_audit(session: Session) -> None:
         _decision(route("logistics", "delivery_issue", 0.9), route("finance", "invoice_dispute"))
     )
 
-    decision = decide(session, email, llm=llm, model_name="test-model", registry=get_registry())
+    decision = decide(session, email, classifier=LLMClassifier(llm, get_registry(), "test-model"))
 
     assert email.status is EmailStatus.ROUTED
     assert decision.model == "test-model" and decision.prompt_version == "decision-v1"
@@ -174,7 +174,7 @@ def test_decide_marks_needs_review(session: Session) -> None:
     )
     email = ingest(session, MemoryStorage(), incoming, source="test").email
     llm = ScriptedLLM(LLMError("hata"), LLMError("hata"))
-    decision = decide(session, email, llm=llm, model_name="m", registry=get_registry())
+    decision = decide(session, email, classifier=LLMClassifier(llm, get_registry(), "m"))
     assert email.status is EmailStatus.NEEDS_REVIEW
     assert decision.needs_review and decision.routes == []
 
@@ -208,9 +208,7 @@ def test_classify_pending_stops_when_model_unavailable(session: Session) -> None
     llm = ScriptedLLM(
         _decision(route("finance", "invoice_received")), LLMUnavailableError("kota bitti")
     )
-    report = classify_pending(
-        scope, llm=llm, model_name="m", registry=get_registry(), threshold=0.75
-    )
+    report = classify_pending(scope, classifier=LLMClassifier(llm, get_registry(), "m"))
 
     assert report.routed == 1 and len(report.failed) == 1 and llm.calls == 2
     statuses = sorted(s.value for s in session.scalars(select(Email.status)))

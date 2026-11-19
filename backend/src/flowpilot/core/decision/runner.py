@@ -5,10 +5,9 @@ from dataclasses import dataclass, field
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from flowpilot.core.decision.engine import decide
+from flowpilot.core.decision.engine import Classifier, decide
 from flowpilot.core.models import Email, EmailStatus
-from flowpilot.core.registry import DepartmentRegistry
-from flowpilot.llm import LLMClient, LLMUnavailableError
+from flowpilot.llm import LLMUnavailableError
 
 
 @dataclass
@@ -21,10 +20,7 @@ class ClassifyReport:
 def classify_pending(
     session_scope: Callable[[], AbstractContextManager[Session]],
     *,
-    llm: LLMClient,
-    model_name: str,
-    registry: DepartmentRegistry,
-    threshold: float,
+    classifier: Classifier,
     limit: int | None = None,
 ) -> ClassifyReport:
     """`received` durumundaki e-postaları geliş sırasıyla sınıflandırır; her biri ayrı işlemde.
@@ -40,14 +36,7 @@ def classify_pending(
         try:
             with session_scope() as session:
                 email = session.get_one(Email, email_id)
-                decision = decide(
-                    session,
-                    email,
-                    llm=llm,
-                    model_name=model_name,
-                    registry=registry,
-                    threshold=threshold,
-                )
+                decision = decide(session, email, classifier=classifier)
         except LLMUnavailableError as exc:
             # Model erişilemez: kalanları denemenin anlamı yok; hepsi `received` kalır.
             report.failed.append(f"{email_id}: {exc} — kalan e-postalar sonraki çalıştırmaya kaldı")
