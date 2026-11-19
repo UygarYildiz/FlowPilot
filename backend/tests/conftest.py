@@ -32,7 +32,11 @@ def alembic_config(url: str) -> Config:
 
 def _ensure_database(url: str) -> None:
     parsed = make_url(url)
-    admin = create_engine(parsed.set(database="postgres"), isolation_level="AUTOCOMMIT")
+    admin = create_engine(
+        parsed.set(database="postgres"),
+        isolation_level="AUTOCOMMIT",
+        connect_args={"connect_timeout": 3},
+    )
     with admin.connect() as conn:
         exists = conn.scalar(
             text("SELECT 1 FROM pg_database WHERE datname = :name"), {"name": parsed.database}

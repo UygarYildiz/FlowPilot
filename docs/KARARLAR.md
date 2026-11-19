@@ -80,3 +80,9 @@
 - Gemini ücretsiz katmanı geliştirme ve denemeyi bedava yapar. Bedeli: istek/dakika ve günlük sınırlar (değerlendirme setleri yavaş çalıştırılır, canlı demoda yeni işlem sınırlanır) ve ücretsiz katmanda gönderilen içeriğin Google tarafından ürün geliştirmede kullanılabilmesi. Bu yüzden ücretsiz katmana yalnızca kurgusal veri gönderilir; IMAP ile gerçek posta kutusu bağlanırsa ücretli katman gerekir.
 - Sağlayıcı değişirse yalnızca `llm/` altındaki uygulama değişir.
 - Redis olmadığı için tek veritabanı yedeklenir; kuyruk yükü büyürse yeni ADR ile ayrı kuyruğa geçilir.
+
+## ADR-010: Departmanlar bir bileşim kökünde kayıt defterine bağlanır
+**Tarih:** 2026-11-19 · **Durum:** Kabul edildi
+**Bağlam:** Decision Engine departmanların intent listesine ihtiyaç duyar, ama çekirdek departman paketlerini import edemez (MIMARI.md kural 1). Departmanlar bir yerde kayıt defterine eklenmeli.
+**Karar:** Sözleşme (`Department`, `Intent`, `DepartmentRegistry`) çekirdekte durur. Departman paketleri yalnızca bu sözleşmeyi import eder ve bir `DEPARTMENT` tanımı dışa verir. Çekirdeğin dışındaki `flowpilot/bootstrap.py` departmanları açık bir listeyle kayıt defterine ekler; CLI ve API kayıt defterini oradan alır. Otomatik keşif (paket tarama, entry point) kullanılmaz.
+**Sonuçlar:** Yeni departman = yeni paket + `bootstrap.py`'de bir satır + import-linter kural 2 listesine bir satır; çekirdek değişmez. Açık liste, hangi departmanların etkin olduğunu tek bakışta gösterir. Bedeli: kaydı unutulan bir departman sessizce devre dışı kalır (kayıt defteri testi dört departmanı doğrular).

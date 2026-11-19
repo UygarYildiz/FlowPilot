@@ -13,6 +13,7 @@ dependencies = [
     "psycopg[binary]>=3.2",
     "pdfplumber>=0.11.10",
     "openpyxl>=3.1.5",
+    "google-genai>=3.6.1",
 ]
 
 [project.scripts]
@@ -51,8 +52,8 @@ include = ["src", "tests"]
 pythonVersion = "3.12"
 typeCheckingMode = "standard"
 
-# MIMARI.md bağımlılık kuralları. Yeni departman eklendiğinde aşağıdaki
-# "departments-independent" sözleşmesine eklenir.
+# MIMARI.md bağımlılık kuralları. Yeni departman eklendiğinde kural 2'nin
+# modül listesine de eklenir.
 [tool.importlinter]
 root_package = "flowpilot"
 
@@ -67,3 +68,19 @@ name = "llm katmanı core ve departmanlardan bağımsızdır"
 type = "forbidden"
 source_modules = ["flowpilot.llm"]
 forbidden_modules = ["flowpilot.core", "flowpilot.departments"]
+
+[[tool.importlinter.contracts]]
+name = "Kural 2: departman modülleri birbirini import etmez"
+type = "independence"
+modules = [
+    "flowpilot.departments.procurement",
+    "flowpilot.departments.finance",
+    "flowpilot.departments.sales_orders",
+    "flowpilot.departments.logistics",
+]
+
+[[tool.importlinter.contracts]]
+name = "Departmanlar bileşim kökünü ve CLI'ı import etmez"
+type = "forbidden"
+source_modules = ["flowpilot.departments"]
+forbidden_modules = ["flowpilot.bootstrap", "flowpilot.cli"]

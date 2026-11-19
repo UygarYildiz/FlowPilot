@@ -8,7 +8,7 @@ import uuid
 from datetime import UTC, datetime
 from typing import Any
 
-from sqlalchemy import BigInteger, DateTime, Enum, ForeignKey, Index, String, Text
+from sqlalchemy import BigInteger, DateTime, Enum, Float, ForeignKey, Index, String, Text
 from sqlalchemy.dialects.postgresql import ARRAY, JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -40,6 +40,18 @@ class ParseStatus(enum.StrEnum):
     FAILED = "failed"
 
 
+class Priority(enum.StrEnum):
+    LOW = "low"
+    NORMAL = "normal"
+    HIGH = "high"
+    URGENT = "urgent"
+
+
+class RouteOrigin(enum.StrEnum):
+    AI = "ai"
+    MANUAL = "manual"
+
+
 class Email(Base):
     __tablename__ = "email"
 
@@ -58,6 +70,9 @@ class Email(Base):
 
     attachments: Mapped[list["Attachment"]] = relationship(
         back_populates="email", cascade="all, delete-orphan", order_by="Attachment.position"
+    )
+    decisions: Mapped[list["Decision"]] = relationship(
+        back_populates="email", cascade="all, delete-orphan", order_by="Decision.created_at"
     )
 
 
@@ -79,6 +94,51 @@ class Attachment(Base):
     email: Mapped[Email] = relationship(back_populates="attachments")
 
     __table_args__ = (Index("ix_attachment_email_id", "email_id"),)
+
+
+class Decision(Base):
+    """Decision Engine'in bir e-posta için kararı. Silinmez; düzeltme yeni rota ekler."""
+
+    __tablename__ = "decision"
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    email_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("email.id", ondelete="CASCADE"))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
+    model: Mapped[str] = mapped_column(String(128))
+    prompt_version: Mapped[str] = mapped_column(String(32))
+    reasoning: Mapped[str] = mapped_column(Text, default="")
+    needs_review: Mapped[bool]
+    review_reason: Mapped[str | None] = mapped_column(Text)
+    attempts: Mapped[int]
+    raw_output: Mapped[dict[str, Any] | None] = mapped_column(JSONB)
+
+    email: Mapped[Email] = relationship(back_populates="decisions")
+    routes: Mapped[list["Route"]] = relationship(
+        back_populates="decision", cascade="all, delete-orphan", order_by="Route.position"
+    )
+
+    __table_args__ = (Index("ix_decision_email_id", "email_id"),)
+
+
+class Route(Base):
+    __tablename__ = "route"
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    decision_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("decision.id", ondelete="CASCADE"))
+    position: Mapped[int]
+    department: Mapped[str] = mapped_column(String(64))
+    intent: Mapped[str | None] = mapped_column(String(64))
+    priority: Mapped[Priority] = mapped_column(_enum(Priority))
+    confidence: Mapped[float] = mapped_column(Float)
+    suggested_action: Mapped[str] = mapped_column(Text, default="")
+    origin: Mapped[RouteOrigin] = mapped_column(_enum(RouteOrigin), default=RouteOrigin.AI)
+
+    decision: Mapped[Decision] = relationship(back_populates="routes")
+
+    __table_args__ = (
+        Index("ix_route_decision_id", "decision_id"),
+        Index("ix_route_department", "department"),
+    )
 
 
 class AuditEvent(Base):

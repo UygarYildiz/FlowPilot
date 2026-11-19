@@ -1,0 +1,1089 @@
+{
+  "meta": {
+    "model": "gemini:gemini-3.5-flash-lite",
+    "date": "2026-11-18T23:38:08+00:00",
+    "dataset": "evals/routing/dataset.jsonl",
+    "prompt_version": "decision-v1",
+    "threshold": 0.75
+  },
+  "summary": {
+    "cases": 56,
+    "department_accuracy": 0.9821428571428571,
+    "auto_routed": 48,
+    "auto_routed_error_rate": 0.020833333333333332,
+    "review_rate": 0.14285714285714285,
+    "review_that_was_correct": 8,
+    "procurement_intent": 1.0,
+    "intent_accuracy_all": 1.0,
+    "multi_department_recall": 1.0,
+    "no_decision": 0
+  },
+  "results": [
+    {
+      "id": "seed-001",
+      "expected": {
+        "procurement": "new_quote"
+      },
+      "predicted": {
+        "procurement": "new_quote"
+      },
+      "confidences": {
+        "procurement": 1.0
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Tedarikçi firmadan şirketimizin satın alma talebine istinaden fiyat teklifi içeren resmi bir e-posta ve PDF eklenmiştir.",
+      "errors": []
+    },
+    {
+      "id": "seed-002",
+      "expected": {
+        "procurement": "new_quote"
+      },
+      "predicted": {
+        "procurement": "new_quote"
+      },
+      "confidences": {
+        "procurement": 1.0
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Tedarikçi konumundaki Anadolu Rulman, SAT-2026-031 numaralı talebimiz için resmi fiyat teklifini ve Excel ekini göndermiştir.",
+      "errors": []
+    },
+    {
+      "id": "seed-003",
+      "expected": {
+        "procurement": "price_update"
+      },
+      "predicted": {
+        "procurement": "price_update"
+      },
+      "confidences": {
+        "procurement": 1.0
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Tedarikçi Kaya Hidrolik, Aralık 2026 itibarıyla geçerli olacak güncel fiyat listesini iletmiştir.",
+      "errors": []
+    },
+    {
+      "id": "seed-004",
+      "expected": {
+        "procurement": "order_status_inquiry"
+      },
+      "predicted": {
+        "procurement": "order_status_inquiry"
+      },
+      "confidences": {
+        "procurement": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Tedarikçi firmamız tarafından verilen PO-2026-0902 numaralı siparişin imzalı formunun teyidini ve durumunu sormaktadır.",
+      "errors": []
+    },
+    {
+      "id": "seed-005",
+      "expected": {
+        "procurement": "supplier_complaint"
+      },
+      "predicted": {
+        "procurement": "supplier_complaint"
+      },
+      "confidences": {
+        "procurement": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Tedarikçi şirketimiz tarafından verilen PO-2026-0877 siparişinde yazılı bildirim yapılmadan teknik şartname/tolerans değişikliği yapıldığını ve ek maliyet doğurduğunu bildirerek şikayette bulunuyor.",
+      "errors": []
+    },
+    {
+      "id": "seed-006",
+      "expected": {
+        "procurement": "purchase_request"
+      },
+      "predicted": {
+        "procurement": "purchase_request"
+      },
+      "confidences": {
+        "procurement": 1.0
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "E-posta üretim planlamasından gelmekte olup Hat 3 bakımı için acil malzeme satın alınmasını talep etmektedir.",
+      "errors": []
+    },
+    {
+      "id": "seed-007",
+      "expected": {
+        "finance": "invoice_received"
+      },
+      "predicted": {
+        "finance": "invoice_received"
+      },
+      "confidences": {
+        "finance": 1.0
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "finance": true
+      },
+      "reasoning": "Tedarikçi Özkan Rulman tarafından kesilen e-fatura ve detayları iletildiği için finans departmanına yönlendirilmiştir.",
+      "errors": []
+    },
+    {
+      "id": "seed-008",
+      "expected": {
+        "finance": "payment_notice"
+      },
+      "predicted": {
+        "finance": "payment_notice"
+      },
+      "confidences": {
+        "finance": 1.0
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "finance": true
+      },
+      "reasoning": "Müşteri şirketimize ait bir faturanın ödemesinin yapıldığını ve cari hesabın güncellenmesini bildirmektedir.",
+      "errors": []
+    },
+    {
+      "id": "seed-009",
+      "expected": {
+        "sales_orders": "new_order"
+      },
+      "predicted": {
+        "sales_orders": "new_order"
+      },
+      "confidences": {
+        "sales_orders": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "sales_orders": true
+      },
+      "reasoning": "Müşteri şirketten yeni ürün siparişi talebinde bulunuyor ve proforma fatura istiyor.",
+      "errors": []
+    },
+    {
+      "id": "seed-010",
+      "expected": {
+        "sales_orders": "order_change"
+      },
+      "predicted": {
+        "sales_orders": "order_change"
+      },
+      "confidences": {
+        "sales_orders": 0.98
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "sales_orders": true
+      },
+      "reasoning": "Müşteri mevcut bir siparişindeki ürün miktarının artırılmasını ve teslim tarihinin teyit edilmesini talep etmektedir.",
+      "errors": []
+    },
+    {
+      "id": "seed-011",
+      "expected": {
+        "logistics": "delivery_delay"
+      },
+      "predicted": {
+        "logistics": "delivery_delay"
+      },
+      "confidences": {
+        "logistics": 0.99
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "logistics": true
+      },
+      "reasoning": "E-posta, sevkiyatın yoldaki bir çalışma nedeniyle gecikeceğini ve güncel teslimat zamanını bildirerek irsaliye paylaşıyor.",
+      "errors": []
+    },
+    {
+      "id": "seed-012",
+      "expected": {
+        "logistics": "shipment_request"
+      },
+      "predicted": {
+        "logistics": "shipment_request"
+      },
+      "confidences": {
+        "logistics": 1.0
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "logistics": true
+      },
+      "reasoning": "E-posta depo tarafından lojistik departmanına gönderilmiş olup belirli bir sipariş için yarınki yükleme için kapalı kasa araç talebi içermektedir.",
+      "errors": []
+    },
+    {
+      "id": "seed-013",
+      "expected": {
+        "logistics": "delivery_issue",
+        "finance": "invoice_dispute"
+      },
+      "predicted": {
+        "logistics": "delivery_issue",
+        "finance": "invoice_dispute"
+      },
+      "confidences": {
+        "logistics": 0.95,
+        "finance": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "logistics": true,
+        "finance": true
+      },
+      "reasoning": "E-posta, SO-2026-0431 siparişine ait teslimatta eksik ürün olduğunu belirttiği için lojistik; bu ürünlerin faturalandırıldığını belirterek düzeltme istediği için finans departmanını ilgilendirir.",
+      "errors": []
+    },
+    {
+      "id": "seed-014",
+      "expected": {
+        "unknown": null
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 1.0
+      },
+      "needs_review": true,
+      "department_correct": true,
+      "intent_correct": {},
+      "reasoning": "Gelen e-posta harici bir fuar organizasyonunun tanıtım ve duyuru mesajı olduğundan şirket içi hiçbir departmanın iş sürecine dahil değildir.",
+      "errors": []
+    },
+    {
+      "id": "seed-015",
+      "expected": {
+        "unknown": null
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 1.0
+      },
+      "needs_review": true,
+      "department_correct": true,
+      "intent_correct": {},
+      "reasoning": "Gelen e-posta şirket içi belirsiz bir toplantı çağrısı niteliğinde olup belirli bir departmanın iş süreçleriyle ilgili değildir.",
+      "errors": []
+    },
+    {
+      "id": "ev-016",
+      "expected": {
+        "procurement": "new_quote"
+      },
+      "predicted": {
+        "procurement": "new_quote"
+      },
+      "confidences": {
+        "procurement": 1.0
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Tedarikçi konumundaki Yıldız Kalıp firması, şirketimiz için yıllık bakım hizmetine ait fiyat teklifini ve ilgili PDF ekini göndermiştir.",
+      "errors": []
+    },
+    {
+      "id": "ev-017",
+      "expected": {
+        "procurement": "new_quote"
+      },
+      "predicted": {
+        "procurement": "new_quote"
+      },
+      "confidences": {
+        "procurement": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Tedarikçi şirketimiz için talep edilen pnömatik silindirlere ait güncel fiyat teklifini iletmektedir.",
+      "errors": []
+    },
+    {
+      "id": "ev-018",
+      "expected": {
+        "procurement": "price_update"
+      },
+      "predicted": {
+        "procurement": "price_update"
+      },
+      "confidences": {
+        "procurement": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Ege Kablo, tedarik ettiğimiz ürünler için bir fiyat artış bildirimi göndermiştir; bu durum Satın Alma departmanının fiyat listesi güncellemesi kapsamındadır.",
+      "errors": []
+    },
+    {
+      "id": "ev-019",
+      "expected": {
+        "procurement": "price_update"
+      },
+      "predicted": {
+        "procurement": "price_update"
+      },
+      "confidences": {
+        "procurement": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Tedarikçi ithal ürün grubunda fiyatların EUR cinsine geçtiğini ve yeni fiyat listesini ilettiği için bu bir fiyat güncellemesidir.",
+      "errors": []
+    },
+    {
+      "id": "ev-020",
+      "expected": {
+        "procurement": "order_status_inquiry"
+      },
+      "predicted": {
+        "procurement": "order_status_inquiry"
+      },
+      "confidences": {
+        "procurement": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Tedarikçi firma, verdiğimiz PO-2026-0915 siparişi için iki farklı adres arasından hangisinin geçerli olduğunu sormaktadır.",
+      "errors": []
+    },
+    {
+      "id": "ev-021",
+      "expected": {
+        "procurement": "supplier_complaint"
+      },
+      "predicted": {
+        "procurement": "supplier_complaint"
+      },
+      "confidences": {
+        "procurement": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Tedarikçi şirket, verdiğimiz siparişlerin sonradan iptal edilmesi nedeniyle şikayet bildirmekte ve yeni bir ceza politikası uygulamaya başlayacaklarını iletmektedir.",
+      "errors": []
+    },
+    {
+      "id": "ev-022",
+      "expected": {
+        "procurement": "purchase_request"
+      },
+      "predicted": {
+        "procurement": "purchase_request"
+      },
+      "confidences": {
+        "procurement": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Şirket içinden bakım birimi yeni bir forklift aküsü satın alınmasını talep etmektedir.",
+      "errors": []
+    },
+    {
+      "id": "ev-023",
+      "expected": {
+        "procurement": "purchase_request"
+      },
+      "predicted": {
+        "procurement": "purchase_request"
+      },
+      "confidences": {
+        "procurement": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "BT birimi, yeni başlayacak mühendisler için şirket içi kullanım amacıyla dizüstü bilgisayar satın alınmasını ve teklif toplanmasını talep etmektedir.",
+      "errors": []
+    },
+    {
+      "id": "ev-024",
+      "expected": {
+        "procurement": "new_quote"
+      },
+      "predicted": {
+        "procurement": "new_quote"
+      },
+      "confidences": {
+        "procurement": 1.0
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Tedarikçi şirketimizin satın alma talebine istinaden e-posta yoluyla fiyat teklifi göndermiştir.",
+      "errors": []
+    },
+    {
+      "id": "ev-025",
+      "expected": {
+        "procurement": "new_quote"
+      },
+      "predicted": {
+        "procurement": "new_quote"
+      },
+      "confidences": {
+        "procurement": 1.0
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true
+      },
+      "reasoning": "Tedarikçi şirketimizden giden RFQ SAT-2026-031 talebine istinaden resmi fiyat teklifini iletmiştir.",
+      "errors": []
+    },
+    {
+      "id": "ev-026",
+      "expected": {
+        "finance": "invoice_received"
+      },
+      "predicted": {
+        "finance": "invoice_received"
+      },
+      "confidences": {
+        "finance": 1.0
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "finance": true
+      },
+      "reasoning": "E-posta, bir nakliye firması olan Hızlı Lojistik tarafından gönderilen Kasım 2026 dönemine ait hizmet faturasını ve PDF ekini içermektedir.",
+      "errors": []
+    },
+    {
+      "id": "ev-027",
+      "expected": {
+        "finance": "invoice_received"
+      },
+      "predicted": {
+        "finance": "invoice_received"
+      },
+      "confidences": {
+        "finance": 1.0
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "finance": true
+      },
+      "reasoning": "Tedarikçi Nord Bearings, PO-2026-0861 numaralı siparişe ait INV-2026-5531 numaralı faturayı göndermiştir. Bu durum finans departmanının görev alanına girer.",
+      "errors": []
+    },
+    {
+      "id": "ev-028",
+      "expected": {
+        "finance": "payment_notice"
+      },
+      "predicted": {
+        "finance": "payment_notice"
+      },
+      "confidences": {
+        "finance": 1.0
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "finance": true
+      },
+      "reasoning": "Müşteri şirkete yapılan ödemenin dekontunu ilettiği için finans departmanının ödeme bildirimi olarak kaydetmesi gerekir.",
+      "errors": []
+    },
+    {
+      "id": "ev-029",
+      "expected": {
+        "finance": "payment_status_inquiry"
+      },
+      "predicted": {
+        "finance": "payment_status_inquiry"
+      },
+      "confidences": {
+        "finance": 0.99
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "finance": true
+      },
+      "reasoning": "E-posta, tedarikçi tarafından vadesi geçen faturaların ödeme durumunu sormak amacıyla gönderilmiştir.",
+      "errors": []
+    },
+    {
+      "id": "ev-030",
+      "expected": {
+        "finance": "payment_status_inquiry"
+      },
+      "predicted": {
+        "finance": "payment_status_inquiry"
+      },
+      "confidences": {
+        "finance": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "finance": true
+      },
+      "reasoning": "Tedarikçi firmadan gelen bu e-posta, kesilen bir faturanın ödeme durumunu sorgulamaktadır ve finans departmanının alanına girer.",
+      "errors": []
+    },
+    {
+      "id": "ev-031",
+      "expected": {
+        "finance": "invoice_dispute"
+      },
+      "predicted": {
+        "finance": "invoice_dispute"
+      },
+      "confidences": {
+        "finance": 0.98
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "finance": true
+      },
+      "reasoning": "Müşteri finans departmanı kesilen faturada iskonto uygulanmadığını belirterek düzeltme talep etmiştir.",
+      "errors": []
+    },
+    {
+      "id": "ev-032",
+      "expected": {
+        "finance": "invoice_dispute"
+      },
+      "predicted": {
+        "finance": "invoice_dispute"
+      },
+      "confidences": {
+        "finance": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "finance": true
+      },
+      "reasoning": "Müşteri şirkete kestiğimiz faturada KDV oranının yanlış hesaplandığını belirterek düzeltme talep etmektedir.",
+      "errors": []
+    },
+    {
+      "id": "ev-033",
+      "expected": {
+        "sales_orders": "new_order"
+      },
+      "predicted": {
+        "sales_orders": "new_order"
+      },
+      "confidences": {
+        "sales_orders": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "sales_orders": true
+      },
+      "reasoning": "Müşteri Karataş Makine, Atlas Endüstri'ye yeni bir satın alma siparişi iletmiştir.",
+      "errors": []
+    },
+    {
+      "id": "ev-034",
+      "expected": {
+        "sales_orders": "new_order"
+      },
+      "predicted": {
+        "sales_orders": "new_order"
+      },
+      "confidences": {
+        "sales_orders": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "sales_orders": true
+      },
+      "reasoning": "Müşteri, önceki bir siparişin aynısını tekrar vermek istediğini belirttiği için bu bir yeni sipariş talebidir.",
+      "errors": []
+    },
+    {
+      "id": "ev-035",
+      "expected": {
+        "sales_orders": "order_change"
+      },
+      "predicted": {
+        "sales_orders": "order_change"
+      },
+      "confidences": {
+        "sales_orders": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "sales_orders": true
+      },
+      "reasoning": "Müşteri, mevcut SO-2026-0452 numaralı siparişinin iptal edilmesini talep ediyor. Bu durum satış ve sipariş departmanının görev alanına girer.",
+      "errors": []
+    },
+    {
+      "id": "ev-036",
+      "expected": {
+        "sales_orders": "order_change"
+      },
+      "predicted": {
+        "sales_orders": "order_change"
+      },
+      "confidences": {
+        "sales_orders": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "sales_orders": true
+      },
+      "reasoning": "Müşteri mevcut bir siparişin teslimat adresinin değiştirilmesini talep etmektedir.",
+      "errors": []
+    },
+    {
+      "id": "ev-037",
+      "expected": {
+        "sales_orders": "order_status_inquiry"
+      },
+      "predicted": {
+        "sales_orders": "order_status_inquiry"
+      },
+      "confidences": {
+        "sales_orders": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "sales_orders": true
+      },
+      "reasoning": "Müşteri şirketimize daha önce verdiği siparişin sevkiyat tarihini sormaktadır. Bu durum satış ve sipariş departmanının görev alanına girer.",
+      "errors": []
+    },
+    {
+      "id": "ev-038",
+      "expected": {
+        "sales_orders": "customer_request"
+      },
+      "predicted": {
+        "sales_orders": "customer_request"
+      },
+      "confidences": {
+        "sales_orders": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "sales_orders": true
+      },
+      "reasoning": "E-posta yeni bir müşteri adayından gelen ürün fiyatı ve teslim süresi talebini içermektedir, bu nedenle satış ve sipariş departmanına yönlendirilmiştir.",
+      "errors": []
+    },
+    {
+      "id": "ev-039",
+      "expected": {
+        "sales_orders": "customer_request"
+      },
+      "predicted": {
+        "sales_orders": "customer_request"
+      },
+      "confidences": {
+        "sales_orders": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "sales_orders": true
+      },
+      "reasoning": "Müşteri konumundaki bir makine üreticisi ürün kataloğu ve fiyat listesi talep etmektedir; bu durum Satış ve Sipariş departmanının müşteri talepleri kapsamına girer.",
+      "errors": []
+    },
+    {
+      "id": "ev-040",
+      "expected": {
+        "sales_orders": "customer_request"
+      },
+      "predicted": {
+        "sales_orders": "customer_request"
+      },
+      "confidences": {
+        "sales_orders": 0.9
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "sales_orders": true
+      },
+      "reasoning": "Müşteri yakın zamanda aldığı ürünlerde erken aşınma sorunu bildirmiş ve çözüm istemiştir; bu durum satış ve müşteri ilişkileri departmanını ilgilendirir.",
+      "errors": []
+    },
+    {
+      "id": "ev-041",
+      "expected": {
+        "sales_orders": "new_order"
+      },
+      "predicted": {
+        "sales_orders": "new_order"
+      },
+      "confidences": {
+        "sales_orders": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "sales_orders": true
+      },
+      "reasoning": "Müşteri şirketimizden ürün siparişi verdiğini bildirdiği için Satış ve Sipariş departmanına yönlendirilmiştir.",
+      "errors": []
+    },
+    {
+      "id": "ev-042",
+      "expected": {
+        "logistics": "delivery_delay"
+      },
+      "predicted": {
+        "logistics": "delivery_delay"
+      },
+      "confidences": {
+        "logistics": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "logistics": true
+      },
+      "reasoning": "Nakliye firması Ambarlı'daki gümrük muayenesi nedeniyle sevkiyatın 3 iş günü gecikeceğini bildiriyor.",
+      "errors": []
+    },
+    {
+      "id": "ev-043",
+      "expected": {
+        "logistics": "shipment_request"
+      },
+      "predicted": {
+        "logistics": "shipment_request"
+      },
+      "confidences": {
+        "logistics": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "logistics": true
+      },
+      "reasoning": "E-posta, Stuttgart'a yapılacak 12 paletlik ihracat sevkiyatı için nakliye planlaması ve teklif toplama talebi içermektedir.",
+      "errors": []
+    },
+    {
+      "id": "ev-044",
+      "expected": {
+        "logistics": "delivery_issue"
+      },
+      "predicted": {
+        "logistics": "delivery_issue"
+      },
+      "confidences": {
+        "logistics": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "logistics": true
+      },
+      "reasoning": "E-posta teslimat sırasında yaşanan fiziksel hasar ve ürünlerin kullanılamaz durumda olduğunu bildirdiği için lojistik departmanına yönlendirilmiştir.",
+      "errors": []
+    },
+    {
+      "id": "ev-045",
+      "expected": {
+        "logistics": "shipping_info"
+      },
+      "predicted": {
+        "logistics": "shipping_info"
+      },
+      "confidences": {
+        "logistics": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "logistics": true
+      },
+      "reasoning": "E-posta, kargo firmasından gönderinin takip numarasını ve tahmini teslimat tarihini bildiren bir sevkiyat bilgisi içermektedir.",
+      "errors": []
+    },
+    {
+      "id": "ev-046",
+      "expected": {
+        "logistics": "shipping_info"
+      },
+      "predicted": {
+        "logistics": "shipping_info"
+      },
+      "confidences": {
+        "logistics": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "logistics": true
+      },
+      "reasoning": "Lojistik firması ihracat beyannamesi için gerekli sevkiyat belgelerini talep etmektedir.",
+      "errors": []
+    },
+    {
+      "id": "ev-047",
+      "expected": {
+        "logistics": "delivery_delay"
+      },
+      "predicted": {
+        "logistics": "delivery_delay",
+        "sales_orders": "order_status_inquiry"
+      },
+      "confidences": {
+        "logistics": 0.95,
+        "sales_orders": 0.85
+      },
+      "needs_review": false,
+      "department_correct": false,
+      "intent_correct": {
+        "logistics": true
+      },
+      "reasoning": "Nakliye firması sevkiyatın arıza nedeniyle yarına kaldığını bildirmektedir. Bu durum lojistik takibini ve müşteri sipariş durumunu doğrudan ilgilendirmektedir.",
+      "errors": []
+    },
+    {
+      "id": "ev-048",
+      "expected": {
+        "finance": "invoice_received",
+        "logistics": "delivery_delay"
+      },
+      "predicted": {
+        "finance": "invoice_received",
+        "logistics": "delivery_delay"
+      },
+      "confidences": {
+        "finance": 1.0,
+        "logistics": 1.0
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "finance": true,
+        "logistics": true
+      },
+      "reasoning": "E-posta hem yeni bir fatura içerdiği için finans departmanını hem de sevkiyat gecikmesi bildirdiği için lojistik departmanını ilgilendirmektedir.",
+      "errors": []
+    },
+    {
+      "id": "ev-049",
+      "expected": {
+        "sales_orders": "new_order",
+        "finance": "invoice_dispute"
+      },
+      "predicted": {
+        "sales_orders": "new_order",
+        "finance": "invoice_dispute"
+      },
+      "confidences": {
+        "sales_orders": 0.95,
+        "finance": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "sales_orders": true,
+        "finance": true
+      },
+      "reasoning": "E-posta hem yeni bir ürün siparişi içerdiğinden sales_orders departmanına hem de önceki fatura için düzeltme talebi içerdiğinden finance departmanına yönlendirilmiştir.",
+      "errors": []
+    },
+    {
+      "id": "ev-050",
+      "expected": {
+        "procurement": "purchase_request",
+        "logistics": "shipment_request"
+      },
+      "predicted": {
+        "procurement": "purchase_request",
+        "logistics": "shipment_request"
+      },
+      "confidences": {
+        "procurement": 0.95,
+        "logistics": 0.95
+      },
+      "needs_review": false,
+      "department_correct": true,
+      "intent_correct": {
+        "procurement": true,
+        "logistics": true
+      },
+      "reasoning": "E-posta hem acil malzeme alımı için satın alma talebi hem de bu malın depodan teslim alınması için lojistik araç planlaması gerektirmektedir.",
+      "errors": []
+    },
+    {
+      "id": "ev-051",
+      "expected": {
+        "unknown": null
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 1.0
+      },
+      "needs_review": true,
+      "department_correct": true,
+      "intent_correct": {},
+      "reasoning": "Gelen e-posta dış kaynaklı bir webinar duyurusu olup şirket içi herhangi bir departmanın iş sürecine dahil değildir.",
+      "errors": []
+    },
+    {
+      "id": "ev-052",
+      "expected": {
+        "unknown": null
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 1.0
+      },
+      "needs_review": true,
+      "department_correct": true,
+      "intent_correct": {},
+      "reasoning": "Gelen e-posta şirket dışından gönderilen bir SEO reklam teklifi olduğundan hiçbir şirket departmanının görev alanına girmemektedir.",
+      "errors": []
+    },
+    {
+      "id": "ev-053",
+      "expected": {
+        "unknown": null
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 1.0
+      },
+      "needs_review": true,
+      "department_correct": true,
+      "intent_correct": {},
+      "reasoning": "Bu e-posta bir iş başvurusudur ve şirketimizdeki mevcut departmanların (Satın alma, Finans, Satış, Lojistik) hiçbiriyle ilgili değildir.",
+      "errors": []
+    },
+    {
+      "id": "ev-054",
+      "expected": {
+        "unknown": null
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 1.0
+      },
+      "needs_review": true,
+      "department_correct": true,
+      "intent_correct": {},
+      "reasoning": "Bu e-posta tüm personele gönderilen şirket içi bir sosyal etkinlik duyurusudur ve operasyonel veya idari bir departmanın iş yükünü ilgilendirmez.",
+      "errors": []
+    },
+    {
+      "id": "ev-055",
+      "expected": {
+        "unknown": null
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 1.0
+      },
+      "needs_review": true,
+      "department_correct": true,
+      "intent_correct": {},
+      "reasoning": "Gelen e-posta bir tedarikçinin otomatik ofis dışı yanıtıdır, iş gerektiren herhangi bir talep içermemektedir.",
+      "errors": []
+    },
+    {
+      "id": "ev-056",
+      "expected": {
+        "unknown": null
+      },
+      "predicted": {
+        "unknown": null
+      },
+      "confidences": {
+        "unknown": 0.2
+      },
+      "needs_review": true,
+      "department_correct": true,
+      "intent_correct": {},
+      "reasoning": "E-postada hangi konu veya departmanla ilgili olduğu belirtilmemiş, bağlam çok eksik.",
+      "errors": []
+    }
+  ]
+}
