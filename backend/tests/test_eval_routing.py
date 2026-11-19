@@ -27,7 +27,7 @@ def _classification(*routes: tuple[str, str | None], review: bool = False) -> Cl
 
 def test_dataset_loads_and_labels_are_valid() -> None:
     cases = routing.load_cases(DATASET, SEED_DIR)
-    assert len(cases) >= 50
+    assert len(cases) >= 150
     registry = get_registry()
     for case in cases:
         for department, intent in case.expected.items():

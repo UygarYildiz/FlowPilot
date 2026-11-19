@@ -39,17 +39,23 @@ onun önerilerini onaylama/reddetme ekranı. Panel şimdilik yalnızca senin bil
 (internette değil).
 
 ## Ne kadar iyi çalışıyor?
-56 örnek e-postayla ölçtük:
+150 örnek e-postayla ölçtük (19 Kasım):
 
 | Ne ölçtük | Sonuç | Hedefimiz |
 |---|---|---|
-| Doğru departmana gönderme | %98 | en az %90 ✅ |
-| "Eminim" deyip yanlış gönderme | %2 | en fazla %5 ✅ |
+| Doğru departmana gönderme | %96 | en az %90 ✅ |
+| "Eminim" deyip yanlış gönderme | %3 | en fazla %5 ✅ |
 | Satın Alma e-postasının türünü doğru bilme (teklif mi, şikâyet mi…) | %100 | en az %85 ✅ |
 
-⚠️ **Bu sonuçlar olduğundan iyi görünüyor olabilir.** Örnek e-postaların hepsini Claude yazdı;
-gerçek hayattaki e-postalar daha dağınık. Hedef 150 e-postaya çıkmak ve senin de birkaç gerçekçi
-örnek eklemen.
+Yeni eklenen 94 e-posta bilerek daha zordu: iletilmiş e-postalar, tek satırlık mesajlar, İngilizce
+olanlar, yanlış adrese gelenler, iki departman arasında kalanlar, sahte banka e-postası gibi. Sonuçlar
+56 e-postalık ilk ölçüme göre biraz düştü (%98 → %96), ki bu beklenen bir şey.
+
+**Yapay zekânın en sık hatası:** gereksiz yere fazladan bir departman eklemek. Örneğin bir tedarikçinin
+"ödememizi yapın" hatırlatmasına Finans'ın yanında Satış'ı da eklemiş. Zararı sınırlı: doğru departman
+yine e-postayı alıyor, fazladan biri de görüyor.
+
+⚠️ Örneklerin hepsini hâlâ Claude yazdı. Senin yazacağın birkaç gerçekçi e-posta ölçümü daha güvenilir yapar.
 
 ## Yol haritası (v1: Çekirdek + Satın Alma)
 
@@ -58,7 +64,7 @@ gerçek hayattaki e-postalar daha dağınık. Hedef 150 e-postaya çıkmak ve se
 | Hazırlık | Proje fikri, kapsam, teknoloji seçimi, belge sistemi | ✅ Bitti |
 | M0 | Projenin iskeleti, otomatik testler (GitHub'da her yüklemede çalışır) | ✅ Bitti |
 | M1 | E-postaları ve eklerini içeri alma, tekrarları ayıklama | ✅ Bitti |
-| M2 | Yapay zekâyla departmana yönlendirme + ölçüm | 🔄 Neredeyse bitti (örnek seti 56/150) |
+| M2 | Yapay zekâyla departmana yönlendirme + ölçüm (150 örnek) | ✅ Bitti |
 | M3 | **Panel:** e-postaları, kararları ve gerekçelerini ekranda görme, yanlışı düzeltme, giriş | ✅ Bitti |
 | M4 | Ajan önerilerini onaylama/reddetme ve tüm sistemin "kim ne yaptı" ekranı | ⬜ Sırada |
 | M5 | **Satın Alma ajanı:** tekliften ürün/fiyat çıkarma, teklifleri karşılaştırma, sipariş taslağı | ⬜ |
@@ -67,6 +73,11 @@ gerçek hayattaki e-postalar daha dağınık. Hedef 150 e-postaya çıkmak ve se
 v1 bitince sırayla Finans (v2), Satış ve Sipariş (v3), Lojistik (v4) departmanlarının ajanları eklenecek.
 
 ## Son oturumlarda ne yaptık?
+
+**19 Kasım — Örnek seti 150'ye çıktı (M2 bitti)**
+- 94 yeni, bilerek daha zor örnek e-posta yazdık; doğru cevaplarını sonuçlara bakmadan belirledik.
+- Ölçüm yaptık: üç hedef de tuttu (yukarıdaki tablo). Hataları inceledik ve en sık hatanın "fazladan
+  departman eklemek" olduğunu bulduk.
 
 **19 Kasım — Panel (M3)**
 - Giriş ekranı ve demo hesapları: yönetici ile Satın Alma, Finans, Satış ve Lojistik çalışanları.
@@ -77,28 +88,16 @@ v1 bitince sırayla Finans (v2), Satış ve Sipariş (v3), Lojistik (v4) departm
   değiştirdi (örn. fuar e-postası kapandı); istersen veriyi sıfırlarız.
 - Panel dilini Türkçe yaptık. İngilizceye çevirmek gerekirse metinler tek yerde duruyor.
 
-**19 Kasım — Bu belge**
-- Projeyi kolay takip edebilmen için bu dosyayı yazdık. Her çalışmanın sonunda güncelleniyor; güncellenmezse
-  sistem işi bitirmeye ve commit atmaya izin vermiyor.
-
-**19 Kasım — Yapay zekâ kararı (M2)**
-- Dört departmanı ve her birinin e-posta türlerini tanımladık (ör. Satın Alma: teklif, fiyat güncellemesi,
-  sipariş sorusu, şikâyet, şirket içi talep).
-- Gemini'yi bağladık; senin koyduğun anahtarla çalışıyor. Ücretsiz katmanı kullanıyoruz, maliyeti yok.
-- Sistemin ne kadar doğru çalıştığını ölçen bir araç yazdık; sonuçlar yukarıda.
-- İnternet bir ara koptu ve bir sorunu gösterdi: bağlantı yokken e-postalar yanlışlıkla "insan baksın"
-  yığınına düşebilirdi. Düzelttik: artık bağlantı gelince kaldığı yerden devam ediyor.
-
 (Daha eski çalışmalar: `docs/gunluk/`.)
 
 ## Sırada ne var?
 1. **M4 — Onay akışı:** Ajanların önerilerini (ör. "bu tekliften sipariş taslağı hazırladım") onaylama
    veya reddetme ekranı ve bütün sistemin "kim ne yaptı" kaydı.
-2. Örnek e-posta setini 56'dan 150'ye çıkarmak (daha zor, daha dağınık örneklerle). Bu, M4'ten önce de
-   yapılabilir; senin tercihin.
+2. İleride: "fazladan departman" hatasını azaltmak için yapay zekâya verilen talimatı iyileştirmek. Bunu
+   yaparken ölçümün kendini kandırmaması için örnek seti ikiye ayıracağız.
 
 ## Senden beklenenler
-- **Karar:** Sırada M4 mü, yoksa önce örnek seti mi büyütelim?
+- **Karar:** M4'e geçelim mi?
 - **Onay:** Panel Türkçe yapıldı. İlanlar İngilizce ise çevirebiliriz, söylemen yeterli.
 - **İsteğe bağlı:** Şirketlere gelebilecek 5–10 gerçekçi e-posta yazarsan ölçüm çok daha güvenilir olur.
   Gerçek kişi/şirket bilgisi koyma; Gemini'nin ücretsiz katmanına yalnızca kurgusal veri gönderiyoruz.

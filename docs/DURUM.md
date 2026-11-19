@@ -5,13 +5,14 @@
 
 **Son güncelleme:** 2026-11-19
 **Aktif sürüm:** v1 — Çekirdek + Procurement ([kapsam](surumler/v1.md))
-**Aşama:** M0, M1, M3 bitti; M2 büyük ölçüde bitti (yönlendirme seti 56/150). M4 (onay) başlamadı.
+**Aşama:** M0–M3 bitti (yönlendirme seti 150, hedefler tuttu). M4 (onay) başlamadı.
 **Yığın:** ADR-009 — Python/FastAPI, PostgreSQL, React/Vite, LLM: Gemini `gemini-3.5-flash-lite` (ücretsiz katman).
 **Uzak depo:** https://github.com/UygarYildiz/FlowPilot (`main`, CI: GitHub Actions)
 
-## Son ölçüm (yönlendirme, 56 e-posta, `decision-v1`)
-Departman %98,2 (hedef ≥90) · otomatik yönlendirilenlerde hata %2,1 (≤5) · Procurement intent %100 (≥85)
-· manuel inceleme %14,3. Rapor: `backend/evals/results/routing-20261118-233808-*.md`.
+## Son ölçüm (yönlendirme, 150 e-posta, `decision-v1`, 2026-11-19)
+Departman %96,0 (hedef ≥90) · otomatik yönlendirilenlerde hata %3,1 (≤5) · Procurement intent %100 (≥85)
+· tüm intent %98,6 · çok departmanlı geri çağırma %96,4 · manuel inceleme %12,7.
+Rapor: `backend/evals/results/routing-20261119-100854-*.md`. 6 hatanın 4'ü fazladan departman ekleme.
 
 ## Şu an yapılan
 - Yok. Sıradaki adımı bekliyor.
@@ -20,7 +21,8 @@ Departman %98,2 (hedef ≥90) · otomatik yönlendirilenlerde hata %2,1 (≤5) �
 1. M4: departman sözleşmesine `agent` ve `proposal_types` (v1 kapsamı 3.3), `AgentRun` / `Proposal` modelleri,
    öneri yaşam döngüsü (pending → approved → executed / rejected / failed), tek yürütücü (idempotency),
    panelde onay/ret ve tüm sistem için denetim kaydı ekranı. Başarı kriteri 7 testle.
-2. Yönlendirme setini 150'ye çıkar (kullanıcı önce bunu isteyebilir).
+2. (İleride) Fazladan departman ekleme eğilimi için `decision-v2` prompt denemesi. Seti önce geliştirme/test diye
+   ikiye ayır, prompt'u yalnızca geliştirme kısmına bakarak değiştir; test kısmı tarafsız kalsın.
 
 ## Açık sorular
 - Panel dili Türkçe yapıldı (ADR-012); kullanıcı İngilizce isterse `frontend/src/lib/text.ts` + sayfalar çevrilir.

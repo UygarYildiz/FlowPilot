@@ -16,7 +16,7 @@ Amaç: Platformun iskeleti ve ilk gerçek ajan canlıda.
 - [x] Merkezi inbox ve departman inbox'ları (panel) — M3; giriş, inceleme kuyruğu, düzeltme
 - [~] Onay / ret akışı ve denetim kaydı — denetim kaydı ve e-posta geçmişi var; öneri onay/ret M4
 - [ ] Procurement Agent: PDF/Excel tekliften veri çıkarma, karşılaştırma, satın alma taslağı
-- [~] Değerlendirme seti + yönlendirme doğruluğu ölçümü — ölçüm aracı var; set 56/150 e-posta
+- [x] Değerlendirme seti + yönlendirme doğruluğu ölçümü — 150 e-posta; departman %96, otomatik hata %3,1, Procurement intent %100
 - [~] CI/CD ve canlı demo (kurgusal şirket) — CI kuruldu (M0), yayın M6'da
 
 ## v2 — Finance
