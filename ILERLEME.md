@@ -146,6 +146,10 @@ v1 bitince sırayla Finans (v2), Satış ve Sipariş (v3), Lojistik (v4) departm
 (Daha eski çalışmalar: `docs/gunluk/`.)
 
 ## Şu an
+Not: Bir düzeltmeyi gönderirken, yazılmakta olan otomatik döngünün yarım iki dosyası yanlışlıkla
+GitHub'a da gitmişti. Senin kararınla GitHub'da geri alındı; senin bilgisayarındaki dosyalar olduğu gibi
+duruyor ve döngü bitince normal şekilde gönderilecek.
+
 **M5 bitti:** Satın Alma ajanı v1 kapsamındaki beş e-posta türünün hepsini işliyor.
 
 Bilgisayarındaki deneme verisinde seni bekleyen üç öneri var (menüde "Onay bekleyenler"): Kaya Hidrolik

@@ -48,6 +48,8 @@ Kullanıcı kararı (2026-11-20, 3. oturum): yayın (deploy) sonraya; önce sist
 - Değerlendirme setine kullanıcının da (Claude dışında) birkaç gerçekçi e-posta eklemesi ölçümü daha güvenilir yapar.
 
 ## Notlar
+- 86a0f88 başka oturumun yarım M6 işini (`worker.py`, `imap.py` eklemeleri) yanlışlıkla push etmişti; sonraki
+  commit bunları yalnızca depoda geri aldı (çalışma klasöründe duruyorlar, M6 işi bitince commit'lenecek).
 - Commit edilmemiş: `make_extraction_set.py` biçimlendirmesi + yeniden üretilmiş 20 çıkarma belgesi (önceki oturum; içerik aynı, ~1 bayt fark). Bir sonraki commit'e girer.
 - Panel yerelde: `.claude/launch.json` (api :8000, panel :5173). Demo hesaplar `uv run flowpilot users demo`, şifre `flowpilot-demo`.
 - Tarayıcı denemeleri geliştirme veritabanını değiştirdi (1 e-posta kapatıldı, 1 düzeltildi, 1 rota kapatıldı). Sıfırlama komutu yok (M6).
