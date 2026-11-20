@@ -3,10 +3,11 @@
 > Her çalışma oturumunun sonunda güncellenir. Bu dosya **kısa** kalır (en fazla ~60 satır).
 > Geçmiş burada birikmez: biten işler `gunluk/` ve `CHANGELOG.md`'ye gider.
 
-**Son güncelleme:** 2026-11-20 (3)
+**Son güncelleme:** 2026-11-20 (4)
 **Aktif sürüm:** v1 — Çekirdek + Procurement ([kapsam](surumler/v1.md))
 **Aşama:** M0–M5 bitti. M5: Procurement Agent beş intent (ADR-015 `new_quote`; ADR-016 `price_update`,
-`order_status_inquiry`, `supplier_complaint`, `purchase_request`). Sırada M6 (yayın).
+`order_status_inquiry`, `supplier_complaint`, `purchase_request`). M6 1. parça sürüyor: işleyici (ADR-017) yazıldı,
+gerçek posta kutusuyla denenmedi.
 **Yığın:** ADR-009 — Python/FastAPI, PostgreSQL, React/Vite. Sınıflandırma: ADR-013 kademeli — SubQ `subq-snap-1.2` → Gemini `gemini-3.5-flash-lite` → insan.
 **Uzak depo:** https://github.com/UygarYildiz/FlowPilot (`main`, CI: GitHub Actions)
 
@@ -30,33 +31,34 @@ Test yarısı: Gemini %97,3 / otomatik hata %0 / inceleme %12,2 · SubQ %95,9 / 
 Denenip bırakılanlar: "belirsiz" eşiğini gevşetmek, `typed-v3` (asıl + ek departman soruları).
 
 ## Sıradaki adım
-Kullanıcı kararı (2026-11-20, 3. oturum): yayın (deploy) sonraya; önce sistem gerçek posta kutusuyla uçtan uca
-çalışmalı. M6'nın ilk parçası:
-1. Otomatik işleme döngüsü (`flowpilot worker`): N saniyede bir IMAP → sınıflandırma → ajan; e-posta başına
-   süre kaydı (kriter 10, p95 ≤ 60 sn). Bugün üç ayrı elle çalıştırılan komut var (`ingest imap`, `classify`,
-   `agents`). IMAP her seferinde son N günü tamamen indiriyor (tekrar önleme sonra); Message-ID/UID ile
-   önceden eleme düşünülmeli.
-2. Kullanıcı ayrı bir test Gmail hesabı açar (2 adımlı doğrulama + uygulama şifresi) ve `backend/.env`'e
-   `FLOWPILOT_IMAP_*` yazar. Kendi posta kutusu değil: Gemini ücretsiz katmanına yalnızca kurgusal veri (ADR-009).
-3. Kullanıcı kendi hesabından seed'deki kurgusal e-postaları (ekliler dahil) gönderir; panelde izlenir.
-4. Sonra: demo hesabı, "demo verisini sıfırla", paneli FastAPI'den sunma, README/GIF, CHANGELOG `v1.0.0`, yayın.
+Kullanıcı kararı: yayın sonraya; önce sistem gerçek posta kutusuyla kendiliğinden çalışmalı ("mail gelince tetiklensin").
+1. **Yapıldı:** `flowpilot worker` (ADR-017): açık IMAP bağlantısı, IDLE ile anında tetiklenme (yoksa 60 sn yoklama),
+   tur = içeri al → sınıflandır → ajanlar; `flowpilot latency` (kriter 10). Sahte IMAP ile testli; gerçek sunucu yok.
+2. **Kullanıcı:** ayrı test Gmail hesabı (2 adımlı doğrulama + uygulama şifresi), `backend/.env`:
+   `FLOWPILOT_IMAP_HOST=imap.gmail.com`, `_USER`, `_PASSWORD`. Kendi kutusu değil (ADR-009: ücretsiz Gemini'ye kurgusal veri).
+3. Canlı deneme: `uv run flowpilot worker` açıkken kullanıcı kendi hesabından seed'deki kurgusal e-postaları
+   (ekliler dahil) gönderir; panelde izlenir; `flowpilot latency` ile p95 ölçülür. IDLE'ın Gmail'de gerçekten
+   tetiklendiği ve SSL soketinde `select` beklemesinin çalıştığı burada doğrulanmalı.
+4. Sonra: panelde posta kutusu durumu (bağlı mı, son kontrol)? Demo hesabı, "demo verisini sıfırla", paneli
+   FastAPI'den sunma, README/GIF, CHANGELOG `v1.0.0`, yayın (Render: web + worker).
 5. (İleride) Ajan sürümü değişince tamamlanmış `agent_run`'ları yeniden çalıştırma yolu yok. `decision-v2` denemesi.
 
 ## Açık sorular
 - Canlı demonun barındırılacağı yer: ADR-009 Render diyor; kullanıcı yayını gerçek posta denemesinden sonraya bıraktı.
+- Panelden posta kutusu bağlama (kullanıcının "insanlar mailini bağlayınca" fikri): v1 tek şirket/tek kutu, `.env`'den.
+  Panelden bağlama şifre saklama ve çok kiracılık ister (v1 kapsam dışı) → `YOL_HARITASI` "Sonrası".
 - Panel dili Türkçe yapıldı (ADR-012); kullanıcı İngilizce isterse `frontend/src/lib/text.ts` + sayfalar çevrilir.
 - Değerlendirme setine kullanıcının da (Claude dışında) birkaç gerçekçi e-posta eklemesi ölçümü daha güvenilir yapar.
 
 ## Notlar
-- 86a0f88 başka oturumun yarım M6 işini (`worker.py`, `imap.py` eklemeleri) yanlışlıkla push etmişti; sonraki
-  commit bunları yalnızca depoda geri aldı (çalışma klasöründe duruyorlar, M6 işi bitince commit'lenecek).
-- Commit edilmemiş: `make_extraction_set.py` biçimlendirmesi + yeniden üretilmiş 20 çıkarma belgesi (önceki oturum; içerik aynı, ~1 bayt fark). Bir sonraki commit'e girer.
+- 86a0f88 yarım M6 işini (`worker.py`, `imap.py`) yanlışlıkla push etmişti, bb36c86 geri aldı; tamamlanmış hâli
+  ADR-017 commit'inde. Aynı klasörde iki oturum çalışırsa `git add -A` yerine dosya adlarıyla eklenmeli.
 - Panel yerelde: `.claude/launch.json` (api :8000, panel :5173). Demo hesaplar `uv run flowpilot users demo`, şifre `flowpilot-demo`.
 - Tarayıcı denemeleri geliştirme veritabanını değiştirdi (1 e-posta kapatıldı, 1 düzeltildi, 1 rota kapatıldı). Sıfırlama komutu yok (M6).
 - Kullanıcıya her oturum sonunda `ILERLEME.md` sade dille güncellenir (ADR-011); Stop/pre-commit kontrolü ister.
 - Gemini ücretsiz katmanına yalnızca kurgusal veri gönderilir (ADR-009). `.env` gitignore'da.
 - Docker Desktop kapanınca DB testleri atlanır (yerelde); `docker compose up -d` gerekir. DB `localhost:5433`.
-- IMAP adaptörü yalnızca sahte sunucuyla test edildi.
+- IMAP adaptörü ve işleyici yalnızca sahte sunucuyla test edildi.
 - Geliştirme DB'si (2026-11-20): göç `b3e23afd5d95` uygulandı. M4'teki geçici deneme ajanının çalışması ve 3 önerisi
   silindi (denetim olayları duruyor); gerçek ajan çalıştı: Anadolu ve Özkan teklifleri + SAT-2026-031 taslağı onaylı.
   2. parça: göç `b7f029c4be61`; 4 boş `agent_run` silinip ajan yeniden çalıştı; şikâyet yanıtı onaylı, diğer

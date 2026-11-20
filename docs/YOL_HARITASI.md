@@ -18,7 +18,7 @@ Amaç: Platformun iskeleti ve ilk gerçek ajan canlıda.
 - [x] Procurement Agent: PDF/Excel tekliften veri çıkarma, karşılaştırma, satın alma taslağı — M5: `new_quote` (ADR-015), fiyat güncellemesi, yanıt taslakları (gönderilmez), iç talep (ADR-016)
 - [x] Değerlendirme seti + yönlendirme doğruluğu ölçümü — 150 e-posta; departman %96, otomatik hata %3,1, Procurement intent %100
 - [x] Çıkarma seti (30 belge) + ölçüm — alan doğruluğu %98,7, işaretsiz yanlış tutar 0 (kriter 4–5)
-- [~] CI/CD ve canlı demo (kurgusal şirket) — CI kuruldu (M0), yayın M6'da
+- [~] CI/CD ve canlı demo (kurgusal şirket) — CI kuruldu (M0); M6 1. parça: işleyici (ADR-017), gerçek posta denemesi bekliyor; yayın sonra
 
 ## v2 — Finance
 - [ ] Finance Agent: fatura çıkarma (v1'deki belge çıkarmayı yeniden kullanır), ödeme kaydı kontrolü
@@ -34,5 +34,6 @@ Amaç: Platformun iskeleti ve ilk gerçek ajan canlıda.
 - [x] Karar modelleri (Cloudflare Clef, SubQ Snap 1.2) ile sınıflandırma; Gemini ile karşılaştırma. Seçim: kademeli SubQ → Gemini → insan (ADR-013); test yarısında departman %97,3, otomatik hata %1,5, inceleme %10,8.
 
 ## Sonrası (sıralanmadı)
+- [ ] Panelden posta kutusu bağlama (şirket başına kutu, şifrelerin güvenli saklanması; çok kiracılık ister).
 - ERP olayları, web formları ve diğer giriş kaynakları
 - n8n / Make gibi iş akışı araçlarına webhook ile tetikleme

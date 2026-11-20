@@ -35,6 +35,10 @@ class Settings(BaseSettings):
     imap_user: str = ""
     imap_password: str = ""
     imap_folder: str = "INBOX"
+    # İşleyici (ADR-017): IDLE ile en çok bu kadar bekler, sonra bir tur atar (yeniden deneme için).
+    imap_idle_seconds: float = 300.0
+    # Sunucu IDLE desteklemiyorsa yoklama aralığı.
+    imap_poll_seconds: float = 60.0
 
 
 @lru_cache

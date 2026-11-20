@@ -87,10 +87,16 @@ modules = [
 name = "Departmanlar bileşim kökünü ve CLI'ı import etmez"
 type = "forbidden"
 source_modules = ["flowpilot.departments"]
-forbidden_modules = ["flowpilot.bootstrap", "flowpilot.cli", "flowpilot.api"]
+forbidden_modules = ["flowpilot.bootstrap", "flowpilot.cli", "flowpilot.api", "flowpilot.worker"]
 
 [[tool.importlinter.contracts]]
 name = "core API katmanını, CLI'ı ve bileşim kökünü import etmez"
 type = "forbidden"
 source_modules = ["flowpilot.core"]
-forbidden_modules = ["flowpilot.api", "flowpilot.cli", "flowpilot.bootstrap", "flowpilot.main"]
+forbidden_modules = [
+    "flowpilot.api",
+    "flowpilot.cli",
+    "flowpilot.bootstrap",
+    "flowpilot.main",
+    "flowpilot.worker",
+]

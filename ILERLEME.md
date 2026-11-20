@@ -66,6 +66,13 @@ Bir örnekle:
    - **Şirket içi satın alma talebi:** *"Satın alma talebi oluştur: 3 kalem (Üretim Planlama, en geç
      24.11.2026)"*. Onaylanınca talep numarası veriliyor (SAT-2026-101, 102…).
 
+10. **Sistem artık kendiliğinden çalışabiliyor (yeni):** Bir "işleyici" posta kutusuna sürekli bağlı
+    duruyor. Kutuya yeni e-posta düştüğü an posta sunucusu haber veriyor; işleyici e-postayı çekiyor,
+    yönlendiriyor, ajanı çalıştırıyor ve öneriyi panele koyuyor. Kimsenin komut çalıştırması gerekmiyor.
+    Posta kutusunda hiçbir şeyi değiştirmiyor ("okundu" işareti bile koymuyor). Bağlantı koparsa kendisi
+    yeniden bağlanıyor; yapay zekâya o an ulaşamazsa birkaç dakika sonra yeniden deniyor.
+    ⚠️ Bunu şimdilik yalnızca sahte bir posta sunucusuyla denedik; gerçek Gmail denemesi seni bekliyor.
+
 **Henüz olmayanlar:** Finans, Satış ve Lojistik departmanlarının ajanları (v2–v4). Panel şimdilik yalnızca
 senin bilgisayarında çalışıyor (internette değil).
 
@@ -120,6 +127,12 @@ v1 bitince sırayla Finans (v2), Satış ve Sipariş (v3), Lojistik (v4) departm
 
 ## Son oturumlarda ne yaptık?
 
+**20 Kasım — Kendiliğinden çalışan sistem (M6, 1. parça)**
+- Senin isteğinle yayını sonraya bıraktık: önce sistem gerçek bir ürün gibi kendi başına çalışmalı.
+- "İşleyici" yazıldı (yukarıda 10. madde): posta kutusuna bağlı kalıyor, yeni e-posta gelince hemen
+  işliyor. Her e-postanın gelişinden öneriye kaç saniye sürdüğünü ölçen bir komut da eklendi.
+- Sahte posta sunucusuyla otomatik testleri geçti. Gerçek Gmail'le deneme sırada.
+
 **20 Kasım — Satın Alma ajanı, 2. parça (M5 bitti)**
 - Fiyat güncellemesi, sipariş durumu sorusu, tedarikçi şikâyeti ve iç satın alma talebi e-postaları da
   artık öneriye dönüşüyor (yukarıda 9. madde).
@@ -128,47 +141,30 @@ v1 bitince sırayla Finans (v2), Satış ve Sipariş (v3), Lojistik (v4) departm
 
 **20 Kasım — Satın Alma ajanı, 1. parça (M5)**
 - Ajan teklif eklerini okuyor, sayıları belgeye ve aritmetiğe karşı kontrol ediyor, "teklifi kaydet" ve
-  (birden çok teklif varsa) "satın alma taslağı" öneriyor. Onaylanınca Satın Alma'nın kendi kayıtlarına
-  yazılıyor.
-- 30 belgelik ölçüm seti hazırlandı; iki hedef de tuttu (yukarıdaki tablo).
-- Ölçerken bir hata bulduk ve düzelttik: noktalı virgüllü Türkçe CSV dosyalarında sistem "2.216,39" gibi
-  sayıları bölüyordu.
-- Hepsini tarayıcıda gerçek yapay zekâyla denedik: iki teklif kaydedildi, taslak onaylandı.
-
-**19 Kasım — Onay akışı (M4 bitti)**
-- Departmanların "ajan" takabileceği kurallar yazıldı: ajan yalnızca öneri hazırlar, hiçbir şeyi kendisi
-  değiştiremez.
-- Öneriler onaylanır ya da gerekçeyle reddedilir; onaylanan tam bir kez uygulanır. Bunu, iki işlemin
-  aynı öneriyi aynı anda uygulamaya çalıştığı bir test dahil, otomatik testlerle kanıtladık.
-- Panele "Onay bekleyenler" listesi, e-postada "Ajan önerileri" bölümü ve yönetici için "Denetim kaydı"
-  ekranı eklendi; hepsini tarayıcıda denedik.
+  "satın alma taslağı" öneriyor. 30 belgelik ölçüm setinde iki hedef de tuttu.
 
 (Daha eski çalışmalar: `docs/gunluk/`.)
 
 ## Şu an
-Not: Bir düzeltmeyi gönderirken, yazılmakta olan otomatik döngünün yarım iki dosyası yanlışlıkla
-GitHub'a da gitmişti. Senin kararınla GitHub'da geri alındı; senin bilgisayarındaki dosyalar olduğu gibi
-duruyor ve döngü bitince normal şekilde gönderilecek.
+**M6, 1. parça:** sistemin gerçek bir posta kutusuyla kendi başına çalışması. İşleyici yazıldı ve testlerden
+geçti; gerçek Gmail kutusuyla deneme senin hesabını bekliyor.
 
-**M5 bitti:** Satın Alma ajanı v1 kapsamındaki beş e-posta türünün hepsini işliyor.
-
-Bilgisayarındaki deneme verisinde seni bekleyen üç öneri var (menüde "Onay bekleyenler"): Kaya Hidrolik
-fiyat güncellemesi, Demirtaş Çelik'e sipariş durumu yanıt taslağı ve Hat 3 için iç satın alma talebi.
-İstersen onaylayıp ya da reddedip deneyebilirsin. Şikâyet yanıt taslağını biz onayladık.
+Bilgisayarındaki deneme verisinde seni bekleyen üç öneri hâlâ duruyor (menüde "Onay bekleyenler").
 
 ## Sırada ne var?
-Kararın: önce sistem **gerçek bir posta kutusuyla** çalışsın, internete koymak (yayın) sonra.
-1. **Otomatik döngü:** sistem posta kutusuna kendisi baksın; yeni e-postayı çeksin, yönlendirsin, ajanı
-   çalıştırsın, öneriyi panele koysun. Bugün bunlar elle çalıştırılan üç ayrı komut. Burada "e-posta
-   gelişinden öneriye 60 saniyenin altında" hedefini de ölçeceğiz.
-2. **Gerçek deneme:** sen ayrı bir test Gmail hesabı açarsın, kendi hesabından ona kurgusal Atlas
-   e-postaları gönderirsin, panelde birlikte izleriz.
-3. Sonra: demo hesabı, "demo verisini sıfırla", README ve tanıtım, internete koyma (M6'nın geri kalanı).
+1. **Gerçek deneme:** sen test Gmail hesabını bağlarsın, işleyiciyi açarız, kendi hesabından ona kurgusal
+   Atlas e-postaları (ekli teklifler dahil) gönderirsin; birkaç saniye içinde panelde görünmeleri gerekir.
+   "Gelişten öneriye 60 saniyenin altında" hedefini burada ölçeceğiz.
+2. Sonra: demo hesabı, "demo verisini sıfırla", README ve tanıtım, internete koyma (M6'nın geri kalanı).
+3. **Sonraya not:** panelden "posta kutunu bağla" (her şirket kendi kutusunu bağlasın) v1'de yok: bu, şifreleri
+   güvenle saklamayı ve birden çok şirketi ayırmayı gerektiriyor. v1'de kutu ayar dosyasından bağlanıyor.
 
 ## Senden beklenenler
 - **Test posta kutusu:** yeni bir Gmail hesabı aç (kendi hesabın değil), iki adımlı doğrulamayı aç ve bir
-  "uygulama şifresi" al. Şifreyi `backend/.env` dosyasına sen yaz; ben şifre girmiyorum.
-  Kendi hesabın olmamasının nedeni: Gemini'nin ücretsiz katmanına yalnızca kurgusal veri gönderiyoruz.
+  "uygulama şifresi" al (Google Hesabı → Güvenlik → Uygulama şifreleri). `backend/.env` dosyasına sen yaz;
+  ben şifre girmiyorum: `FLOWPILOT_IMAP_HOST=imap.gmail.com`, `FLOWPILOT_IMAP_USER=<yeni adres>`,
+  `FLOWPILOT_IMAP_PASSWORD=<16 haneli uygulama şifresi>`. Kendi hesabın olmamasının nedeni: Gemini'nin
+  ücretsiz katmanına yalnızca kurgusal veri gönderiyoruz.
 - **Onay:** Panel Türkçe yapıldı. İlanlar İngilizce ise çevirebiliriz, söylemen yeterli.
 - **İsteğe bağlı:** Şirketlere gelebilecek 5–10 gerçekçi e-posta yazarsan ölçüm çok daha güvenilir olur.
   Gerçek kişi/şirket bilgisi koyma.
@@ -211,6 +207,17 @@ npm run dev
 Sonra tarayıcıda http://localhost:5173 adresini aç ve giriş sayfasındaki demo hesaplardan birine tıkla
 (şifre otomatik dolar: `flowpilot-demo`).
 
+**Posta kutusunu izletmek için** (test Gmail hesabı `.env`'e yazıldıktan sonra), `backend` klasöründe:
+
+```powershell
+uv run flowpilot worker
+```
+```powershell
+uv run flowpilot latency
+```
+
+İlki açık kaldığı sürece gelen e-postaları işler (Ctrl+C ile durur); ikincisi gelişten öneriye geçen süreleri gösterir.
+
 ## Küçük sözlük
 | Terim | Anlamı |
 |---|---|
@@ -230,6 +237,9 @@ Sonra tarayıcıda http://localhost:5173 adresini aç ve giriş sayfasındaki de
 | Ajan | Departmanın işini hazırlayan yapay zekâ (ilki M5'te). Sadece **önerir**, onay insanındır. |
 | Öneri | Ajanın hazırladığı iş (ör. "bu teklifi kaydet"). Onaylanınca bir kez uygulanır, reddedilirse hiç. |
 | Denetim kaydı | Sistemde olan her şeyin silinemeyen listesi: kim, ne zaman, ne yaptı. |
+| İşleyici (worker) | Arka planda sürekli çalışan parça: posta kutusunu izler, gelen e-postayı baştan sona işler. |
+| IMAP / IDLE | IMAP: posta kutusunu okumanın standart yolu. IDLE: "yeni e-posta gelince bana haber ver" özelliği; böylece sistem sürekli sormak zorunda kalmaz. |
+| Uygulama şifresi | Google'ın, bir programın posta kutusunu okuması için verdiği ayrı şifre. Hesap şifren değildir, istediğinde iptal edilir. |
 | Seed | Demo için hazırladığımız kurgusal şirket verisi (Atlas Endüstri). |
 | Değerlendirme seti | Doğru cevabını bildiğimiz örnek e-postalar; sistemin ne kadar doğru çalıştığını ölçmek için. |
 | ADR | "Neden böyle yaptık" kaydı. `docs/KARARLAR.md`'de durur. |

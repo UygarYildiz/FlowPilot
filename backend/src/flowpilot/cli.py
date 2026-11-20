@@ -4,6 +4,8 @@
     uv run flowpilot classify [--limit N]      bekleyen e-postaları Decision Engine'den geçir
     uv run flowpilot eval routing [--limit N]  yönlendirme değerlendirmesi (rapor: evals/results/)
     uv run flowpilot users demo                demo panel kullanıcılarını oluştur/güncelle
+    uv run flowpilot worker                    posta kutusunu izle, gelen e-postayı uçtan uca işle
+    uv run flowpilot latency                   gelişten yönlendirmeye/öneriye süre (kriter 10)
 
 Sınıflandırma motoru `FLOWPILOT_DECISION_ENGINE` ile seçilir (llm | clef); llm için sağlayıcı
 `FLOWPILOT_LLM_PROVIDER` (fake | gemini).
@@ -35,8 +37,7 @@ def _ingest(args: argparse.Namespace, settings: Settings, parser: argparse.Argum
     if args.source == "seed":
         source = SeedSource(args.dir or settings.seed_dir)
     else:
-        if not settings.imap_host:
-            parser.error("IMAP için FLOWPILOT_IMAP_HOST / _USER / _PASSWORD ayarlanmalı")
+        _require_imap(settings, parser)
         source = ImapSource(
             host=settings.imap_host,
             port=settings.imap_port,
@@ -129,6 +130,68 @@ def _eval_routing(args: argparse.Namespace, settings: Settings) -> int:
     return 0
 
 
+def _require_imap(settings: Settings, parser: argparse.ArgumentParser) -> None:
+    if not (settings.imap_host and settings.imap_user and settings.imap_password):
+        parser.error("IMAP için FLOWPILOT_IMAP_HOST / _USER / _PASSWORD ayarlanmalı (backend/.env)")
+
+
+def _worker(args: argparse.Namespace, settings: Settings, parser: argparse.ArgumentParser) -> int:
+    import logging
+
+    from flowpilot.core.ingestion.sources.imap import ImapMailbox
+    from flowpilot.worker import known_message_ids, run_worker
+
+    logging.basicConfig(
+        level=logging.DEBUG if args.verbose else logging.INFO,
+        format="%(asctime)s %(message)s",
+        datefmt="%H:%M:%S",
+    )
+    for noisy in ("httpx", "httpcore", "google_genai"):
+        logging.getLogger(noisy).setLevel(logging.WARNING)
+    _require_imap(settings, parser)
+    mailbox = ImapMailbox(
+        host=settings.imap_host,
+        port=settings.imap_port,
+        user=settings.imap_user,
+        password=settings.imap_password,
+        folder=settings.imap_folder,
+        since_days=args.since_days,
+        is_known=known_message_ids(session_scope),
+    )
+    registry = get_registry()
+    classifier = build_classifier(settings, registry)
+    logging.getLogger("flowpilot.worker").info(
+        "İşleyici başladı · %s · %s/%s · model %s (durdurmak için Ctrl+C)",
+        settings.imap_user,
+        settings.imap_host,
+        settings.imap_folder,
+        classifier.model_name,
+    )
+    try:
+        run_worker(
+            mailbox,
+            session_scope=session_scope,
+            storage=LocalStorage(settings.storage_dir),
+            classifier=classifier,
+            registry=registry,
+            idle_seconds=settings.imap_idle_seconds,
+            poll_seconds=settings.imap_poll_seconds,
+        )
+    except KeyboardInterrupt:
+        mailbox.close()
+        print("İşleyici durduruldu.")
+    return 0
+
+
+def _latency(args: argparse.Namespace) -> int:
+    from flowpilot.evals import latency
+
+    with session_scope() as session:
+        rows = latency.collect(session, source=args.source)
+    print(latency.render(rows))
+    return 0
+
+
 def _users_demo(settings: Settings) -> int:
     with session_scope() as session:
         emails = ensure_demo_users(session, settings.demo_password)
@@ -214,6 +277,13 @@ def main(argv: list[str] | None = None) -> int:
     users_commands = users.add_subparsers(dest="users_command", required=True)
     users_commands.add_parser("demo", help="Demo kullanıcılarını oluştur/güncelle")
 
+    worker = commands.add_parser("worker", help="Posta kutusunu izle; gelen e-postayı işle")
+    worker.add_argument("--since-days", type=int, default=7, help="İlk taramada kaç gün geriye")
+    worker.add_argument("-v", "--verbose", action="store_true")
+
+    latency_parser = commands.add_parser("latency", help="Gelişten öneriye süre (kriter 10)")
+    latency_parser.add_argument("--source", default="imap")
+
     args = parser.parse_args(argv)
     settings = get_settings()
     if args.command == "ingest":
@@ -222,6 +292,10 @@ def main(argv: list[str] | None = None) -> int:
         return _classify(args, settings)
     if args.command == "agents":
         return _agents(args)
+    if args.command == "worker":
+        return _worker(args, settings, parser)
+    if args.command == "latency":
+        return _latency(args)
     if args.command == "users":
         return _users_demo(settings)
     if args.suite == "rescore":

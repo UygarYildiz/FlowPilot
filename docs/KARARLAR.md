@@ -142,3 +142,14 @@
 - **`purchase_request` → `create_purchase_request`:** talep eden, birim, masraf merkezi, en geç tarih, gerekçe ve kalemler (kod, açıklama, miktar, birim) çıkarılır; miktar kaynak kontrolünden geçer, kod katalogda aranır. Onaylanınca `procurement_purchase_request` kaydı açılır ve talep numarası (`SAT-<yıl>-<sıra>`, 101'den başlar) verilir.
 - Kaynak kontrolü ve `Issue` yapısı 1. parçayla ortaktır (`validation.py`).
 **Sonuçlar:** Dört yeni intent kayıtlı sahte model cevaplarıyla testlidir; ayrı ölçüm seti yok (kriter 4–5 tekliflere aittir). Bedeli: yanıt taslağının üslubu ve doğruluğu modele bağlıdır; sayı kontrolü yalnızca rakamları yakalar (ör. "yarın" gibi söz vermeleri yakalamaz), bu yüzden taslak her zaman insan onayından geçer ve gönderilmez.
+
+## ADR-017: Sürekli çalışan işleyici; yeni e-posta IMAP IDLE ile tetiklenir
+**Tarih:** 2026-11-20 · **Durum:** Kabul edildi
+**Bağlam:** Çekme, sınıflandırma ve ajan üç ayrı, elle çalıştırılan komuttu; sistem kendiliğinden çalışmıyordu. Kullanıcı: ürün olması için posta kutusu bağlanınca gelen e-posta otomatik işlenmeli. Kriter 10: gelişten öneriye p95 ≤ 60 sn. ADR-009 zaten Render'da ayrı bir worker öngörüyordu. Seçenekler: (a) zamanlanmış yoklama (cron, her N dk), (b) sürekli açık IMAP bağlantısı + IDLE (sunucu yeni e-postayı anında bildirir), (c) Gmail API push (Pub/Sub) — v1 kapsamı dışı, Gmail'e bağlar.
+**Karar:** (b), yoklama yedeğiyle.
+- `ImapMailbox` (`core/ingestion/sources/imap.py`): tek açık bağlantı, `readonly` SELECT ve `BODY.PEEK` (posta kutusu değişmez). İlk turda son N gün; kayıtlı e-postalar yalnızca `Message-ID` başlığı indirilerek atlanır. Sonra yalnızca son görülen UID'den büyükler. UIDVALIDITY değişirse baştan tarar. `EmailSource` arayüzünü karşılar; giriş servisi ve tekrar önleme aynen kullanılır.
+- `wait`: sunucu IDLE destekliyorsa RFC 2177 IDLE (en çok `FLOWPILOT_IMAP_IDLE_SECONDS`, 300 sn); yoksa `FLOWPILOT_IMAP_POLL_SECONDS` (60 sn) bekleyip yoklar. IDLE yalnızca gecikmeyi düşürür; doğruluk her turdaki UID aramasına dayanır.
+- `flowpilot worker` (`worker.py`): tur = içeri al → `classify_pending` → `run_pending_agents`, sonra bekle. Bekleme süresi dolunca da tur atılır: model erişilemediği için `received` kalanlar böylece yeniden denenir. Bağlantı hatasında artan aralıkla (5 sn → 5 dk) yeniden bağlanır.
+- `flowpilot latency`: gelişten (Date başlığı) ilk karara ve ilk öneriye süreler; ortanca/p95.
+**Sonuçlar:** Tek posta kutusu (v1 tek şirket); panelden posta kutusu bağlama ve birden çok kutu sonraya. İşleyici tek süreçtir; iki tane çalışırsa tekrar önleme ve `agent_run` tekilliği çift kaydı önler ama model çağrısı boşa yapılabilir. Bedeli: imaplib IDLE'ı desteklemediği için (Python 3.12) IDLE elle yazıldı; tamponda kalmış bir bildirim en kötü bekleme süresi sonunda yakalanır. Geliş zamanı gönderenin `Date` başlığıdır (kaba ölçü). Gerçek bir sunucuyla (Gmail) henüz denenmedi.
+
