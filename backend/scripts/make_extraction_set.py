@@ -185,8 +185,9 @@ def pdf_prose(spec: Spec, path: Path) -> None:
     unit = CURRENCY_LABEL[spec.currency] if spec.show_currency else ""
     paragraphs = [
         spec.supplier,
-        f"Sayın Atlas Endüstri Satın Alma Birimi,",
-        f"{spec.request_no} numaralı talebiniz için {spec.quote_no} numaralı teklifimizi aşağıda sunarız.",
+        "Sayın Atlas Endüstri Satın Alma Birimi,",
+        f"{spec.request_no} numaralı talebiniz için {spec.quote_no} numaralı teklifimizi "
+        "aşağıda sunarız.",
         "",
     ]
     for line in spec.lines:
@@ -235,7 +236,9 @@ def xlsx_totals(spec: Spec, path: Path) -> None:
     ws.append(["TEKLİF", spec.quote_no, "Talep", spec.request_no])
     ws.append(["Son geçerlilik", spec.valid_until.isoformat()])
     cur = spec.currency if spec.show_currency else ""
-    ws.append(["Kod", "Tanım", "Adet", "Birim", f"Fiyat {cur}".strip(), f"Tutar {cur}".strip(), "Termin"])
+    ws.append(
+        ["Kod", "Tanım", "Adet", "Birim", f"Fiyat {cur}".strip(), f"Tutar {cur}".strip(), "Termin"]
+    )
     for i, line in enumerate(spec.lines):
         ws.append(
             [
@@ -263,7 +266,9 @@ def csv_tr(spec: Spec, path: Path) -> None:
         w.writerow(["Teklif No", spec.quote_no])
         w.writerow(["Talep No", spec.request_no])
         w.writerow(["Geçerlilik", spec.valid_until.strftime("%d.%m.%Y")])
-        w.writerow(["Kod", "Ürün", "Miktar", "Birim", f"Birim fiyat {unit}".strip(), "Tutar", "Teslim"])
+        w.writerow(
+            ["Kod", "Ürün", "Miktar", "Birim", f"Birim fiyat {unit}".strip(), "Tutar", "Teslim"]
+        )
         for i, line in enumerate(spec.lines):
             w.writerow(
                 [
@@ -290,7 +295,9 @@ def csv_en(spec: Spec, path: Path) -> None:
         w.writerow(["Valid until", spec.valid_until.isoformat()])
         if spec.show_currency:
             w.writerow(["Currency", spec.currency])
-        w.writerow(["Item", "Description", "Qty", "UoM", "Unit price", "Amount", "Lead time (days)"])
+        w.writerow(
+            ["Item", "Description", "Qty", "UoM", "Unit price", "Amount", "Lead time (days)"]
+        )
         for i, line in enumerate(spec.lines):
             w.writerow(
                 [
@@ -375,7 +382,7 @@ def build_specs() -> list[Spec]:
         chosen = rnd.sample(PRODUCTS, rnd.randint(2, 5))
         lines = []
         for code, desc, unit, base_try in chosen:
-            price = (Decimal(str(base_try)) * Decimal(str(rnd.uniform(0.85, 1.2))) / FX[currency])
+            price = Decimal(str(base_try)) * Decimal(str(rnd.uniform(0.85, 1.2))) / FX[currency]
             price = price.quantize(CENT, ROUND_HALF_UP)
             qty = rnd.choice([5, 10, 12, 20, 24, 40, 50, 60, 100, 150, 200, 400])
             lines.append(Line(code, desc, unit, qty, price, rnd.choice([3, 5, 7, 10, 14, 21, 28])))

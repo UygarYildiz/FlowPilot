@@ -3,7 +3,7 @@
 > Her çalışma oturumunun sonunda güncellenir. Bu dosya **kısa** kalır (en fazla ~60 satır).
 > Geçmiş burada birikmez: biten işler `gunluk/` ve `CHANGELOG.md`'ye gider.
 
-**Son güncelleme:** 2026-11-20
+**Son güncelleme:** 2026-11-20 (3)
 **Aktif sürüm:** v1 — Çekirdek + Procurement ([kapsam](surumler/v1.md))
 **Aşama:** M0–M5 bitti. M5: Procurement Agent beş intent (ADR-015 `new_quote`; ADR-016 `price_update`,
 `order_status_inquiry`, `supplier_complaint`, `purchase_request`). Sırada M6 (yayın).
@@ -30,18 +30,25 @@ Test yarısı: Gemini %97,3 / otomatik hata %0 / inceleme %12,2 · SubQ %95,9 / 
 Denenip bırakılanlar: "belirsiz" eşiğini gevşetmek, `typed-v3` (asıl + ek departman soruları).
 
 ## Sıradaki adım
-1. M6 (v1 kapsamı 3.8, 7. madde): canlı demo (barındırma yeri açık soru), demo hesabı, "demo verisini sıfırla",
-   paneli FastAPI'den sunma, README/GIF, ölçüm sonuçları, CHANGELOG `v1.0.0`. Kriter 10 (gelişten öneriye
-   p95 ≤ 60 sn) henüz ölçülmedi: kademeli sınıflandırma + ajan süresi canlı akışta ölçülmeli.
-2. (İleride) Ajan sürümü değişince tamamlanmış `agent_run`'ları yeniden çalıştırma yolu yok (dev'de elle silindi).
-   `decision-v2` prompt denemesi (yalnızca dev yarısına bakarak).
+Kullanıcı kararı (2026-11-20, 3. oturum): yayın (deploy) sonraya; önce sistem gerçek posta kutusuyla uçtan uca
+çalışmalı. M6'nın ilk parçası:
+1. Otomatik işleme döngüsü (`flowpilot worker`): N saniyede bir IMAP → sınıflandırma → ajan; e-posta başına
+   süre kaydı (kriter 10, p95 ≤ 60 sn). Bugün üç ayrı elle çalıştırılan komut var (`ingest imap`, `classify`,
+   `agents`). IMAP her seferinde son N günü tamamen indiriyor (tekrar önleme sonra); Message-ID/UID ile
+   önceden eleme düşünülmeli.
+2. Kullanıcı ayrı bir test Gmail hesabı açar (2 adımlı doğrulama + uygulama şifresi) ve `backend/.env`'e
+   `FLOWPILOT_IMAP_*` yazar. Kendi posta kutusu değil: Gemini ücretsiz katmanına yalnızca kurgusal veri (ADR-009).
+3. Kullanıcı kendi hesabından seed'deki kurgusal e-postaları (ekliler dahil) gönderir; panelde izlenir.
+4. Sonra: demo hesabı, "demo verisini sıfırla", paneli FastAPI'den sunma, README/GIF, CHANGELOG `v1.0.0`, yayın.
+5. (İleride) Ajan sürümü değişince tamamlanmış `agent_run`'ları yeniden çalıştırma yolu yok. `decision-v2` denemesi.
 
 ## Açık sorular
-- Canlı demonun barındırılacağı yer (v1 kapsamı 9. açık soru) — M6 öncesi kullanıcıya sorulmalı.
+- Canlı demonun barındırılacağı yer: ADR-009 Render diyor; kullanıcı yayını gerçek posta denemesinden sonraya bıraktı.
 - Panel dili Türkçe yapıldı (ADR-012); kullanıcı İngilizce isterse `frontend/src/lib/text.ts` + sayfalar çevrilir.
 - Değerlendirme setine kullanıcının da (Claude dışında) birkaç gerçekçi e-posta eklemesi ölçümü daha güvenilir yapar.
 
 ## Notlar
+- Commit edilmemiş: `make_extraction_set.py` biçimlendirmesi + yeniden üretilmiş 20 çıkarma belgesi (önceki oturum; içerik aynı, ~1 bayt fark). Bir sonraki commit'e girer.
 - Panel yerelde: `.claude/launch.json` (api :8000, panel :5173). Demo hesaplar `uv run flowpilot users demo`, şifre `flowpilot-demo`.
 - Tarayıcı denemeleri geliştirme veritabanını değiştirdi (1 e-posta kapatıldı, 1 düzeltildi, 1 rota kapatıldı). Sıfırlama komutu yok (M6).
 - Kullanıcıya her oturum sonunda `ILERLEME.md` sade dille güncellenir (ADR-011); Stop/pre-commit kontrolü ister.

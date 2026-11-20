@@ -114,7 +114,7 @@ Tuzaklı belgelerdeki sorunların hepsini kontrol yakaladı ve "şüpheli" diye 
 | M3 | **Panel:** e-postaları, kararları ve gerekçelerini ekranda görme, yanlışı düzeltme, giriş | ✅ Bitti |
 | M4 | Ajan önerilerini onaylama/reddetme ve tüm sistemin "kim ne yaptı" ekranı | ✅ Bitti |
 | M5 | **Satın Alma ajanı:** tekliften ürün/fiyat çıkarma, teklifleri karşılaştırma, sipariş taslağı | ✅ Bitti |
-| M6 | İnternette herkesin açabileceği canlı demo | ⬜ Sırada |
+| M6 | Gerçek posta kutusuyla otomatik çalışma, sonra internette canlı demo | ⬜ Sırada |
 
 v1 bitince sırayla Finans (v2), Satış ve Sipariş (v3), Lojistik (v4) departmanlarının ajanları eklenecek.
 
@@ -153,17 +153,21 @@ fiyat güncellemesi, Demirtaş Çelik'e sipariş durumu yanıt taslağı ve Hat 
 İstersen onaylayıp ya da reddedip deneyebilirsin. Şikâyet yanıt taslağını biz onayladık.
 
 ## Sırada ne var?
-1. **M6 — Canlı demo:** internette açılabilen panel, demo hesabı, "demo verisini sıfırla" düğmesi,
-   README ve kısa tanıtım, ölçüm sonuçlarıyla birlikte v1.0.0.
-2. Ölçülmemiş bir v1 hedefi kaldı: e-postanın gelişinden önerinin hazır olmasına kadar geçen süre (60
-   saniyenin altında olmalı). M6'da canlı akışta ölçeceğiz.
+Kararın: önce sistem **gerçek bir posta kutusuyla** çalışsın, internete koymak (yayın) sonra.
+1. **Otomatik döngü:** sistem posta kutusuna kendisi baksın; yeni e-postayı çeksin, yönlendirsin, ajanı
+   çalıştırsın, öneriyi panele koysun. Bugün bunlar elle çalıştırılan üç ayrı komut. Burada "e-posta
+   gelişinden öneriye 60 saniyenin altında" hedefini de ölçeceğiz.
+2. **Gerçek deneme:** sen ayrı bir test Gmail hesabı açarsın, kendi hesabından ona kurgusal Atlas
+   e-postaları gönderirsin, panelde birlikte izleriz.
+3. Sonra: demo hesabı, "demo verisini sıfırla", README ve tanıtım, internete koyma (M6'nın geri kalanı).
 
 ## Senden beklenenler
-- **Bilgi:** Bilgisayarındaki ayarı yeni düzene çevirdim; artık gerçek Gemini kullanılıyor (önceden sahte
-  bir model ayarlıydı). Gemini'ye yalnızca kurgusal veri gönderiyoruz.
+- **Test posta kutusu:** yeni bir Gmail hesabı aç (kendi hesabın değil), iki adımlı doğrulamayı aç ve bir
+  "uygulama şifresi" al. Şifreyi `backend/.env` dosyasına sen yaz; ben şifre girmiyorum.
+  Kendi hesabın olmamasının nedeni: Gemini'nin ücretsiz katmanına yalnızca kurgusal veri gönderiyoruz.
 - **Onay:** Panel Türkçe yapıldı. İlanlar İngilizce ise çevirebiliriz, söylemen yeterli.
 - **İsteğe bağlı:** Şirketlere gelebilecek 5–10 gerçekçi e-posta yazarsan ölçüm çok daha güvenilir olur.
-  Gerçek kişi/şirket bilgisi koyma; Gemini'nin ücretsiz katmanına yalnızca kurgusal veri gönderiyoruz.
+  Gerçek kişi/şirket bilgisi koyma.
 
 ## Kendin denemek istersen
 Docker Desktop açıkken, `backend` klasöründe:
